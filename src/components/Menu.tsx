@@ -1,100 +1,93 @@
 import {
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonMenu,
-  IonMenuToggle,
-  IonNote,
+    IonContent,
+    IonIcon,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonListHeader,
+    IonMenu,
+    IonMenuToggle,
+    IonNote,
+    IonToggle,
+    ToggleChangeEventDetail,
 } from '@ionic/react';
+import React from 'react';
 
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { mainPages, userPages, accountPages } from '../pages';
 import './Menu.css';
 
-interface AppPage {
-  url: string;
-  iosIcon: string;
-  mdIcon: string;
-  title: string;
-}
-
-const appPages: AppPage[] = [
-  {
-    title: 'Inbox',
-    url: '/page/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
-  },
-  {
-    title: 'Outbox',
-    url: '/page/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
-  },
-  {
-    title: 'Favorites',
-    url: '/page/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
-  },
-  {
-    title: 'Archived',
-    url: '/page/Archived',
-    iosIcon: archiveOutline,
-    mdIcon: archiveSharp
-  },
-  {
-    title: 'Trash',
-    url: '/page/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp
-  },
-  {
-    title: 'Spam',
-    url: '/page/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp
-  }
-];
-
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-
 const Menu: React.FC = () => {
-  const location = useLocation();
+    const location = useLocation();
 
-  return (
-    <IonMenu contentId="main" type="overlay">
-      <IonContent>
-        <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
-          {appPages.map((appPage, index) => {
-            return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
-                </IonItem>
-              </IonMenuToggle>
-            );
-          })}
-        </IonList>
+    const changeTheme = async (e: CustomEvent<ToggleChangeEventDetail>) => {
+        const ionToggle = e.currentTarget;
+        if (!ionToggle) {
+            return;
+        }
+        console.log(`Dark: ${e.detail.checked}`);
+        document.body.classList.toggle('dark', e.detail.checked);
+        // document.body.classList.toggle("dark");
+    };
 
-        <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
-      </IonContent>
-    </IonMenu>
-  );
+    // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    // prefersDark.matches()
+
+    return (
+        <IonMenu contentId="main" type="overlay">
+            <IonContent>
+                <IonList id="main-list">
+                    <IonListHeader>Learnify</IonListHeader>
+                    <IonNote>A nice Learning App</IonNote>
+                    {mainPages.map((mainPage, index) => {
+                        return (
+                            <IonMenuToggle key={index} autoHide={false}>
+                                <IonItem className={location.pathname === mainPage.url ? 'selected' : ''} routerLink={mainPage.url} routerDirection="none" lines="none" detail={false}>
+                                    <IonIcon slot="start" ios={mainPage.iosIcon} md={mainPage.mdIcon} />
+                                    <IonLabel>{mainPage.title}</IonLabel>
+                                </IonItem>
+                            </IonMenuToggle>
+                        );
+                    })}
+                </IonList>
+
+                <IonList id="user-list">
+                    <IonListHeader>Your</IonListHeader>
+                    {userPages.map((userPages, index) => {
+                        return (
+                            <IonMenuToggle key={index} autoHide={false}>
+                                <IonItem className={location.pathname === userPages.url ? 'selected' : ''} routerLink={userPages.url} routerDirection="none" lines="none" detail={false}>
+                                    <IonIcon slot="start" ios={userPages.iosIcon} md={userPages.mdIcon} />
+                                    <IonLabel>{userPages.title}</IonLabel>
+                                </IonItem>
+                            </IonMenuToggle>
+                        );
+                    })}
+                </IonList>
+
+                <IonList id="account-list">
+                    {accountPages.map((accountPages, index) => {
+                        return (
+                            <IonMenuToggle key={index} autoHide={false}>
+                                <IonItem className={location.pathname === accountPages.url ? 'selected' : ''} routerLink={accountPages.url} routerDirection="none" lines="none" detail={false}>
+                                    <IonIcon slot="start" ios={accountPages.iosIcon} md={accountPages.mdIcon} />
+                                    <IonLabel>{accountPages.title}</IonLabel>
+                                </IonItem>
+                            </IonMenuToggle>
+                        );
+                    })}
+                </IonList>
+
+                <IonList id='setting-list'>
+                    <IonListHeader>Settings</IonListHeader>
+                    <IonItem lines="none" detail={false}>
+                        <IonToggle slot="start" onIonChange={changeTheme} />
+                        <IonLabel>Light Mode</IonLabel>
+                    </IonItem>
+                </IonList>
+            </IonContent>
+        </IonMenu>
+    );
 };
 
 export default Menu;
