@@ -2,7 +2,7 @@ import { IonApp, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonR
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
-import Page from './pages/ErrorPage';
+import ErrorPage from './pages/ErrorPage';
 import { mainPages, userPages, accountPages } from './pages';
 
 /* Core CSS required for Ionic components to work properly */
@@ -23,8 +23,11 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import Page from './components/Page';
 
 setupIonicReact();
+
+document.body.classList.add('dark');
 
 const App: React.FC = () => {
     return (
@@ -63,27 +66,7 @@ const App: React.FC = () => {
                         })}
                         {userPages.map((userPages, index) => {
                             return (
-                                <Route path={userPages.url} exact={true}>
-                                    <IonPage>
-                                        <IonHeader>
-                                            <IonToolbar>
-                                                <IonButtons slot="start">
-                                                    <IonMenuButton />
-                                                </IonButtons>
-                                                <IonTitle>{userPages.title}</IonTitle>
-                                            </IonToolbar>
-                                        </IonHeader>
-
-                                        <IonContent fullscreen>
-                                            <IonHeader collapse="condense">
-                                                <IonToolbar>
-                                                    <IonTitle size="large">{userPages.title}</IonTitle>
-                                                </IonToolbar>
-                                            </IonHeader>
-                                            <userPages.component />
-                                        </IonContent>
-                                    </IonPage>
-                                </Route>
+                                <Page url={userPages.url} title={userPages.title} component={userPages.component}></Page>
                             );
                         })}
                         {accountPages.map((accountPages, index) => {
@@ -112,7 +95,7 @@ const App: React.FC = () => {
                             );
                         })}
                         <Route exact={true} >
-                            <Page />
+                            <ErrorPage />
                         </Route>
                     </IonRouterOutlet>
                 </IonSplitPane>

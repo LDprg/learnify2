@@ -21,17 +21,10 @@ const Menu: React.FC = () => {
     const location = useLocation();
 
     const changeTheme = async (e: CustomEvent<ToggleChangeEventDetail>) => {
-        const ionToggle = e.currentTarget;
-        if (!ionToggle) {
+        if (!e.currentTarget)
             return;
-        }
-        console.log(`Dark: ${e.detail.checked}`);
-        document.body.classList.toggle('dark', e.detail.checked);
-        // document.body.classList.toggle("dark");
+        document.body.classList.toggle('dark', !e.detail.checked);
     };
-
-    // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    // prefersDark.matches()
 
     return (
         <IonMenu contentId="main" type="overlay">

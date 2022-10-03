@@ -2,7 +2,7 @@ import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonRouterLin
 import { useLocation } from 'react-router';
 import './ErrorPage.css';
 
-const Page: React.FC = () => {
+const ErrorPage: React.FC = () => {
 
     const name = useLocation().pathname.split('/')[1];
 
@@ -32,4 +32,4 @@ const Page: React.FC = () => {
     );
 };
 
-export default Page;
+export default ErrorPage;
