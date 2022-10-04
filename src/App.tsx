@@ -1,4 +1,4 @@
-import { IonApp, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
@@ -24,12 +24,18 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import Page from './components/Page';
+import { useEffect } from 'react';
+import User from './services/User';
 
 setupIonicReact();
 
 document.body.classList.add('dark');
 
 const App: React.FC = () => {
+    useEffect(() => {
+        User.syncLogin();
+    }, []);
+
     return (
         <IonApp>
             <IonReactRouter>
@@ -42,55 +48,21 @@ const App: React.FC = () => {
                         {mainPages.map((mainPage, index) => {
                             return (
                                 <Route path={mainPage.url} exact={true}>
-                                    <IonPage>
-                                        <IonHeader>
-                                            <IonToolbar>
-                                                <IonButtons slot="start">
-                                                    <IonMenuButton />
-                                                </IonButtons>
-                                                <IonTitle>{mainPage.title}</IonTitle>
-                                            </IonToolbar>
-                                        </IonHeader>
-
-                                        <IonContent fullscreen>
-                                            <IonHeader collapse="condense">
-                                                <IonToolbar>
-                                                    <IonTitle size="large">{mainPage.title}</IonTitle>
-                                                </IonToolbar>
-                                            </IonHeader>
-                                            <mainPage.component />
-                                        </IonContent>
-                                    </IonPage>
+                                    <Page title={mainPage.title} component={mainPage.component}></Page>
                                 </Route>
                             );
                         })}
                         {userPages.map((userPages, index) => {
                             return (
-                                <Page url={userPages.url} title={userPages.title} component={userPages.component}></Page>
+                                <Route path={userPages.url} exact={true}>
+                                    <Page title={userPages.title} component={userPages.component}></Page>
+                                </Route>
                             );
                         })}
                         {accountPages.map((accountPages, index) => {
                             return (
                                 <Route path={accountPages.url} exact={true}>
-                                    <IonPage>
-                                        <IonHeader>
-                                            <IonToolbar>
-                                                <IonButtons slot="start">
-                                                    <IonMenuButton />
-                                                </IonButtons>
-                                                <IonTitle>{accountPages.title}</IonTitle>
-                                            </IonToolbar>
-                                        </IonHeader>
-
-                                        <IonContent fullscreen>
-                                            <IonHeader collapse="condense">
-                                                <IonToolbar>
-                                                    <IonTitle size="large">{accountPages.title}</IonTitle>
-                                                </IonToolbar>
-                                            </IonHeader>
-                                            <accountPages.component />
-                                        </IonContent>
-                                    </IonPage>
+                                    <Page title={accountPages.title} component={accountPages.component}></Page>
                                 </Route>
                             );
                         })}

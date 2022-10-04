@@ -1,12 +1,13 @@
 import "../index.css";
+import { IonRouterLink, IonTitle } from '@ionic/react';
 
-const LoginPage: React.FC = () => {
-  return (
-    <div className="container">
-      <strong>Logout Page</strong>
-      <p>Getting started here!</p>
-    </div>
-  );
+const LogoutPage: React.FC = () => {
+    return (
+        <div className="container">
+            <IonTitle>Logout Complete!</IonTitle>
+            <p>Goto <IonRouterLink routerLink="/Login" routerDirection="none">Login</IonRouterLink></p>
+        </div>
+    );
 };
 
-export default LoginPage;
+export default LogoutPage;

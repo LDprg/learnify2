@@ -1,7 +1,6 @@
-import { homeOutline, homeSharp, idCardOutline, idCardSharp, listOutline, listSharp, logInOutline, logInSharp, logOutOutline, logOutSharp, personCircleOutline, personCircleSharp, schoolOutline, schoolSharp } from 'ionicons/icons';
+import { homeOutline, homeSharp, idCardOutline, idCardSharp, listOutline, listSharp, logInOutline, logInSharp, personCircleOutline, personCircleSharp, schoolOutline, schoolSharp } from 'ionicons/icons';
 import React from 'react';
 import LoginPage from './account/LoginPage';
-import LogoutPage from './account/LogoutPage';
 import RegisterPage from './account/RegisterPage';
 import HomePage from './main/HomePage';
 import LearnPage from './main/LearnPage';
@@ -12,6 +11,7 @@ interface AppPage {
     title: string;
     url: string;
     component: React.FC;
+    func: any;
     iosIcon: string;
     mdIcon: string;
 }
@@ -21,6 +21,7 @@ export const mainPages: AppPage[] = [
         title: 'Home',
         url: '/Home',
         component: HomePage,
+        func: null,
         iosIcon: homeOutline,
         mdIcon: homeSharp
     },
@@ -28,6 +29,7 @@ export const mainPages: AppPage[] = [
         title: 'Learn',
         url: '/Learn',
         component: LearnPage,
+        func: null,
         iosIcon: schoolOutline,
         mdIcon: schoolSharp
     },
@@ -37,7 +39,8 @@ export const userPages: AppPage[] = [
     {
         title: 'Profile',
         url: '/Profile',
-        component:  ProfilePage,
+        component: ProfilePage,
+        func: null,
         iosIcon: personCircleOutline,
         mdIcon: personCircleSharp
     },
@@ -45,6 +48,7 @@ export const userPages: AppPage[] = [
         title: 'Sets',
         url: '/Sets',
         component: SetsPage,
+        func: null,
         iosIcon: listOutline,
         mdIcon: listSharp
     }
@@ -55,20 +59,15 @@ export const accountPages: AppPage[] = [
         title: 'Login',
         url: '/Login',
         component: LoginPage,
+        func: null,
         iosIcon: logInOutline,
         mdIcon: logInSharp
-    },
-    {
-        title: 'Logout',
-        url: '/Logout',
-        component: LogoutPage,
-        iosIcon: logOutOutline,
-        mdIcon: logOutSharp
     },
     {
         title: 'Register',
         url: '/Register',
         component: RegisterPage,
+        func: null,
         iosIcon: idCardOutline,
         mdIcon: idCardSharp
     }

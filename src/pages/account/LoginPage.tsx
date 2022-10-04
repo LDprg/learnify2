@@ -1,6 +1,7 @@
-import { IonButton, IonInput, IonItem, IonLabel, IonTitle, IonText, IonAlert, IonIcon, IonRow, IonCol } from '@ionic/react';
+import { IonButton, IonInput, IonItem, IonLabel, IonTitle, IonAlert, IonIcon, IonRow, IonCol } from '@ionic/react';
 import { personCircle } from 'ionicons/icons';
 import React from "react";
+import { useHistory } from 'react-router';
 import User from "../../services/User";
 import "../index.css";
 
@@ -10,20 +11,29 @@ const LoginPage: React.FC = () => {
     const [error, setError] = React.useState<string>();
     const [showAlert, setShowAlert] = React.useState(false);
 
-    const login = async () => {
+    const history = useHistory()
+
+    const login = async (e: any) => {
+        e.preventDefault();
         try {
-            await User.signIn(email!, password!);
+            const user = await User.signIn(email!, password!);
+            if (user.email === email)
+                history.push("/Home");
+            else {
+                setError("Something went wrong!");
+                setShowAlert(true);
+            }
+
         } catch (e: any) {
             setError(e.response.data.message);
-            setShowAlert(true);   
+            setShowAlert(true);
         }
-        return await false;
     }
 
     return (
         <div className='container'>
-            <form onSubmit={login} noValidate>
-                <IonTitle>Login Page</IonTitle>
+            <form onSubmit={login}>
+                <IonTitle>Login</IonTitle>
                 <IonRow>
                     <IonCol>
                         <IonIcon
