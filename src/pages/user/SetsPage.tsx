@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import Sets from "../../services/Sets";
 import "../index.css";
-import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonTitle, IonCardSubtitle, IonHeader, IonRow, IonCol, IonGrid } from '@ionic/react';
+import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonRow, IonCol, IonGrid } from '@ionic/react';
+import useApi from "../../hooks/useApi";
 
 const SetsPage: React.FC = () => {
-    const [userSet, setUserSet] = useState([{}]);
+    // const [userSet, setUserSet] = useState([{}]);
+    const getUserSet = useApi(Sets.getUserSet());
 
-    useEffect(() => {
-        Sets.getUserSet().then((val) => setUserSet(val));
-    }, []);
+    // useEffect(() => {
+    //     Sets.getUserSet().then((val) => setUserSet(val));
+    // }, []);
 
     return (
         <IonContent>
@@ -21,7 +23,7 @@ const SetsPage: React.FC = () => {
                 </IonRow>
                 <IonRow>
                     <IonCol>
-                        {userSet.map((data: any, index: number) => {
+                        {getUserSet.data?.map((data: any, index: number) => {
                             return (
                                 <IonCard key={index} className="ion-activated">
                                     <IonCardHeader>

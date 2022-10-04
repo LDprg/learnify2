@@ -24,18 +24,12 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import Page from './components/Page';
-import { useEffect } from 'react';
-import User from './services/User';
 
 setupIonicReact();
 
 document.body.classList.add('dark');
 
 const App: React.FC = () => {
-    useEffect(() => {
-        User.syncLogin();
-    }, []);
-
     return (
         <IonApp>
             <IonReactRouter>
