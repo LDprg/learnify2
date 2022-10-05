@@ -2,7 +2,6 @@ import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/r
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
-import ErrorPage from './pages/ErrorPage';
 import { mainPages, userPages, accountPages } from './pages';
 
 /* Core CSS required for Ionic components to work properly */
@@ -24,6 +23,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import Page from './components/Page';
+import SetPage from './pages/SetPage';
+import ErrorPage from './pages/ErrorPage';
 
 setupIonicReact();
 
@@ -60,6 +61,9 @@ const App: React.FC = () => {
                                 </Route>
                             );
                         })}
+                        <Route path="/Set/:id" exact={true}>
+                            <Page title="Set"component={SetPage}></Page>
+                        </Route>
                         <Route exact={true} >
                             <ErrorPage />
                         </Route>
