@@ -1,20 +1,19 @@
 import { IonButton, IonInput, IonItem, IonLabel, IonTitle, IonAlert, IonIcon, IonRow, IonCol } from '@ionic/react';
 import { personCircle } from 'ionicons/icons';
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from 'react-router';
-import useApi from '../../hooks/useApi';
-import User from "../../services/User";
 import "../index.css";
 import { useEffect } from 'react';
+import { useSignInGlobal } from '../../hooks/useApi';
 
 const LoginPage: React.FC = () => {
-    const [email, setEmail] = React.useState<string>();
-    const [password, setPassword] = React.useState<string>();
-    const [error, setError] = React.useState<string>();
-    const [showAlert, setShowAlert] = React.useState(false);
+    const [email, setEmail] = useState<string>();
+    const [password, setPassword] = useState<string>();
+    const [error, setError] = useState<string>();
+    const [showAlert, setShowAlert] = useState(false);
 
     const history = useHistory();
-    const signIn = useApi(User.signIn);
+    const signIn = useSignInGlobal();
 
     const login = async (e: any) => {
         e.preventDefault();

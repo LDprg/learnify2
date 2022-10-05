@@ -16,20 +16,31 @@ import React, { useEffect } from 'react';
 
 import { useLocation } from 'react-router-dom';
 import { mainPages, userPages, accountPages } from '../pages';
-import User from '../services/User';
 import './Menu.css';
-import useApi from '../hooks/useApi';
+import { useGetUser, useSignInGlobal, useSignOutGlobal } from '../hooks/useApi';
 import useEffectOnce from '../hooks/useEffectOnce';
 
 const Menu: React.FC = () => {
     const location = useLocation();
-    const getUser = useApi(User.getUser);
-    const signOut = useApi(User.signOut);
+    const getUser = useGetUser();
+    const signOut = useSignOutGlobal();
+    const signIn = useSignInGlobal();
 
     useEffect(() => {
-        getUser.request();
+        if(!signOut.loading)
+            getUser.request();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location, signOut]);
+    }, [signOut.loading]);
+
+    useEffect(() => {
+        if(!signIn.loading)
+            getUser.request();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [signIn.loading]);
+
+    useEffectOnce(() => {
+        getUser.request();
+    });
 
     const changeTheme = async (e: CustomEvent<ToggleChangeEventDetail>) => {
         if (!e.currentTarget)

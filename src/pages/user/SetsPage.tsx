@@ -1,16 +1,35 @@
-import { useEffect, useState } from "react";
-import Sets from "../../services/Sets";
 import "../index.css";
 import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonRow, IonCol, IonGrid } from '@ionic/react';
-import useApi from "../../hooks/useApi";
+import { useGetUserSet} from '../../hooks/useApi';
+import useEffectOnce from '../../hooks/useEffectOnce';
 
 const SetsPage: React.FC = () => {
-    // const [userSet, setUserSet] = useState([{}]);
-    const getUserSet = useApi(Sets.getUserSet());
+    const getUserSet = useGetUserSet();
 
-    // useEffect(() => {
-    //     Sets.getUserSet().then((val) => setUserSet(val));
-    // }, []);
+    useEffectOnce(() => {
+        getUserSet.request();
+    });
+
+    const renderSets = () => {
+        if (getUserSet.loading) {
+            return <div>Loading...</div>;
+        }
+        else {
+            return getUserSet.data?.map((data: any, index: number) => {
+                return (
+                    <IonCard key={index} className="ion-activated">
+                        <IonCardHeader>
+                            <IonCardTitle>{data.name}</IonCardTitle>
+                            <IonCardSubtitle>
+                                User: {data.userid} <br />
+                                Id: {data._id}
+                            </IonCardSubtitle>
+                        </IonCardHeader>
+                    </IonCard>
+                );
+            });
+        }
+    }
 
     return (
         <IonContent>
@@ -18,24 +37,11 @@ const SetsPage: React.FC = () => {
                 <IonRow>
                     <IonCol>
                         <h4>Your Sets:</h4>
-
                     </IonCol>
                 </IonRow>
                 <IonRow>
                     <IonCol>
-                        {getUserSet.data?.map((data: any, index: number) => {
-                            return (
-                                <IonCard key={index} className="ion-activated">
-                                    <IonCardHeader>
-                                        <IonCardTitle>{data.name}</IonCardTitle>
-                                        <IonCardSubtitle>
-                                            User: {data.userid} <br />
-                                            Id: {data._id}
-                                        </IonCardSubtitle>
-                                    </IonCardHeader>
-                                </IonCard>
-                            );
-                        })}
+                        {renderSets()}
                     </IonCol>
                 </IonRow>
             </IonGrid>
