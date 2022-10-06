@@ -1,9 +1,9 @@
 import "./index.css";
-import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonItem, IonIcon, IonButton } from '@ionic/react';
+import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput } from '@ionic/react';
 import { useParams } from "react-router";
-import { useGetSet } from "../hooks/useApi";
-import { useEffect } from "react";
-import { pencilOutline, pencilSharp } from "ionicons/icons";
+import { useGetSet, useGetUser, useUpdateSet } from '../hooks/useApi';
+import { useEffect, useState } from "react";
+import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, pencilOutline, pencilSharp } from "ionicons/icons";
 
 interface SetPageProps {
     id: string;
@@ -13,14 +13,132 @@ const SetsPage: React.FC = () => {
     const { id } = useParams<SetPageProps>();
 
     const getSet = useGetSet();
+    const getUser = useGetUser();
+    const updateSet = useUpdateSet();
+
+    const [edit, setEdit] = useState(false);
+    const [item, setItem] = useState("");
+    const [newData, setNewData] = useState<any>({});
 
     useEffect(() => {
         getSet.request(id);
+        getUser.request();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
+    const renderUser = (data: any) => {
+        if (getSet.data?.userid === getUser.data?.id && !edit) {
+            return (
+                <IonGrid>
+                    <IonRow>
+                        <IonCol>
+                            <IonLabel>{data?.first}</IonLabel>
+                        </IonCol>
+                        <IonCol >
+                            <IonLabel>{data?.second}</IonLabel>
+                        </IonCol>
+                        <IonCol size="1">
+                            <IonButton expand="block" fill="clear" color="danger" onClick={() => {
+                                for (const item of getSet.data?.data) {
+                                    if (data?._id === item._id) {
+                                        getSet.data?.data.splice(getSet.data?.data.indexOf(item), 1);
+                                    }
+                                }
+
+                                updateSet.request(id, getSet.data).then(() => {
+                                    getSet.request(id);
+                                });
+                            }}>
+                                <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
+                            </IonButton>
+                        </IonCol>
+                        <IonCol size="1">
+                            <IonButton expand="block" fill="clear" onClick={() => {
+                                setNewData(data);
+                                setItem(data?._id);
+                                setEdit(true);
+                            }}>
+                                <IonIcon slot="icon-only" ios={pencilOutline} md={pencilSharp}></IonIcon>
+                            </IonButton>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+            );
+        }
+        else if (getSet.data?.userid === getUser.data?.id && edit && item === data._id) {
+            return (
+                <IonGrid>
+                    <IonRow>
+                        <IonCol>
+                            <IonInput value={newData.first} placeholder="Value" onIonChange={(e) => {
+                                setNewData({ ...newData, first: e.detail.value });
+                            }}></IonInput>
+                        </IonCol>
+                        <IonCol >
+                            <IonInput value={newData.second} placeholder="Key" onIonChange={(e) => {
+                                setNewData({ ...newData, second: e.detail.value });
+                            }}></IonInput>
+                        </IonCol>
+                        <IonCol size="1">
+                            <IonButton expand="block" fill="clear" color="danger" onClick={() => {
+                                setNewData({});
+                                setEdit(false);
+                                setItem("");
+                            }}>
+                                <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
+                            </IonButton>
+                        </IonCol>
+                        <IonCol size="1">
+                            <IonButton expand="block" fill="clear" onClick={() => {
+                                for (const item of getSet.data?.data) {
+                                    if (newData._id === item._id) {
+                                        item.first = newData.first.trim();
+                                        item.second = newData.second.trim();
+                                    }
+                                }
+
+                                updateSet.request(id, getSet.data).then(() => {
+                                    getSet.request(id);
+                                });
+
+                                setNewData({});
+                                setEdit(false);
+                                setItem("");
+                            }}>
+                                <IonIcon slot="icon-only" ios={checkmarkOutline} md={checkmarkSharp}></IonIcon>
+                            </IonButton>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+            );
+        } else {
+            return (
+                <IonGrid>
+                    <IonRow>
+                        <IonCol>
+                            <IonLabel>{data.first}</IonLabel>
+                        </IonCol>
+                        <IonCol>
+                            <IonLabel>{data.second}</IonLabel>
+                        </IonCol>
+                        <IonCol size="1">
+                            <IonButton expand="block" fill="clear" color="danger" disabled>
+                                <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
+                            </IonButton>
+                        </IonCol>
+                        <IonCol size="1">
+                            <IonButton expand="block" fill="clear" disabled>
+                                <IonIcon slot="icon-only" ios={pencilOutline} md={pencilSharp}></IonIcon>
+                            </IonButton>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+            );
+        }
+    }
+
     const renderSet = () => {
-        if (getSet.loading) {
+        if (!getSet.data && getSet.loading) {
             return (
                 <IonGrid>
                     <IonRow>
@@ -38,8 +156,8 @@ const SetsPage: React.FC = () => {
                     <IonGrid>
                         <IonRow>
                             <IonCol>
-                                <h4>Set: {getSet.data.name}</h4>
-                                <h4>User: {getSet.data.userid}</h4>
+                                <h4>Set: {getSet.data?.name}</h4>
+                                <h4>User: {getSet.data?.userid}</h4>
                             </IonCol>
                         </IonRow>
                         <IonRow>
@@ -49,18 +167,21 @@ const SetsPage: React.FC = () => {
                                         <IonCard key={index}>
                                             <IonCardHeader>
                                                 <IonCardTitle>
-                                                    <IonItem>
-                                                        <IonLabel slot="start">{data.first}</IonLabel>
-                                                        <IonLabel slot="">{data.second}</IonLabel>
-                                                        <IonButton fill="clear">
-                                                            <IonIcon slot="icon-only" ios={pencilOutline} md={pencilSharp}>Edit</IonIcon>
-                                                        </IonButton>
-                                                    </IonItem>
+                                                    {renderUser(data)}
                                                 </IonCardTitle>
                                             </IonCardHeader>
                                         </IonCard>
                                     );
                                 })}
+                                <IonButton expand="block" fill="clear" onClick={() => {
+                                    getSet.data?.data.push({ first: "", second: "" });
+
+                                    updateSet.request(id, getSet.data).then(() => {
+                                        getSet.request(id);
+                                    });
+                                }}>
+                                    <IonIcon slot="icon-only" ios={addOutline} md={addSharp}></IonIcon>
+                                </IonButton>
                             </IonCol>
                         </IonRow>
                     </IonGrid>
@@ -77,7 +198,16 @@ const SetsPage: React.FC = () => {
                         </IonRow>
                         <IonRow>
                             <IonCol>
-                                <h4>Cards not found</h4>
+                                <h4 className="ion-text-center">Cards not found</h4>
+                                <IonButton expand="block" fill="clear" onClick={() => {
+                                    getSet.data?.data.push({ first: "", second: "" });
+
+                                    updateSet.request(id, getSet.data).then(() => {
+                                        getSet.request(id);
+                                    });
+                                }}>
+                                    <IonIcon slot="icon-only" ios={addOutline} md={addSharp}></IonIcon>
+                                </IonButton>
                             </IonCol>
                         </IonRow>
                     </IonGrid>

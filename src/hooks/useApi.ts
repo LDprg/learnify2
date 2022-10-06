@@ -51,3 +51,6 @@ export const useSignUpGlobal = singletonHook(init, useSignUp);
 export const useGetUser = () => {return useApi(User.getUser)};
 export const useGetUserSet = () => {return useApi(Sets.getUserSet)};
 export const useGetSet = () => {return useApi(Sets.getSet)};
+export const useUpdateSet = () => {return useApi(Sets.updateSet)};
+export const useCreateSet = () => {return useApi(Sets.createSet)};
+export const useDeleteSet = () => {return useApi(Sets.deleteSet)};
