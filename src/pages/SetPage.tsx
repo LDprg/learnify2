@@ -179,7 +179,7 @@ const SetsPage: React.FC = () => {
                                     updateSet.request(id, getSet.data).then(() => {
                                         getSet.request(id);
                                     });
-                                }}>
+                                }} disabled={getSet.data?.userid !== getUser.data?.id || !getUser.data}>
                                     <IonIcon slot="icon-only" ios={addOutline} md={addSharp}></IonIcon>
                                 </IonButton>
                             </IonCol>
