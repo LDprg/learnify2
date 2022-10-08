@@ -46,9 +46,23 @@ const SetsPage: React.FC = () => {
                                             </IonCardSubtitle>
                                         </IonCol>
                                         <IonCol size="1">
-                                            <IonButton expand="block" fill="clear" color="danger" onClick={() => {
-                                                deleteSet.request(data._id).then(() => {
-                                                    getUserSet.request();
+                                            <IonButton expand="block" fill="clear" color="danger" onClick={() => {                                                
+                                                presentAlert({
+                                                    header: "Delete",
+                                                    message: "Are you sure you want to delete this item?",
+                                                    buttons: [
+                                                        {
+                                                            text: "No",
+                                                        },
+                                                        {
+                                                            text: "Yes",
+                                                            handler: () => {
+                                                                deleteSet.request(data._id).then(() => {
+                                                                    getUserSet.request();
+                                                                });
+                                                            }
+                                                        }
+                                                    ]
                                                 });
                                             }}>
                                                 <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>

@@ -25,6 +25,7 @@ import './theme/variables.css';
 import Page from './components/Page';
 import SetPage from './pages/SetPage';
 import ErrorPage from './pages/ErrorPage';
+import LearningPage from './pages/LearningPage';
 
 setupIonicReact();
 
@@ -63,6 +64,9 @@ const App: React.FC = () => {
                         })}
                         <Route path="/Set/:id" exact={true}>
                             <Page title="Set"component={SetPage}></Page>
+                        </Route>
+                        <Route path="/Set/:id/Learn" exact={true}>
+                            <Page title="Learn Set" component={LearningPage}></Page>
                         </Route>
                         <Route exact={true} >
                             <ErrorPage />

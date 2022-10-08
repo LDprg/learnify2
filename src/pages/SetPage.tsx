@@ -1,5 +1,5 @@
 import "./index.css";
-import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput } from '@ionic/react';
+import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput, useIonAlert, IonItem } from '@ionic/react';
 import { useParams } from "react-router";
 import { useGetSet, useGetUser, useUpdateSet } from '../hooks/useApi';
 import { useEffect, useState } from "react";
@@ -11,6 +11,8 @@ interface SetPageProps {
 
 const SetsPage: React.FC = () => {
     const { id } = useParams<SetPageProps>();
+
+    const [presentAlert] = useIonAlert();
 
     const getSet = useGetSet();
     const getUser = useGetUser();
@@ -41,13 +43,27 @@ const SetsPage: React.FC = () => {
                             <IonButton expand="block" fill="clear" color="danger" onClick={() => {
                                 for (const item of getSet.data?.data) {
                                     if (data?._id === item._id) {
-                                        getSet.data?.data.splice(getSet.data?.data.indexOf(item), 1);
+                                        presentAlert({
+                                            header: "Delete",
+                                            message: "Are you sure you want to delete this Set?",
+                                            buttons: [
+                                                {
+                                                    text: "No",
+                                                },
+                                                {
+                                                    text: "Yes",
+                                                    handler: () => {
+                                                        getSet.data?.data.splice(getSet.data?.data.indexOf(item), 1);
+                                                        updateSet.request(id, getSet.data).then(() => {
+                                                            getSet.request(id);
+                                                        });
+                                                    }
+                                                }
+                                            ]
+                                        });
+                                        break;
                                     }
                                 }
-
-                                updateSet.request(id, getSet.data).then(() => {
-                                    getSet.request(id);
-                                });
                             }}>
                                 <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
                             </IonButton>
@@ -70,14 +86,18 @@ const SetsPage: React.FC = () => {
                 <IonGrid>
                     <IonRow>
                         <IonCol>
-                            <IonInput value={newData.first} placeholder="Value" onIonChange={(e) => {
-                                setNewData({ ...newData, first: e.detail.value });
-                            }}></IonInput>
+                            <IonItem>
+                                <IonInput value={newData.first} placeholder="Value" onIonChange={(e) => {
+                                    setNewData({ ...newData, first: e.detail.value });
+                                }}></IonInput>
+                            </IonItem>
                         </IonCol>
                         <IonCol >
-                            <IonInput value={newData.second} placeholder="Key" onIonChange={(e) => {
-                                setNewData({ ...newData, second: e.detail.value });
-                            }}></IonInput>
+                            <IonItem>
+                                <IonInput value={newData.second} placeholder="Key" onIonChange={(e) => {
+                                    setNewData({ ...newData, second: e.detail.value });
+                                }}></IonInput>
+                            </IonItem>
                         </IonCol>
                         <IonCol size="1">
                             <IonButton expand="block" fill="clear" color="danger" onClick={() => {
@@ -154,10 +174,21 @@ const SetsPage: React.FC = () => {
             if (JSON.stringify(getSet.data.data).length > 2) {
                 return (
                     <IonGrid>
-                        <IonRow>
+                        <IonRow class="ion-align-items-center">
                             <IonCol>
                                 <h4>Set: {getSet.data?.name}</h4>
                                 <h4>User: {getSet.data?.userid}</h4>
+                            </IonCol>
+                            <IonCol>
+                                <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none">
+                                    <IonCardHeader>
+                                        <IonCardTitle>
+                                            <div className="ion-text-center">
+                                                Learn
+                                            </div>
+                                        </IonCardTitle>
+                                    </IonCardHeader>
+                                </IonCard>
                             </IonCol>
                         </IonRow>
                         <IonRow>
