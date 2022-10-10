@@ -1,5 +1,5 @@
 import { useLocation, useParams } from "react-router";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGetSet } from "../hooks/useApi";
 import { IonCol, IonGrid, IonItem, IonLabel, IonRow, IonInput, IonButton, IonContent } from '@ionic/react';
 
@@ -13,12 +13,15 @@ const LearningPage = () => {
 
     const location = useLocation();
 
+    const input = useRef(null);
+
     const getSet = useGetSet();
     const [collection, setCollection] = useState<any>({});
     const [index, setIndex] = useState<number>(0);
     const [mode, setMode] = useState<string>('ask');
 
     const [answer, setAnswer] = useState<string>('');
+    const [wrongAnswer, setWrongAnswer] = useState<string>('');
 
     function shuffle(array: any) {
         const newArray = [...array]
@@ -37,6 +40,7 @@ const LearningPage = () => {
     useEffect(() => {
         getSet.request(id);
         setIndex(0);
+        (input.current as any).setFocus();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
@@ -56,6 +60,20 @@ const LearningPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
 
+    const askSubmit = () => {
+        (input.current as any).setFocus();
+        if (answer.trim() === collection[index]?.second) {
+            collection[index].correct = true;
+            setIndex(index + 1);
+            setAnswer('');
+        } else {
+            collection[index].correct = false;
+            setAnswer('');
+            setWrongAnswer(answer);
+            setMode('result');
+        }
+    }
+
     const ask = () => {
         return (
             <IonGrid>
@@ -72,17 +90,8 @@ const LearningPage = () => {
                     <IonCol>
                         <IonItem>
                             <IonLabel>Answer: </IonLabel>
-                            <IonInput placeholder="Your Text" value={answer} onIonChange={e => setAnswer(e.detail.value!)}></IonInput>
-                            <IonButton expand="full" onClick={() => {
-                                if (answer.trim() === collection[index]?.second) {
-                                    collection[index].correct = true;
-                                    setIndex(index + 1);
-                                    setAnswer('');
-                                } else {
-                                    collection[index].correct = false;
-                                    setMode('result');
-                                }
-                            }}>Check</IonButton>
+                            <IonInput placeholder="Your Text" value={answer} onIonChange={e => setAnswer(e.detail.value!)} ref={input} onKeyDown={e => e.key === 'Enter' && askSubmit()}></IonInput>
+                            <IonButton expand="full" onClick={askSubmit}>Check</IonButton>
                         </IonItem>
                     </IonCol>
                 </IonRow>
@@ -96,11 +105,11 @@ const LearningPage = () => {
                 <IonRow>
                     <IonCol>
                         <IonItem>
-                            <IonLabel>
+                            <IonLabel color={"success"}>
                                 Correct Answer: {collection[index]?.second}
                             </IonLabel>
-                            <IonLabel>
-                                Your Answer: {answer}
+                            <IonLabel color={"danger"}>
+                                Your Answer: {wrongAnswer}
                             </IonLabel>
                         </IonItem>
                     </IonCol>
@@ -109,14 +118,16 @@ const LearningPage = () => {
                     <IonCol>
                         <IonItem>
                             <IonLabel>Answer: </IonLabel>
-                            <IonInput placeholder="Your Text" value={answer} onIonChange={e => setAnswer(e.detail.value!)}></IonInput>
-                            <IonButton expand="full" onClick={() => {
-                                if (answer.trim() === collection[index]?.second) {
+                            <IonInput placeholder="Your Text" value={answer} onIonChange={e => {
+                                setAnswer(e.detail.value!);
+                                (input.current as any).setFocus();
+
+                                if (e.detail.value!.trim() === collection[index]?.second.trim()) {
                                     setIndex(index + 1);
                                     setAnswer('');
                                     setMode('ask');
                                 }
-                            }}>Check</IonButton>
+                            }} ref={input}></IonInput>
                         </IonItem>
                     </IonCol>
                 </IonRow>
