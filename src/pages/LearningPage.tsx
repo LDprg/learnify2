@@ -38,18 +38,20 @@ const LearningPage = () => {
     }
 
     useEffect(() => {
-        getSet.request(id);
-        setIndex(0);
-        (input.current as any).setFocus();
+        if (location.pathname === "/Set/" + id + "/Learn") {
+            setIndex(0);
+            (input.current as any)?.setFocus();
+            getSet.request(id);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location.pathname]);
+    }, [location.pathname, id]);
 
     useEffect(() => {
-        if (getSet.data != null) {
+        if (getSet.loading === false && getSet.data != null) {
             setCollection(shuffle(getSet.data?.data));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [getSet.data])
+    }, [getSet.loading])
 
     useEffect(() => {
         if (getSet.loading === false && collection.length > 0) {
@@ -61,7 +63,7 @@ const LearningPage = () => {
     }, [index]);
 
     const askSubmit = () => {
-        (input.current as any).setFocus();
+        (input.current as any)?.setFocus();
         if (answer.trim() === collection[index]?.second) {
             collection[index].correct = true;
             setIndex(index + 1);
@@ -120,7 +122,7 @@ const LearningPage = () => {
                             <IonLabel>Answer: </IonLabel>
                             <IonInput placeholder="Your Text" value={answer} onIonChange={e => {
                                 setAnswer(e.detail.value!);
-                                (input.current as any).setFocus();
+                                (input.current as any)?.setFocus();
 
                                 if (e.detail.value!.trim() === collection[index]?.second.trim()) {
                                     setIndex(index + 1);
@@ -147,9 +149,15 @@ const LearningPage = () => {
                 </IonRow>
                 <IonRow>
                     <IonCol>
-                        <IonItem>
-                            <IonLabel>{JSON.stringify(collection)}</IonLabel>
-                        </IonItem>
+                        {collection.map((item: any, index: number) => {
+                            return (
+                                <IonItem key={index}>
+                                    <IonLabel color={item.correct ? "success" : "danger"}>
+                                        {item.first} - {item.second}
+                                    </IonLabel>
+                                </IonItem>
+                            );
+                        })}
                     </IonCol>
                 </IonRow>
             </IonGrid>

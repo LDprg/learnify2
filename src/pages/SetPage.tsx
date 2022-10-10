@@ -1,6 +1,6 @@
 import "./index.css";
 import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput, useIonAlert, IonItem } from '@ionic/react';
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { useGetSet, useGetUser, useUpdateSet } from '../hooks/useApi';
 import { useEffect, useState } from "react";
 import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, pencilOutline, pencilSharp } from "ionicons/icons";
@@ -11,6 +11,8 @@ interface SetPageProps {
 
 const SetsPage: React.FC = () => {
     const { id } = useParams<SetPageProps>();
+
+    const location = useLocation();
 
     const [presentAlert] = useIonAlert();
 
@@ -23,10 +25,12 @@ const SetsPage: React.FC = () => {
     const [newData, setNewData] = useState<any>({});
 
     useEffect(() => {
-        getSet.request(id);
-        getUser.request();
+        if (location.pathname === "/Set/" + id) {
+            getSet.request(id);
+            getUser.request();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [location.pathname, id]);
 
     const renderUser = (data: any) => {
         if (getSet.data?.userid === getUser.data?.id && !edit) {

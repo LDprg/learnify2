@@ -32,6 +32,7 @@ setupIonicReact();
 document.body.classList.add('dark');
 
 const App: React.FC = () => {
+    
     return (
         <IonApp>
             <IonReactRouter>
