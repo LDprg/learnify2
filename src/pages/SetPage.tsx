@@ -178,8 +178,8 @@ const SetsPage: React.FC = () => {
             if (JSON.stringify(getSet.data.data).length > 2) {
                 return (
                     <IonGrid>
-                        <div className="ion-align-items-stretch flex-container">
-                            <IonCard className="flex-item flex-item-25">
+                        <IonRow class="flex-container">
+                            <IonCard class="flex-item flex-item-25">
                                 <IonCardHeader>
                                     <IonCardTitle>
                                         <h4>Set: {getSet.data?.name}</h4>
@@ -194,7 +194,7 @@ const SetsPage: React.FC = () => {
                                     </IonCardTitle>
                                 </IonCardHeader>
                             </IonCard>
-                        </div>
+                        </IonRow>
                         <IonRow>
                             <IonCol>
                                 {getSet.data?.data.map((data: any, index: number) => {
