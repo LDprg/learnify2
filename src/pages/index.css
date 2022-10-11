@@ -22,3 +22,30 @@
 .container a {
     text-decoration: none;
 }
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.flex-item {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+}
+
+.flex-item-25 {
+    flex: 25%;
+}
+
+.flex-item-50 {
+    flex: 50%;
+}
+
+@media (max-width: 800px) {
+    .flex-item-25, .flex-item-50 {
+        flex: 100%;
+    }
+}

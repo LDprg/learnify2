@@ -178,23 +178,23 @@ const SetsPage: React.FC = () => {
             if (JSON.stringify(getSet.data.data).length > 2) {
                 return (
                     <IonGrid>
-                        <IonRow class="ion-align-items-center">
-                            <IonCol>
-                                <h4>Set: {getSet.data?.name}</h4>
-                                <h4>User: {getSet.data?.userid}</h4>
-                            </IonCol>
-                            <IonCol>
-                                <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none">
-                                    <IonCardHeader>
-                                        <IonCardTitle>
-                                            <div className="ion-text-center">
-                                                Learn
-                                            </div>
-                                        </IonCardTitle>
-                                    </IonCardHeader>
-                                </IonCard>
-                            </IonCol>
-                        </IonRow>
+                        <div className="ion-align-items-stretch flex-container">
+                            <IonCard className="flex-item flex-item-25">
+                                <IonCardHeader>
+                                    <IonCardTitle>
+                                        <h4>Set: {getSet.data?.name}</h4>
+                                        <h4>User: {getSet.data?.userid}</h4>
+                                    </IonCardTitle>
+                                </IonCardHeader>
+                            </IonCard>
+                            <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-50">
+                                <IonCardHeader>
+                                    <IonCardTitle>
+                                        Learn
+                                    </IonCardTitle>
+                                </IonCardHeader>
+                            </IonCard>
+                        </div>
                         <IonRow>
                             <IonCol>
                                 {getSet.data?.data.map((data: any, index: number) => {
