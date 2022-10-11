@@ -19,12 +19,18 @@ import { mainPages, userPages, accountPages } from '../pages';
 import './Menu.css';
 import { useGetUser, useSignInGlobal, useSignOutGlobal } from '../hooks/useApi';
 import useEffectOnce from '../hooks/useEffectOnce';
+import useStorage from '../hooks/useStorage';
+import { useState } from 'react';
 
 const Menu: React.FC = () => {
     const location = useLocation();
     const getUser = useGetUser();
     const signOut = useSignOutGlobal();
     const signIn = useSignInGlobal();
+
+    const [toggle, setToggle] = useState(false);
+    
+    const theme = useStorage('theme');
 
     useEffect(() => {
         if(!signOut.loading)
@@ -40,12 +46,15 @@ const Menu: React.FC = () => {
 
     useEffectOnce(() => {
         getUser.request();
+        (async () => setToggle(!Boolean(await theme.get())))();
     });
 
     const changeTheme = async (e: CustomEvent<ToggleChangeEventDetail>) => {
         if (!e.currentTarget)
             return;
-        document.body.classList.toggle('dark', !e.detail.checked);
+        setToggle(e.detail.checked);
+        await theme.set(!e.detail.checked);
+        document.body.classList.toggle('dark', Boolean(await theme.get()));
     };
 
     const RenderUser = () => {
@@ -112,7 +121,7 @@ const Menu: React.FC = () => {
                 <IonList id='setting-list'>
                     <IonListHeader>Settings</IonListHeader>
                     <IonItem lines="none" detail={false}>
-                        <IonToggle slot="start" onIonChange={changeTheme} />
+                        <IonToggle slot="start" checked={toggle} onIonChange={changeTheme} />
                         <IonLabel>Light Mode</IonLabel>
                     </IonItem>
                 </IonList>

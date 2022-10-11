@@ -27,9 +27,18 @@ import SetPage from './pages/SetPage';
 import ErrorPage from './pages/ErrorPage';
 import LearningPage from './pages/LearningPage';
 
+import { Drivers, Storage } from '@ionic/storage';
+
 setupIonicReact();
 
-document.body.classList.add('dark');
+// document.body.classList.add('dark');
+const store = new Storage({
+    name: '__hooks',
+    driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
+});
+store.create();
+(async () => document.body.classList.toggle('dark', Boolean(await store.get('theme'))))();
+
 
 const App: React.FC = () => {
     
