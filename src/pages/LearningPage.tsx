@@ -33,18 +33,19 @@ const LearningPage = () => {
 
             newArray.push(...randomItem)
         }
-
+ 
         return newArray
     }
 
     useEffect(() => {
         if (location.pathname === "/Set/" + id + "/Learn") {
             setIndex(0);
+            setMode("ask");
             (input.current as any)?.setFocus();
             getSet.request(id);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location.pathname, id]);
+    }, [location, id]);
 
     useEffect(() => {
         if (getSet.loading === false && getSet.data != null) {
@@ -54,9 +55,24 @@ const LearningPage = () => {
     }, [getSet.loading])
 
     useEffect(() => {
+        if(collection[index]?.second.trim() === "" || collection[index]?.first.trim() === "") {
+            collection[index].correct = true;
+            setIndex(index + 1);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [collection])
+
+    useEffect(() => {
+        console.log(index);
         if (getSet.loading === false && collection.length > 0) {
             if (collection.length <= index) {
                 setMode("final");
+            }
+            else {
+                if(collection[index]?.second.trim() === "" || collection[index]?.first.trim() === "") {
+                    collection[index].correct = true;
+                    setIndex(index + 1);
+                }
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

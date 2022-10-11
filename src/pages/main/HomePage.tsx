@@ -1,5 +1,5 @@
 import "../index.css";
-import { IonContent, IonGrid, IonCol, IonRow, IonHeader, IonItem, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonIcon } from '@ionic/react';
+import { IonContent, IonGrid, IonCol, IonRow, IonItem, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent } from '@ionic/react';
 
 const HomePage: React.FC = () => {
     return (
@@ -44,11 +44,8 @@ const HomePage: React.FC = () => {
                                 </IonItem>
                                 <IonItem>
                                     <IonCardSubtitle>
-                                        You can support Learnify by a little sponsorship.
+                                        You can support Learnify by a little sponsorship on <a target="_blank" href="https://patreon.com/LDprg" rel="noopener noreferrer">Patreon</a>.
                                     </IonCardSubtitle>
-                                    <IonButton>
-                                        {/* <IonIcon ios={Patreon} md={userPages.mdIcon}></IonIcon> */}
-                                    </IonButton>
                                 </IonItem>
                             </IonCardContent>
                         </IonCard>

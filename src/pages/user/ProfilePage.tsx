@@ -9,8 +9,6 @@ const ProfilePage: React.FC = () => {
 
     const getUser = useGetUser();
 
-    console.log(getUser.data);
-
     useEffect(() => {
         if (location.pathname === "/Profile") {
             getUser.request();
