@@ -1,10 +1,9 @@
 import "./index.css";
 import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput, useIonAlert, IonItem } from '@ionic/react';
 import { useLocation, useParams } from "react-router";
-import { useGetSet, useGetUser, useUpdateSet } from '../hooks/useApi';
+import { useGetSet, useGetUser, useGetUserStatShort, useUpdateSet } from '../hooks/useApi';
 import { useEffect, useState } from "react";
-import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, pencilOutline, pencilSharp } from "ionicons/icons";
-
+import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, pencilOutline, pencilSharp, trendingDownOutline, trendingDownSharp, trendingUpOutline, trendingUpSharp } from "ionicons/icons";
 interface SetPageProps {
     id: string;
 }
@@ -19,6 +18,7 @@ const SetsPage: React.FC = () => {
     const getSet = useGetSet();
     const getUser = useGetUser();
     const updateSet = useUpdateSet();
+    const getUserStatShort = useGetUserStatShort();
 
     const [edit, setEdit] = useState(false);
     const [item, setItem] = useState("");
@@ -26,11 +26,17 @@ const SetsPage: React.FC = () => {
 
     useEffect(() => {
         if (location.pathname === "/Set/" + id) {
-            getSet.request(id);
             getUser.request();
+            getSet.request(id);            
+            getUserStatShort.request(id);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname, id]);
+
+    const getStat = (data: any) => {
+        console.log(getUserStatShort.data?.data.find((value: any) => value.cardid === data?._id));
+        return getUserStatShort.data?.data.find((value: any) => value.cardid === data?._id)?.stat;
+    }
 
     const renderUser = (data: any) => {
         if (getSet.data?.userid === getUser.data?.id && !edit) {
@@ -38,12 +44,30 @@ const SetsPage: React.FC = () => {
                 <IonGrid>
                     <IonRow>
                         <IonCol>
-                            <IonLabel>{data?.first}</IonLabel>
+                            <IonItem>
+                                <h2>{data?.first}</h2>
+                            </IonItem>
                         </IonCol>
                         <IonCol >
-                            <IonLabel>{data?.second}</IonLabel>
+                            <IonItem>
+                                <h2>{data?.second}</h2>
+                            </IonItem>
                         </IonCol>
-                        <IonCol size="1">
+                        <IonCol>
+                            <IonItem>
+                                <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>
+                                &nbsp;
+                                <IonLabel>{getStat(data) ? getStat(data).success ? getStat(data).success : 0 : 0}</IonLabel>
+                            </IonItem>
+                        </IonCol>
+                        <IonCol>
+                            <IonItem>
+                                <IonIcon color={"danger"} ios={trendingDownOutline} md={trendingDownSharp}></IonIcon>
+                                &nbsp;
+                                <IonLabel>{getStat(data) ? getStat(data).wrong ? getStat(data).wrong : 0 : 0}</IonLabel>
+                            </IonItem>
+                        </IonCol>
+                        <IonCol>
                             <IonButton expand="block" fill="clear" color="danger" onClick={() => {
                                 for (const item of getSet.data?.data) {
                                     if (data?._id === item._id) {
@@ -72,7 +96,7 @@ const SetsPage: React.FC = () => {
                                 <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
                             </IonButton>
                         </IonCol>
-                        <IonCol size="1">
+                        <IonCol>
                             <IonButton expand="block" fill="clear" onClick={() => {
                                 setNewData(data);
                                 setItem(data?._id);
@@ -103,7 +127,7 @@ const SetsPage: React.FC = () => {
                                 }}></IonInput>
                             </IonItem>
                         </IonCol>
-                        <IonCol size="1">
+                        <IonCol>
                             <IonButton expand="block" fill="clear" color="danger" onClick={() => {
                                 setNewData({});
                                 setEdit(false);
@@ -112,7 +136,7 @@ const SetsPage: React.FC = () => {
                                 <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
                             </IonButton>
                         </IonCol>
-                        <IonCol size="1">
+                        <IonCol>
                             <IonButton expand="block" fill="clear" onClick={() => {
                                 for (const item of getSet.data?.data) {
                                     if (newData._id === item._id) {
@@ -140,17 +164,35 @@ const SetsPage: React.FC = () => {
                 <IonGrid>
                     <IonRow>
                         <IonCol>
-                            <IonLabel>{data.first}</IonLabel>
+                            <IonItem>
+                                <h2>{data?.first}</h2>
+                            </IonItem>
+                        </IonCol>
+                        <IonCol >
+                            <IonItem>
+                                <h2>{data?.second}</h2>
+                            </IonItem>
                         </IonCol>
                         <IonCol>
-                            <IonLabel>{data.second}</IonLabel>
+                            <IonItem disabled>
+                                <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>
+                                &nbsp;
+                                <IonLabel>0</IonLabel>
+                            </IonItem>
                         </IonCol>
-                        <IonCol size="1">
+                        <IonCol>
+                            <IonItem disabled>
+                                <IonIcon color={"danger"} ios={trendingDownOutline} md={trendingDownSharp}></IonIcon>
+                                &nbsp;
+                                <IonLabel>0</IonLabel>
+                            </IonItem>
+                        </IonCol>
+                        <IonCol>
                             <IonButton expand="block" fill="clear" color="danger" disabled>
                                 <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
                             </IonButton>
                         </IonCol>
-                        <IonCol size="1">
+                        <IonCol>
                             <IonButton expand="block" fill="clear" disabled>
                                 <IonIcon slot="icon-only" ios={pencilOutline} md={pencilSharp}></IonIcon>
                             </IonButton>

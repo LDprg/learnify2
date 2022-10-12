@@ -1,6 +1,6 @@
 import { useLocation, useParams } from "react-router";
 import { useEffect, useRef, useState } from 'react';
-import { useGetSet } from "../hooks/useApi";
+import { useGetSet, useGetUserStatShort, useUpdateUserStat } from "../hooks/useApi";
 import { IonCol, IonGrid, IonItem, IonLabel, IonRow, IonInput, IonButton, IonContent } from '@ionic/react';
 
 interface LearningPageProps {
@@ -16,6 +16,8 @@ const LearningPage = () => {
     const input = useRef(null);
 
     const getSet = useGetSet();
+    const updateUserStat = useUpdateUserStat();
+
     const [collection, setCollection] = useState<any>({});
     const [index, setIndex] = useState<number>(0);
     const [mode, setMode] = useState<string>('ask');
@@ -82,10 +84,12 @@ const LearningPage = () => {
         (input.current as any)?.setFocus();
         if (answer.trim() === collection[index]?.second) {
             collection[index].correct = true;
+            updateUserStat.request(id, collection[index]._id, "success");
             setIndex(index + 1);
             setAnswer('');
         } else {
             collection[index].correct = false;
+            updateUserStat.request(id, collection[index]._id, "wrong");
             setAnswer('');
             setWrongAnswer(answer);
             setMode('result');

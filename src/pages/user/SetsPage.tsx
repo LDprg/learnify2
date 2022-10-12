@@ -45,7 +45,7 @@ const SetsPage: React.FC = () => {
                                                 </IonRow>
                                             </IonCardSubtitle>
                                         </IonCol>
-                                        <IonCol size="1">
+                                        <IonCol>
                                             <IonButton expand="block" fill="clear" color="danger" onClick={() => {                                                
                                                 presentAlert({
                                                     header: "Delete",

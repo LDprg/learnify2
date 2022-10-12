@@ -55,3 +55,5 @@ export const useUpdateSet = () => {return useApi(Sets.updateSet)};
 export const useCreateSet = () => {return useApi(Sets.createSet)};
 export const useDeleteSet = () => {return useApi(Sets.deleteSet)};
 export const useSearchSet = () => {return useApi(Sets.searchSet)};
+export const useGetUserStatShort = () => {return useApi(Sets.getUserStatShort)};
+export const useUpdateUserStat = () => {return useApi(Sets.updateUserStat)};
