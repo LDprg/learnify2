@@ -174,17 +174,17 @@ const SetsPage: React.FC = () => {
                             </IonItem>
                         </IonCol>
                         <IonCol>
-                            <IonItem disabled>
+                            <IonItem disabled={!getUser.data}>
                                 <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>
                                 &nbsp;
-                                <IonLabel>0</IonLabel>
+                                <IonLabel>{getStat(data) ? getStat(data).success ? getStat(data).success : 0 : 0}</IonLabel>
                             </IonItem>
                         </IonCol>
                         <IonCol>
-                            <IonItem disabled>
+                            <IonItem disabled={!getUser.data}>
                                 <IonIcon color={"danger"} ios={trendingDownOutline} md={trendingDownSharp}></IonIcon>
                                 &nbsp;
-                                <IonLabel>0</IonLabel>
+                                <IonLabel>{getStat(data) ? getStat(data).wrong ? getStat(data).wrong : 0 : 0}</IonLabel>
                             </IonItem>
                         </IonCol>
                         <IonCol>

@@ -1,7 +1,7 @@
 import { useLocation, useParams } from "react-router";
 import { useEffect, useRef, useState } from 'react';
 import { useGetSet, useGetUserStatShort, useUpdateUserStat } from "../hooks/useApi";
-import { IonCol, IonGrid, IonItem, IonLabel, IonRow, IonInput, IonButton, IonContent } from '@ionic/react';
+import { IonCol, IonGrid, IonItem, IonLabel, IonRow, IonInput, IonButton, IonContent, IonProgressBar } from '@ionic/react';
 
 interface LearningPageProps {
     id: string;
@@ -196,6 +196,18 @@ const LearningPage = () => {
 
     return (
         <IonContent>
+            <IonGrid>
+                <IonRow>
+                    <IonCol>
+                        <IonItem class="ion-text-center">
+                            <IonLabel>
+                                {index} / {collection.length}
+                            </IonLabel>
+                        </IonItem>
+                        <IonProgressBar value={index/collection.length} style={{height: "1em"}}></IonProgressBar>
+                    </IonCol>
+                </IonRow>
+            </IonGrid>
             {mapper()}
         </IonContent>
     );
