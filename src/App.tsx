@@ -28,6 +28,7 @@ import ErrorPage from './pages/ErrorPage';
 import LearningPage from './pages/LearningPage';
 
 import { Drivers, Storage } from '@ionic/storage';
+import axios from 'axios';
 
 setupIonicReact();
 
@@ -38,7 +39,6 @@ const store = new Storage({
 });
 store.create();
 (async () => document.body.classList.toggle('dark', Boolean(await store.get('theme'))))();
-
 
 const App: React.FC = () => {
     

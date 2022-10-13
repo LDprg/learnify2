@@ -21,6 +21,8 @@ import { useGetUser, useSignInGlobal, useSignOutGlobal } from '../hooks/useApi';
 import useEffectOnce from '../hooks/useEffectOnce';
 import useStorage from '../hooks/useStorage';
 import { useState } from 'react';
+import { IonInput } from '@ionic/react';
+import axios from 'axios';
 
 const Menu: React.FC = () => {
     const location = useLocation();
@@ -29,24 +31,31 @@ const Menu: React.FC = () => {
     const signIn = useSignInGlobal();
 
     const [toggle, setToggle] = useState(false);
-    
+    const [url, setUrl] = useState("http://localhost:8010/proxy");
+
     const theme = useStorage('theme');
+    const link = useStorage('link');
 
     useEffect(() => {
-        if(!signOut.loading)
+        if (!signOut.loading)
             getUser.request();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [signOut.loading]);
 
     useEffect(() => {
-        if(!signIn.loading)
+        if (!signIn.loading)
             getUser.request();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [signIn.loading]);
+
+    useEffect(() => {
+        (async () => axios.defaults.baseURL = await link.get())();
+    }, [link]);
 
     useEffectOnce(() => {
         getUser.request();
         (async () => setToggle(!Boolean(await theme.get())))();
+        (async () => setUrl(await link.get() ? await link.get() : url))();
     });
 
     const changeTheme = async (e: CustomEvent<ToggleChangeEventDetail>) => {
@@ -123,6 +132,13 @@ const Menu: React.FC = () => {
                     <IonItem lines="none" detail={false}>
                         <IonToggle slot="start" checked={toggle} onIonChange={changeTheme} />
                         <IonLabel>Light Mode</IonLabel>
+                    </IonItem>
+                    <IonItem detail={false}>
+                        <IonLabel>URL:</IonLabel>
+                        <IonInput placeholder='http://127.0.0.1/' value={url} onIonChange={(e) => {
+                            setUrl(e.detail.value!);
+                            link.set(e.detail.value!);
+                        }}></IonInput>
                     </IonItem>
                 </IonList>
             </IonContent>
