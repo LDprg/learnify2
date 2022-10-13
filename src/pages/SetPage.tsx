@@ -1,8 +1,8 @@
 import "./index.css";
-import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput, useIonAlert, IonItem } from '@ionic/react';
+import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput, useIonAlert, IonItem, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonTextarea } from '@ionic/react';
 import { useLocation, useParams } from "react-router";
 import { useGetSet, useGetUser, useGetUserStatShort, useUpdateSet } from '../hooks/useApi';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, pencilOutline, pencilSharp, trendingDownOutline, trendingDownSharp, trendingUpOutline, trendingUpSharp } from "ionicons/icons";
 interface SetPageProps {
     id: string;
@@ -24,17 +24,49 @@ const SetsPage: React.FC = () => {
     const [item, setItem] = useState("");
     const [newData, setNewData] = useState<any>({});
 
+    const [isOpenExport, setIsOpenExport] = useState(false);
+    const [exportVal, setExportVal] = useState("");
+    const [isOpenImport, setIsOpenImport] = useState(false);
+    const [importVal, setImportVal] = useState("");
+
     useEffect(() => {
         if (location.pathname === "/Set/" + id) {
             getUser.request();
-            getSet.request(id);            
+            getSet.request(id);
             getUserStatShort.request(id);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname, id]);
 
+    useEffect(() => {
+        if (isOpenExport === true) {
+            var text = "";
+            console.log(getSet.data?.data);
+            for (const item of getSet.data?.data) {
+                console.log(item);
+                text += item.first + "\t" + item.second + "\n";
+            }
+            setExportVal(text);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpenExport]);
+
+    const importSet = async () => {
+        await getSet.request(id);
+        const data = getSet.data;
+        const lines = importVal.split("\n");
+        for (const line of lines) {
+            const items = line.split("\t");
+            if (items.length === 2) {
+                data.data.push({ first: items[0], second: items[1] });
+            }
+        }
+        updateSet.request(id, data).then(() => {
+            getSet.request(id);
+        });
+    };
+
     const getStat = (data: any) => {
-        console.log(getUserStatShort.data?.data.find((value: any) => value.cardid === data?._id));
         return getUserStatShort.data?.data.find((value: any) => value.cardid === data?._id)?.stat;
     }
 
@@ -236,6 +268,67 @@ const SetsPage: React.FC = () => {
                                     </IonCardTitle>
                                 </IonCardHeader>
                             </IonCard>
+                        </IonRow>
+                        <IonRow>
+                            <IonCol>
+                                <IonModal isOpen={isOpenExport}>
+                                    <IonHeader>
+                                        <IonToolbar>
+                                            <IonTitle>Export</IonTitle>
+                                            <IonButtons slot="end">
+                                                <IonButton onClick={() => setIsOpenExport(false)}>Close</IonButton>
+                                            </IonButtons>
+                                        </IonToolbar>
+                                    </IonHeader>
+                                    <IonContent className="ion-padding">
+                                        <IonItem>
+                                            <IonTextarea value={exportVal} auto-grow readonly></IonTextarea>
+                                        </IonItem>
+                                    </IonContent>
+                                </IonModal>
+                                <IonCard onClick={() => setIsOpenExport(true)}>
+                                    <IonCardHeader>
+                                        <IonCardTitle>
+                                            Export
+                                        </IonCardTitle>
+                                    </IonCardHeader>
+                                </IonCard>
+                            </IonCol>
+                            <IonCol>
+                                <IonModal isOpen={isOpenImport}>
+                                    <IonHeader>
+                                        <IonToolbar>
+                                            <IonTitle>Import</IonTitle>
+                                            <IonButtons slot="end">
+                                                <IonButton onClick={() => {
+                                                    importSet();
+                                                    setIsOpenImport(false);
+                                                }}>Add</IonButton>
+                                            </IonButtons>
+                                            <IonButtons slot="end">
+                                                <IonButton onClick={() => setIsOpenImport(false)}>Close</IonButton>
+                                            </IonButtons>
+                                        </IonToolbar>
+                                    </IonHeader>
+                                    <IonContent className="ion-padding">
+                                        <IonItem>
+                                            <IonTextarea value={importVal} auto-grow onIonChange={(e) => setImportVal(e.detail.value!)} onKeyDown={(e) => {
+                                                if (e.key === 'Tab') {
+                                                    setImportVal(importVal + "\t");
+                                                    e.preventDefault();
+                                                 }
+                                            }}></IonTextarea>
+                                        </IonItem>
+                                    </IonContent>
+                                </IonModal>
+                                <IonCard onClick={() => setIsOpenImport(true)}>
+                                    <IonCardHeader>
+                                        <IonCardTitle>
+                                            Import
+                                        </IonCardTitle>
+                                    </IonCardHeader>
+                                </IonCard>
+                            </IonCol>
                         </IonRow>
                         <IonRow>
                             <IonCol>

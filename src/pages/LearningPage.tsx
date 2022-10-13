@@ -24,6 +24,7 @@ const LearningPage = () => {
 
     const [answer, setAnswer] = useState<string>('');
     const [wrongAnswer, setWrongAnswer] = useState<string>('');
+    const [correct, setCorrect] = useState<number>(0);
 
     function shuffle(array: any) {
         const newArray = [...array]
@@ -84,14 +85,15 @@ const LearningPage = () => {
         (input.current as any)?.setFocus();
         if (answer.trim() === collection[index]?.second) {
             collection[index].correct = true;
-            updateUserStat.request(id, collection[index]._id, "success");
             setIndex(index + 1);
+            setCorrect(correct + 1);
+            updateUserStat.request(id, collection[index]._id, "success");
             setAnswer('');
         } else {
             collection[index].correct = false;
-            updateUserStat.request(id, collection[index]._id, "wrong");
             setAnswer('');
             setWrongAnswer(answer);
+            updateUserStat.request(id, collection[index]._id, "wrong");
             setMode('result');
         }
     }
@@ -199,12 +201,16 @@ const LearningPage = () => {
             <IonGrid>
                 <IonRow>
                     <IonCol>
-                        <IonItem class="ion-text-center">
+                        <IonItem class="ion-text-center" lines="none">
                             <IonLabel>
                                 {index} / {collection.length}
                             </IonLabel>
                         </IonItem>
-                        <IonProgressBar value={index/collection.length} style={{height: "1em"}}></IonProgressBar>
+                        <IonItem>
+                            <IonProgressBar value={correct/collection.length} style={{height: "0.5em", margin: "5px"}} color="success"></IonProgressBar>
+                            <IonProgressBar value={(index-correct)/collection.length} style={{height: "0.5em", margin: "5px"}} color="danger"></IonProgressBar>
+                            <IonProgressBar value={index/collection.length} style={{height: "0.5em", margin: "5px"}}></IonProgressBar>
+                        </IonItem>
                     </IonCol>
                 </IonRow>
             </IonGrid>

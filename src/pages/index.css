@@ -49,3 +49,9 @@
         flex: 100%;
     }
 }
+
+
+.rotate {
+    transform: rotate(180deg); 
+    transform-origin: center center
+}
