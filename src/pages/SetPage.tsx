@@ -239,150 +239,126 @@ const SetsPage: React.FC = () => {
         if (!getSet.data && getSet.loading) {
             return (
                 <IonGrid>
-                    <IonRow>
-                        <IonCol>
-                            <h4>Set:</h4>
-                            <h4>User:</h4>
-                        </IonCol>
+                    <IonRow class="flex-container">
+                        <IonCard class="flex-item flex-item-25">
+                            <IonCardHeader>
+                                <IonCardTitle>
+                                    <h4>Set: {getSet.data?.name}</h4>
+                                    <h4>User: {getSet.data?.userid}</h4>
+                                </IonCardTitle>
+                            </IonCardHeader>
+                        </IonCard>
                     </IonRow>
                 </IonGrid>
             );
         }
         else if (getSet.data) {
-            if (JSON.stringify(getSet.data.data).length > 2) {
-                return (
-                    <IonGrid>
-                        <IonRow class="flex-container">
-                            <IonCard class="flex-item flex-item-25">
+            return (
+                <IonGrid>
+                    <IonRow class="flex-container">
+                        <IonCard class="flex-item flex-item-25">
+                            <IonCardHeader>
+                                <IonCardTitle>
+                                    <h4>Set: {getSet.data?.name}</h4>
+                                    <h4>User: {getSet.data?.userid}</h4>
+                                </IonCardTitle>
+                            </IonCardHeader>
+                        </IonCard>
+                        <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-50" disabled={JSON.stringify(getSet.data.data).length <= 2}>
+                            <IonCardHeader>
+                                <IonCardTitle>
+                                    Learn
+                                </IonCardTitle>
+                            </IonCardHeader>
+                        </IonCard>
+                    </IonRow>
+                    <IonRow>
+                        <IonCol>
+                            <IonModal isOpen={isOpenExport}>
+                                <IonHeader>
+                                    <IonToolbar>
+                                        <IonTitle>Export</IonTitle>
+                                        <IonButtons slot="end">
+                                            <IonButton onClick={() => setIsOpenExport(false)}>Close</IonButton>
+                                        </IonButtons>
+                                    </IonToolbar>
+                                </IonHeader>
+                                <IonContent className="ion-padding">
+                                    <IonItem>
+                                        <IonTextarea value={exportVal} auto-grow readonly></IonTextarea>
+                                    </IonItem>
+                                </IonContent>
+                            </IonModal>
+                            <IonCard onClick={() => setIsOpenExport(true)}>
                                 <IonCardHeader>
                                     <IonCardTitle>
-                                        <h4>Set: {getSet.data?.name}</h4>
-                                        <h4>User: {getSet.data?.userid}</h4>
+                                        Export
                                     </IonCardTitle>
                                 </IonCardHeader>
                             </IonCard>
-                            <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-50">
+                        </IonCol>
+                        <IonCol>
+                            <IonModal isOpen={isOpenImport}>
+                                <IonHeader>
+                                    <IonToolbar>
+                                        <IonTitle>Import</IonTitle>
+                                        <IonButtons slot="end">
+                                            <IonButton onClick={() => {
+                                                importSet();
+                                                setIsOpenImport(false);
+                                            }}>Add</IonButton>
+                                        </IonButtons>
+                                        <IonButtons slot="end">
+                                            <IonButton onClick={() => setIsOpenImport(false)}>Close</IonButton>
+                                        </IonButtons>
+                                    </IonToolbar>
+                                </IonHeader>
+                                <IonContent className="ion-padding">
+                                    <IonItem>
+                                        <IonTextarea value={importVal} auto-grow onIonChange={(e) => setImportVal(e.detail.value!)} onKeyDown={(e) => {
+                                            if (e.key === 'Tab') {
+                                                setImportVal(importVal + "\t");
+                                                e.preventDefault();
+                                            }
+                                        }}></IonTextarea>
+                                    </IonItem>
+                                </IonContent>
+                            </IonModal>
+                            <IonCard onClick={() => setIsOpenImport(true)} disabled={getSet.data.userid !== getUser.data.id}>
                                 <IonCardHeader>
                                     <IonCardTitle>
-                                        Learn
+                                        Import
                                     </IonCardTitle>
                                 </IonCardHeader>
                             </IonCard>
-                        </IonRow>
-                        <IonRow>
-                            <IonCol>
-                                <IonModal isOpen={isOpenExport}>
-                                    <IonHeader>
-                                        <IonToolbar>
-                                            <IonTitle>Export</IonTitle>
-                                            <IonButtons slot="end">
-                                                <IonButton onClick={() => setIsOpenExport(false)}>Close</IonButton>
-                                            </IonButtons>
-                                        </IonToolbar>
-                                    </IonHeader>
-                                    <IonContent className="ion-padding">
-                                        <IonItem>
-                                            <IonTextarea value={exportVal} auto-grow readonly></IonTextarea>
-                                        </IonItem>
-                                    </IonContent>
-                                </IonModal>
-                                <IonCard onClick={() => setIsOpenExport(true)}>
-                                    <IonCardHeader>
-                                        <IonCardTitle>
-                                            Export
-                                        </IonCardTitle>
-                                    </IonCardHeader>
-                                </IonCard>
-                            </IonCol>
-                            <IonCol>
-                                <IonModal isOpen={isOpenImport}>
-                                    <IonHeader>
-                                        <IonToolbar>
-                                            <IonTitle>Import</IonTitle>
-                                            <IonButtons slot="end">
-                                                <IonButton onClick={() => {
-                                                    importSet();
-                                                    setIsOpenImport(false);
-                                                }}>Add</IonButton>
-                                            </IonButtons>
-                                            <IonButtons slot="end">
-                                                <IonButton onClick={() => setIsOpenImport(false)}>Close</IonButton>
-                                            </IonButtons>
-                                        </IonToolbar>
-                                    </IonHeader>
-                                    <IonContent className="ion-padding">
-                                        <IonItem>
-                                            <IonTextarea value={importVal} auto-grow onIonChange={(e) => setImportVal(e.detail.value!)} onKeyDown={(e) => {
-                                                if (e.key === 'Tab') {
-                                                    setImportVal(importVal + "\t");
-                                                    e.preventDefault();
-                                                 }
-                                            }}></IonTextarea>
-                                        </IonItem>
-                                    </IonContent>
-                                </IonModal>
-                                <IonCard onClick={() => setIsOpenImport(true)}>
-                                    <IonCardHeader>
-                                        <IonCardTitle>
-                                            Import
-                                        </IonCardTitle>
-                                    </IonCardHeader>
-                                </IonCard>
-                            </IonCol>
-                        </IonRow>
-                        <IonRow>
-                            <IonCol>
-                                {getSet.data?.data.map((data: any, index: number) => {
-                                    return (
-                                        <IonCard key={index}>
-                                            <IonCardHeader>
-                                                <IonCardTitle>
-                                                    {renderUser(data)}
-                                                </IonCardTitle>
-                                            </IonCardHeader>
-                                        </IonCard>
-                                    );
-                                })}
-                                <IonButton expand="block" fill="clear" onClick={() => {
-                                    getSet.data?.data.push({ first: "", second: "" });
+                        </IonCol>
+                    </IonRow>
+                    <IonRow>
+                        <IonCol>
+                            {getSet.data?.data.map((data: any, index: number) => {
+                                return (
+                                    <IonCard key={index}>
+                                        <IonCardHeader>
+                                            <IonCardTitle>
+                                                {renderUser(data)}
+                                            </IonCardTitle>
+                                        </IonCardHeader>
+                                    </IonCard>
+                                );
+                            })}
+                            <IonButton expand="block" fill="clear" onClick={() => {
+                                getSet.data?.data.push({ first: "", second: "" });
 
-                                    updateSet.request(id, getSet.data).then(() => {
-                                        getSet.request(id);
-                                    });
-                                }} disabled={getSet.data?.userid !== getUser.data?.id || !getUser.data}>
-                                    <IonIcon slot="icon-only" ios={addOutline} md={addSharp}></IonIcon>
-                                </IonButton>
-                            </IonCol>
-                        </IonRow>
-                    </IonGrid>
-                );
-            }
-            else {
-                return (
-                    <IonGrid>
-                        <IonRow>
-                            <IonCol>
-                                <h4>Set: {getSet.data.name}</h4>
-                                <h4>User: {getSet.data.userid}</h4>
-                            </IonCol>
-                        </IonRow>
-                        <IonRow>
-                            <IonCol>
-                                <h4 className="ion-text-center">Cards not found</h4>
-                                <IonButton expand="block" fill="clear" onClick={() => {
-                                    getSet.data?.data.push({ first: "", second: "" });
-
-                                    updateSet.request(id, getSet.data).then(() => {
-                                        getSet.request(id);
-                                    });
-                                }}>
-                                    <IonIcon slot="icon-only" ios={addOutline} md={addSharp}></IonIcon>
-                                </IonButton>
-                            </IonCol>
-                        </IonRow>
-                    </IonGrid>
-                );
-            }
+                                updateSet.request(id, getSet.data).then(() => {
+                                    getSet.request(id);
+                                });
+                            }} disabled={getSet.data?.userid !== getUser.data?.id || !getUser.data}>
+                                <IonIcon slot="icon-only" ios={addOutline} md={addSharp}></IonIcon>
+                            </IonButton>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+            );
         }
         else {
             return (
