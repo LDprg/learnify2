@@ -75,8 +75,8 @@ const SetsPage: React.FC = () => {
 
         return (
             <IonGrid>
-                <IonRow>
-                    <IonCol size="6">
+                <IonRow class="ion-align-items-center">
+                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeXs="6">
                         <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
                             <IonTextarea value={noEditMode ? data?.first : newData.first} placeholder="Value" onIonChange={(e) => {
                                 setNewData({ ...newData, first: e.detail.value });
@@ -84,7 +84,7 @@ const SetsPage: React.FC = () => {
                         </IonItem>
                     </IonCol>
 
-                    <IonCol size="6">
+                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeXs="6">
                         <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
                             <IonTextarea value={noEditMode ? data?.second : newData.second} placeholder="Key" onIonChange={(e) => {
                                 setNewData({ ...newData, second: e.detail.value });
@@ -92,7 +92,7 @@ const SetsPage: React.FC = () => {
                         </IonItem>
                     </IonCol>
                     {noEditMode ?
-                        <IonCol sizeMd="3" sizeXs="6">
+                        <IonCol sizeXl="2" sizeMd="3" sizeXs="6">
                             <IonItem disabled={!getUser.data}>
                                 <IonIcon color={"danger"} ios={trendingDownOutline} md={trendingDownSharp}></IonIcon>
                                 &nbsp;
@@ -101,7 +101,7 @@ const SetsPage: React.FC = () => {
                         </IonCol>
                         : null}
                     {noEditMode ?
-                        <IonCol sizeMd="3" sizeXs="6">
+                        <IonCol sizeXl="2" sizeMd="3" sizeXs="6">
                             <IonItem disabled={!getUser.data}>
                                 <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>
                                 &nbsp;
@@ -109,7 +109,7 @@ const SetsPage: React.FC = () => {
                             </IonItem>
                         </IonCol>
                         : null}
-                    <IonCol sizeMd="3" sizeXs="6">
+                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeMd={noEditMode ? "3" : "6"} sizeXs="6">
                         <IonButton expand="block" fill="clear" color="danger" onClick={() => {
                             if (noEditMode) {
                                 for (const item of getSet.data?.data) {
@@ -144,7 +144,7 @@ const SetsPage: React.FC = () => {
                             <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
                         </IonButton>
                     </IonCol>
-                    <IonCol sizeMd="3" sizeXs="6">
+                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeMd={noEditMode ? "3" : "6"} sizeXs="6">
                         <IonButton expand="block" fill="clear" onClick={() => {
                             if (noEditMode) {
                                 setNewData(data);
