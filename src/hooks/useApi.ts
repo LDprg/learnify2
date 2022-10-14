@@ -13,6 +13,9 @@ const useApi = (apiFunc: any) => {
         setLoading(true);
         try {
             const result = await apiFunc(...args);
+            // console.log(result);
+            if (result.status !== 200)
+                throw new Error(result.data.message);
             setData(result.data);
             setError("");
         } catch (e: any) {

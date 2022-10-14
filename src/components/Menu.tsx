@@ -22,7 +22,7 @@ import useEffectOnce from '../hooks/useEffectOnce';
 import { useStorage } from '../hooks/useStorage';
 import { useState } from 'react';
 import { IonInput } from '@ionic/react';
-import axios from 'axios';
+import { setApi } from '../services/Api';
 
 const Menu: React.FC = () => {
     const location = useLocation();
@@ -49,7 +49,7 @@ const Menu: React.FC = () => {
     }, [signIn.loading]);
 
     useEffect(() => {
-        (async () => axios.defaults.baseURL = await link.get())();
+        (async () => setApi(await link.get()))();
     }, [link]);
 
     useEffectOnce(() => {

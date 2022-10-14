@@ -31,7 +31,6 @@ import { Drivers, Storage } from '@ionic/storage';
 
 setupIonicReact();
 
-// document.body.classList.add('dark');
 const store = new Storage({
     name: '__hooks',
     driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]

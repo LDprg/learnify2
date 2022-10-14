@@ -58,7 +58,7 @@ const LearningPage = () => {
     }, [getSet.loading])
 
     useEffect(() => {
-        if(collection[index]?.second.trim() === "" || collection[index]?.first.trim() === "") {
+        if(collection[index]?.second === "" || collection[index]?.first === "") {
             collection[index].correct = true;
             setIndex(index + 1);
         }
@@ -72,7 +72,7 @@ const LearningPage = () => {
                 setMode("final");
             }
             else {
-                if(collection[index]?.second.trim() === "" || collection[index]?.first.trim() === "") {
+                if(collection[index]?.second === "" || collection[index]?.first === "") {
                     collection[index].correct = true;
                     setIndex(index + 1);
                 }
@@ -146,7 +146,7 @@ const LearningPage = () => {
                                 setAnswer(e.detail.value!);
                                 (input.current as any)?.setFocus();
 
-                                if (e.detail.value!.trim() === collection[index]?.second.trim()) {
+                                if (e.detail.value!.trim() === collection[index]?.second) {
                                     setIndex(index + 1);
                                     setAnswer('');
                                     setMode('ask');

@@ -23,7 +23,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
-    "axios": "^0.27.2",
+    "axios": "^1.1.2",
     "ionicons": "^6.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -72,7 +72,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "4.3.0",
+    "@capacitor/cli": "^4.3.0",
     "@ionic/cli": "6.20.2",
     "@types/concurrently": "^7.0.0",
     "concurrently": "^7.4.0",

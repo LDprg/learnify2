@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useHistory } from 'react-router';
 import "../index.css";
 import { useEffect } from 'react';
-import { useSignInGlobal } from '../../hooks/useApi';
+import { useGetUser, useSignInGlobal } from '../../hooks/useApi';
 
 const LoginPage: React.FC = () => {
     const [email, setEmail] = useState<string>();
@@ -14,6 +14,7 @@ const LoginPage: React.FC = () => {
 
     const history = useHistory();
     const signIn = useSignInGlobal();
+    const getUser = useGetUser();
 
     const login = async (e: any) => {
         e.preventDefault();
@@ -26,12 +27,15 @@ const LoginPage: React.FC = () => {
     }
 
     useEffect(() => {
-        if (signIn.data)
+        if (signIn.data){
+            getUser.request();
             history.push("/Home");
+        }
         if (signIn.error) {
             setError(JSON.stringify(signIn.error));
             setShowAlert(true);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, signIn.data, signIn.error]);
 
     return (
