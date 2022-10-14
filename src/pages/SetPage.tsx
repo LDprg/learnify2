@@ -71,36 +71,47 @@ const SetsPage: React.FC = () => {
     }
 
     const renderUser = (data: any) => {
-        if (!edit || item !== data._id) {
-            return (
-                <IonGrid>
-                    <IonRow>
-                        <IonCol>
-                            <IonItem>
-                                <h2>{data?.first}</h2>
-                            </IonItem>
-                        </IonCol>
-                        <IonCol >
-                            <IonItem>
-                                <h2>{data?.second}</h2>
-                            </IonItem>
-                        </IonCol>
-                        <IonCol>
-                            <IonItem disabled={!getUser.data}>
-                                <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>
-                                &nbsp;
-                                <IonLabel>{getStat(data) ? getStat(data).success ? getStat(data).success : 0 : 0}</IonLabel>
-                            </IonItem>
-                        </IonCol>
-                        <IonCol>
+        const noEditMode = !edit || item !== data._id;
+
+        return (
+            <IonGrid>
+                <IonRow>
+                    <IonCol size="6">
+                        <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
+                            <IonTextarea value={noEditMode ? data?.first : newData.first} placeholder="Value" onIonChange={(e) => {
+                                setNewData({ ...newData, first: e.detail.value });
+                            }} readonly={noEditMode} autoGrow></IonTextarea>
+                        </IonItem>
+                    </IonCol>
+
+                    <IonCol size="6">
+                        <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
+                            <IonTextarea value={noEditMode ? data?.second : newData.second} placeholder="Key" onIonChange={(e) => {
+                                setNewData({ ...newData, second: e.detail.value });
+                            }} readonly={noEditMode} autoGrow></IonTextarea>
+                        </IonItem>
+                    </IonCol>
+                    {noEditMode ?
+                        <IonCol sizeMd="3" sizeXs="6">
                             <IonItem disabled={!getUser.data}>
                                 <IonIcon color={"danger"} ios={trendingDownOutline} md={trendingDownSharp}></IonIcon>
                                 &nbsp;
                                 <IonLabel>{getStat(data) ? getStat(data).wrong ? getStat(data).wrong : 0 : 0}</IonLabel>
                             </IonItem>
                         </IonCol>
-                        <IonCol>
-                            <IonButton expand="block" fill="clear" color="danger" onClick={() => {
+                        : null}
+                    {noEditMode ?
+                        <IonCol sizeMd="3" sizeXs="6">
+                            <IonItem disabled={!getUser.data}>
+                                <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>
+                                &nbsp;
+                                <IonLabel>{getStat(data) ? getStat(data).success ? getStat(data).success : 0 : 0}</IonLabel>
+                            </IonItem>
+                        </IonCol>
+                        : null}
+                    <IonCol sizeMd="3" sizeXs="6">
+                        <IonButton expand="block" fill="clear" color="danger" onClick={() => {
+                            if (noEditMode) {
                                 for (const item of getSet.data?.data) {
                                     if (data?._id === item._id) {
                                         presentAlert({
@@ -124,52 +135,22 @@ const SetsPage: React.FC = () => {
                                         break;
                                     }
                                 }
-                            }} disabled={getSet.data?.userid !== getUser.data?.id || !getUser.data}>
-                                <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
-                            </IonButton>
-                        </IonCol>
-                        <IonCol>
-                            <IonButton expand="block" fill="clear" onClick={() => {
-                                setNewData(data);
-                                setItem(data?._id);
-                                setEdit(true);
-                            }} disabled={getSet.data?.userid !== getUser.data?.id || !getUser.data}>
-                                <IonIcon slot="icon-only" ios={pencilOutline} md={pencilSharp}></IonIcon>
-                            </IonButton>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
-            );
-        }
-        else {
-            return (
-                <IonGrid>
-                    <IonRow>
-                        <IonCol>
-                            <IonItem disabled={!getUser.data}>
-                                <IonInput value={newData.first} placeholder="Value" onIonChange={(e) => {
-                                    setNewData({ ...newData, first: e.detail.value });
-                                }}></IonInput>
-                            </IonItem>
-                        </IonCol>
-                        <IonCol >
-                            <IonItem disabled={!getUser.data}>
-                                <IonInput value={newData.second} placeholder="Key" onIonChange={(e) => {
-                                    setNewData({ ...newData, second: e.detail.value });
-                                }}></IonInput>
-                            </IonItem>
-                        </IonCol>
-                        <IonCol>
-                            <IonButton expand="block" fill="clear" color="danger" onClick={() => {
+                            } else {
                                 setNewData({});
                                 setEdit(false);
                                 setItem("");
-                            }}>
-                                <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
-                            </IonButton>
-                        </IonCol>
-                        <IonCol>
-                            <IonButton expand="block" fill="clear" onClick={() => {
+                            }
+                        }} disabled={getSet.data?.userid !== getUser.data?.id || !getUser.data}>
+                            <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
+                        </IonButton>
+                    </IonCol>
+                    <IonCol sizeMd="3" sizeXs="6">
+                        <IonButton expand="block" fill="clear" onClick={() => {
+                            if (noEditMode) {
+                                setNewData(data);
+                                setItem(data?._id);
+                                setEdit(true);
+                            } else {
                                 for (const item of getSet.data?.data) {
                                     if (newData._id === item._id) {
                                         item.first = newData.first.trim();
@@ -184,14 +165,14 @@ const SetsPage: React.FC = () => {
                                 setNewData({});
                                 setEdit(false);
                                 setItem("");
-                            }}>
-                                <IonIcon slot="icon-only" ios={checkmarkOutline} md={checkmarkSharp}></IonIcon>
-                            </IonButton>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
-            );
-        } 
+                            }
+                        }} disabled={getSet.data?.userid !== getUser.data?.id || !getUser.data}>
+                            <IonIcon slot="icon-only" ios={noEditMode ? pencilOutline : checkmarkOutline} md={noEditMode ? pencilSharp : checkmarkSharp}></IonIcon>
+                        </IonButton>
+                    </IonCol>
+                </IonRow>
+            </IonGrid >
+        );
     }
 
     const renderSet = () => {

@@ -55,3 +55,7 @@
     transform: rotate(180deg); 
     transform-origin: center center
 }
+
+.text-big{
+    font-size: 20px;
+}
