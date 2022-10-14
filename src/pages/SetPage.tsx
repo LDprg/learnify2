@@ -76,40 +76,44 @@ const SetsPage: React.FC = () => {
         return (
             <IonGrid>
                 <IonRow class="ion-align-items-center">
-                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeXs="6">
+                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeXs="6" class="ion-no-padding">
                         <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
-                            <IonTextarea value={noEditMode ? data?.first : newData.first} placeholder="Value" onIonChange={(e) => {
+                            <IonTextarea class="ion-no-margin ion-margin-vertical " value={noEditMode ? data?.first : newData.first} placeholder="Value" onIonChange={(e) => {
                                 setNewData({ ...newData, first: e.detail.value });
                             }} readonly={noEditMode} autoGrow></IonTextarea>
                         </IonItem>
                     </IonCol>
 
-                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeXs="6">
+                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeXs="6" class="ion-no-padding">
                         <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
-                            <IonTextarea value={noEditMode ? data?.second : newData.second} placeholder="Key" onIonChange={(e) => {
+                            <IonTextarea class="ion-no-margin ion-margin-vertical" value={noEditMode ? data?.second : newData.second} placeholder="Key" onIonChange={(e) => {
                                 setNewData({ ...newData, second: e.detail.value });
                             }} readonly={noEditMode} autoGrow></IonTextarea>
                         </IonItem>
                     </IonCol>
                     {noEditMode ?
-                        <IonCol sizeXl="2" sizeMd="3" sizeXs="6">
-                            <IonItem disabled={!getUser.data}>
-                                <IonIcon color={"danger"} ios={trendingDownOutline} md={trendingDownSharp}></IonIcon>
-                                &nbsp;
-                                <IonLabel>{getStat(data) ? getStat(data).wrong ? getStat(data).wrong : 0 : 0}</IonLabel>
+                        <IonCol sizeXl="2" sizeMd="3" sizeXs="6" class="ion-no-padding">
+                            <IonItem disabled={!getUser.data} class="ion-text-center">
+                                <IonLabel class="ion-no-margin">
+                                    <IonIcon color={"danger"} ios={trendingDownOutline} md={trendingDownSharp}></IonIcon>
+                                    &nbsp;
+                                    {getStat(data) ? getStat(data).wrong ? getStat(data).wrong : 0 : 0}
+                                </IonLabel>
                             </IonItem>
                         </IonCol>
                         : null}
                     {noEditMode ?
-                        <IonCol sizeXl="2" sizeMd="3" sizeXs="6">
-                            <IonItem disabled={!getUser.data}>
-                                <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>
-                                &nbsp;
-                                <IonLabel>{getStat(data) ? getStat(data).success ? getStat(data).success : 0 : 0}</IonLabel>
+                        <IonCol sizeXl="2" sizeMd="3" sizeXs="6" class="ion-no-padding">
+                            <IonItem disabled={!getUser.data} class="ion-text-center">
+                                <IonLabel class="ion-no-margin">
+                                    <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>
+                                    &nbsp;
+                                    {getStat(data) ? getStat(data).success ? getStat(data).success : 0 : 0}
+                                </IonLabel>
                             </IonItem>
                         </IonCol>
                         : null}
-                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeMd={noEditMode ? "3" : "6"} sizeXs="6">
+                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeMd={noEditMode ? "3" : "6"} sizeXs="6" class="ion-no-padding">
                         <IonButton expand="block" fill="clear" color="danger" onClick={() => {
                             if (noEditMode) {
                                 for (const item of getSet.data?.data) {
@@ -144,7 +148,7 @@ const SetsPage: React.FC = () => {
                             <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
                         </IonButton>
                     </IonCol>
-                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeMd={noEditMode ? "3" : "6"} sizeXs="6">
+                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeMd={noEditMode ? "3" : "6"} sizeXs="6" class="ion-no-padding">
                         <IonButton expand="block" fill="clear" onClick={() => {
                             if (noEditMode) {
                                 setNewData(data);
@@ -212,77 +216,69 @@ const SetsPage: React.FC = () => {
                             </IonCardHeader>
                         </IonCard>
                     </IonRow>
-                    <IonRow>
-                        <IonCol>
-                            <IonModal isOpen={isOpenExport}>
-                                <IonHeader>
-                                    <IonToolbar>
-                                        <IonTitle>Export</IonTitle>
-                                        <IonButtons slot="end">
-                                            <IonButton onClick={() => setIsOpenExport(false)}>Close</IonButton>
-                                        </IonButtons>
-                                    </IonToolbar>
-                                </IonHeader>
-                                <IonContent className="ion-padding">
-                                    <IonItem>
-                                        <IonTextarea value={exportVal} auto-grow readonly></IonTextarea>
-                                    </IonItem>
-                                </IonContent>
-                            </IonModal>
-                            <IonCard onClick={() => setIsOpenExport(true)}>
-                                <IonCardHeader>
-                                    <IonCardTitle>
-                                        Export
-                                    </IonCardTitle>
-                                </IonCardHeader>
-                            </IonCard>
-                        </IonCol>
-                        <IonCol>
-                            <IonModal isOpen={isOpenImport}>
-                                <IonHeader>
-                                    <IonToolbar>
-                                        <IonTitle>Import</IonTitle>
-                                        <IonButtons slot="end">
-                                            <IonButton onClick={() => {
-                                                importSet();
-                                                setIsOpenImport(false);
-                                            }}>Add</IonButton>
-                                        </IonButtons>
-                                        <IonButtons slot="end">
-                                            <IonButton onClick={() => setIsOpenImport(false)}>Close</IonButton>
-                                        </IonButtons>
-                                    </IonToolbar>
-                                </IonHeader>
-                                <IonContent className="ion-padding">
-                                    <IonItem>
-                                        <IonTextarea value={importVal} auto-grow onIonChange={(e) => setImportVal(e.detail.value!)} onKeyDown={(e) => {
-                                            if (e.key === 'Tab') {
-                                                setImportVal(importVal + "\t");
-                                                e.preventDefault();
-                                            }
-                                        }}></IonTextarea>
-                                    </IonItem>
-                                </IonContent>
-                            </IonModal>
-                            <IonCard onClick={() => setIsOpenImport(true)} disabled={getSet.data?.userid !== getUser.data?.id}>
-                                <IonCardHeader>
-                                    <IonCardTitle>
-                                        Import
-                                    </IonCardTitle>
-                                </IonCardHeader>
-                            </IonCard>
-                        </IonCol>
+                    <IonRow class="flex-container">
+                        <IonModal isOpen={isOpenExport}>
+                            <IonHeader>
+                                <IonToolbar>
+                                    <IonTitle>Export</IonTitle>
+                                    <IonButtons slot="end">
+                                        <IonButton onClick={() => setIsOpenExport(false)}>Close</IonButton>
+                                    </IonButtons>
+                                </IonToolbar>
+                            </IonHeader>
+                            <IonContent className="ion-padding">
+                                <IonItem>
+                                    <IonTextarea value={exportVal} auto-grow readonly></IonTextarea>
+                                </IonItem>
+                            </IonContent>
+                        </IonModal>
+                        <IonCard onClick={() => setIsOpenExport(true)} class="flex-item flex-item-25">
+                            <IonCardHeader>
+                                <IonCardTitle>
+                                    Export
+                                </IonCardTitle>
+                            </IonCardHeader>
+                        </IonCard>
+                        <IonModal isOpen={isOpenImport}>
+                            <IonHeader>
+                                <IonToolbar>
+                                    <IonTitle>Import</IonTitle>
+                                    <IonButtons slot="end">
+                                        <IonButton onClick={() => {
+                                            importSet();
+                                            setIsOpenImport(false);
+                                        }}>Add</IonButton>
+                                    </IonButtons>
+                                    <IonButtons slot="end">
+                                        <IonButton onClick={() => setIsOpenImport(false)}>Close</IonButton>
+                                    </IonButtons>
+                                </IonToolbar>
+                            </IonHeader>
+                            <IonContent className="ion-padding">
+                                <IonItem>
+                                    <IonTextarea value={importVal} auto-grow onIonChange={(e) => setImportVal(e.detail.value!)} onKeyDown={(e) => {
+                                        if (e.key === 'Tab') {
+                                            setImportVal(importVal + "\t");
+                                            e.preventDefault();
+                                        }
+                                    }}></IonTextarea>
+                                </IonItem>
+                            </IonContent>
+                        </IonModal>
+                        <IonCard onClick={() => setIsOpenImport(true)} disabled={getSet.data?.userid !== getUser.data?.id} class="flex-item flex-item-25">
+                            <IonCardHeader>
+                                <IonCardTitle>
+                                    Import
+                                </IonCardTitle>
+                            </IonCardHeader>
+                        </IonCard>
                     </IonRow>
                     <IonRow>
                         <IonCol>
                             {getSet.data?.data.map((data: any, index: number) => {
                                 return (
                                     <IonCard key={index}>
-                                        <IonCardHeader>
-                                            <IonCardTitle>
-                                                {renderUser(data)}
-                                            </IonCardTitle>
-                                        </IonCardHeader>
+                                        {renderUser(data)}
                                     </IonCard>
                                 );
                             })}
