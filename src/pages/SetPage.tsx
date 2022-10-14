@@ -71,7 +71,7 @@ const SetsPage: React.FC = () => {
     }
 
     const renderUser = (data: any) => {
-        if (getSet.data?.userid === getUser.data?.id && !edit) {
+        if (!edit || item !== data._id) {
             return (
                 <IonGrid>
                     <IonRow>
@@ -86,14 +86,14 @@ const SetsPage: React.FC = () => {
                             </IonItem>
                         </IonCol>
                         <IonCol>
-                            <IonItem>
+                            <IonItem disabled={!getUser.data}>
                                 <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>
                                 &nbsp;
                                 <IonLabel>{getStat(data) ? getStat(data).success ? getStat(data).success : 0 : 0}</IonLabel>
                             </IonItem>
                         </IonCol>
                         <IonCol>
-                            <IonItem>
+                            <IonItem disabled={!getUser.data}>
                                 <IonIcon color={"danger"} ios={trendingDownOutline} md={trendingDownSharp}></IonIcon>
                                 &nbsp;
                                 <IonLabel>{getStat(data) ? getStat(data).wrong ? getStat(data).wrong : 0 : 0}</IonLabel>
@@ -124,7 +124,7 @@ const SetsPage: React.FC = () => {
                                         break;
                                     }
                                 }
-                            }}>
+                            }} disabled={getSet.data?.userid !== getUser.data?.id || !getUser.data}>
                                 <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
                             </IonButton>
                         </IonCol>
@@ -133,7 +133,7 @@ const SetsPage: React.FC = () => {
                                 setNewData(data);
                                 setItem(data?._id);
                                 setEdit(true);
-                            }}>
+                            }} disabled={getSet.data?.userid !== getUser.data?.id || !getUser.data}>
                                 <IonIcon slot="icon-only" ios={pencilOutline} md={pencilSharp}></IonIcon>
                             </IonButton>
                         </IonCol>
@@ -141,19 +141,19 @@ const SetsPage: React.FC = () => {
                 </IonGrid>
             );
         }
-        else if (getSet.data?.userid === getUser.data?.id && edit && item === data._id) {
+        else {
             return (
                 <IonGrid>
                     <IonRow>
                         <IonCol>
-                            <IonItem>
+                            <IonItem disabled={!getUser.data}>
                                 <IonInput value={newData.first} placeholder="Value" onIonChange={(e) => {
                                     setNewData({ ...newData, first: e.detail.value });
                                 }}></IonInput>
                             </IonItem>
                         </IonCol>
                         <IonCol >
-                            <IonItem>
+                            <IonItem disabled={!getUser.data}>
                                 <IonInput value={newData.second} placeholder="Key" onIonChange={(e) => {
                                     setNewData({ ...newData, second: e.detail.value });
                                 }}></IonInput>
@@ -191,48 +191,7 @@ const SetsPage: React.FC = () => {
                     </IonRow>
                 </IonGrid>
             );
-        } else {
-            return (
-                <IonGrid>
-                    <IonRow>
-                        <IonCol>
-                            <IonItem>
-                                <h2>{data?.first}</h2>
-                            </IonItem>
-                        </IonCol>
-                        <IonCol >
-                            <IonItem>
-                                <h2>{data?.second}</h2>
-                            </IonItem>
-                        </IonCol>
-                        <IonCol>
-                            <IonItem disabled={!getUser.data}>
-                                <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>
-                                &nbsp;
-                                <IonLabel>{getStat(data) ? getStat(data).success ? getStat(data).success : 0 : 0}</IonLabel>
-                            </IonItem>
-                        </IonCol>
-                        <IonCol>
-                            <IonItem disabled={!getUser.data}>
-                                <IonIcon color={"danger"} ios={trendingDownOutline} md={trendingDownSharp}></IonIcon>
-                                &nbsp;
-                                <IonLabel>{getStat(data) ? getStat(data).wrong ? getStat(data).wrong : 0 : 0}</IonLabel>
-                            </IonItem>
-                        </IonCol>
-                        <IonCol>
-                            <IonButton expand="block" fill="clear" color="danger" disabled>
-                                <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
-                            </IonButton>
-                        </IonCol>
-                        <IonCol>
-                            <IonButton expand="block" fill="clear" disabled>
-                                <IonIcon slot="icon-only" ios={pencilOutline} md={pencilSharp}></IonIcon>
-                            </IonButton>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
-            );
-        }
+        } 
     }
 
     const renderSet = () => {
@@ -264,7 +223,7 @@ const SetsPage: React.FC = () => {
                                 </IonCardTitle>
                             </IonCardHeader>
                         </IonCard>
-                        <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-50" disabled={JSON.stringify(getSet.data.data).length <= 2}>
+                        <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-50" disabled={JSON.stringify(getSet.data?.data).length <= 2}>
                             <IonCardHeader>
                                 <IonCardTitle>
                                     Learn
@@ -324,7 +283,7 @@ const SetsPage: React.FC = () => {
                                     </IonItem>
                                 </IonContent>
                             </IonModal>
-                            <IonCard onClick={() => setIsOpenImport(true)} disabled={getSet.data.userid !== getUser.data.id}>
+                            <IonCard onClick={() => setIsOpenImport(true)} disabled={getSet.data?.userid !== getUser.data?.id}>
                                 <IonCardHeader>
                                     <IonCardTitle>
                                         Import
