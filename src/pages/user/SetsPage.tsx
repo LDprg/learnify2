@@ -46,7 +46,7 @@ const SetsPage: React.FC = () => {
                                             </IonCardSubtitle>
                                         </IonCol>
                                         <IonCol>
-                                            <IonButton expand="block" fill="clear" color="danger" onClick={() => {                                                
+                                            <IonButton expand="block" fill="clear" color="danger" onClick={() => {
                                                 presentAlert({
                                                     header: "Delete",
                                                     message: "Are you sure you want to delete this item?",
@@ -85,8 +85,14 @@ const SetsPage: React.FC = () => {
         <IonContent>
             <IonGrid>
                 <IonRow>
-                    <IonCol>
-                        <h4>Your Sets:</h4>
+                    <IonCol class="ion-text-center">
+                        <IonCard>
+                            <IonCardHeader>
+                                <IonCardTitle>
+                                    <h3>Your Sets:</h3>
+                                </IonCardTitle>
+                            </IonCardHeader>
+                        </IonCard>
                     </IonCol>
                 </IonRow>
                 <IonRow>

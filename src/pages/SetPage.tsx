@@ -75,10 +75,10 @@ const SetsPage: React.FC = () => {
 
         return (
             <IonGrid>
-                <IonRow class="ion-align-items-center">
+                <IonRow class="ion-align-items-center ion-padding-vertical">
                     <IonCol sizeXl={noEditMode ? "2" : "3"} sizeXs="6" class="ion-no-padding">
                         <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
-                            <IonTextarea class="ion-no-margin ion-margin-vertical " value={noEditMode ? data?.first : newData.first} placeholder="Value" onIonChange={(e) => {
+                            <IonTextarea class="ion-no-margin ion-no-padding" value={noEditMode ? data?.first : newData.first} placeholder="Value" onIonChange={(e) => {
                                 setNewData({ ...newData, first: e.detail.value });
                             }} readonly={noEditMode} autoGrow></IonTextarea>
                         </IonItem>
@@ -86,9 +86,9 @@ const SetsPage: React.FC = () => {
 
                     <IonCol sizeXl={noEditMode ? "2" : "3"} sizeXs="6" class="ion-no-padding">
                         <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
-                            <IonTextarea class="ion-no-margin ion-margin-vertical" value={noEditMode ? data?.second : newData.second} placeholder="Key" onIonChange={(e) => {
+                            <IonTextarea class="ion-no-margin ion-no-padding" value={noEditMode ? data?.second : newData.second} placeholder="Key" onIonChange={(e) => {
                                 setNewData({ ...newData, second: e.detail.value });
-                            }} readonly={noEditMode} autoGrow></IonTextarea>
+                            }} readonly={noEditMode}></IonTextarea>
                         </IonItem>
                     </IonCol>
                     {noEditMode ?

@@ -19,26 +19,38 @@ const ProfilePage: React.FC = () => {
     return (
         <IonContent>
             <IonGrid>
-                <IonRow>
-                    <IonCol>
+                <IonRow class="ion-margin-bottom">
+                    <IonCol sizeMd="4" sizeXs="12">
                         <IonItem>
                             <IonLabel>User:</IonLabel>
+                        </IonItem>
+                    </IonCol>
+                    <IonCol sizeMd="8" sizeXs="12">
+                        <IonItem>
                             <IonLabel>{getUser.data?.username}</IonLabel>
                         </IonItem>
                     </IonCol>
                 </IonRow>
-                <IonRow>
-                    <IonCol>
+                <IonRow class="ion-margin-bottom">
+                    <IonCol sizeMd="4" sizeXs="12">
                         <IonItem>
                             <IonLabel>Email:</IonLabel>
+                        </IonItem>
+                    </IonCol>
+                    <IonCol sizeMd="8" sizeXs="12">
+                        <IonItem>
                             <IonLabel>{getUser.data?.email}</IonLabel>
                         </IonItem>
                     </IonCol>
                 </IonRow>
-                <IonRow>
-                    <IonCol>
+                <IonRow class="ion-margin-bottom">
+                    <IonCol sizeMd="4" sizeXs="12">
                         <IonItem>
                             <IonLabel>UserId:</IonLabel>
+                        </IonItem>
+                    </IonCol>
+                    <IonCol sizeMd="8" sizeXs="12">
+                        <IonItem>
                             <IonLabel>{getUser.data?.id}</IonLabel>
                         </IonItem>
                     </IonCol>
