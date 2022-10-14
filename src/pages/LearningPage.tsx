@@ -1,6 +1,6 @@
 import { useLocation, useParams } from "react-router";
 import { useEffect, useRef, useState } from 'react';
-import { useGetSet, useGetUserStatShort, useUpdateUserStat } from "../hooks/useApi";
+import { useGetSet, useUpdateUserStat } from "../hooks/useApi";
 import { IonCol, IonGrid, IonItem, IonLabel, IonRow, IonInput, IonButton, IonContent, IonProgressBar } from '@ionic/react';
 
 interface LearningPageProps {

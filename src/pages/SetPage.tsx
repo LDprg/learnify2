@@ -2,7 +2,7 @@ import "./index.css";
 import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput, useIonAlert, IonItem, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonTextarea } from '@ionic/react';
 import { useLocation, useParams } from "react-router";
 import { useGetSet, useGetUser, useGetUserStatShort, useUpdateSet } from '../hooks/useApi';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, pencilOutline, pencilSharp, trendingDownOutline, trendingDownSharp, trendingUpOutline, trendingUpSharp } from "ionicons/icons";
 interface SetPageProps {
     id: string;

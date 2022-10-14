@@ -28,7 +28,6 @@ import ErrorPage from './pages/ErrorPage';
 import LearningPage from './pages/LearningPage';
 
 import { Drivers, Storage } from '@ionic/storage';
-import axios from 'axios';
 
 setupIonicReact();
 

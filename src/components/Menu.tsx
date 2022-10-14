@@ -19,7 +19,7 @@ import { mainPages, userPages, accountPages } from '../pages';
 import './Menu.css';
 import { useGetUser, useSignInGlobal, useSignOutGlobal } from '../hooks/useApi';
 import useEffectOnce from '../hooks/useEffectOnce';
-import useStorage from '../hooks/useStorage';
+import { useStorage } from '../hooks/useStorage';
 import { useState } from 'react';
 import { IonInput } from '@ionic/react';
 import axios from 'axios';
