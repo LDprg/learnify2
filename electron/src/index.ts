@@ -11,8 +11,6 @@ import { ElectronCapacitorApp, setupContentSecurityPolicy, setupReloadWatcher } 
 // Graceful handling of unhandled errors.
 unhandled();
 
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
-
 // Define our menu templates (these are optional)
 const trayMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [new MenuItem({ label: 'Quit App', role: 'quit' })];
 const appMenuBarMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [

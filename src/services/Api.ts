@@ -1,9 +1,9 @@
 import { Drivers, Storage } from '@ionic/storage';
 import { CapacitorCookies } from '@capacitor/core';
-import { getPlatforms, isPlatform } from '@ionic/core';
+import { isPlatform } from '@ionic/core';
 
 
-const getCookies = (name: string) =>{
+const getCookies = (name: string) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop()?.split(';').shift();
@@ -31,31 +31,30 @@ const storeSession = new Storage({
 storeSession.create();
 
 export const setSession = async (session: string) => {
-    if(isPlatform("mobileweb") || isPlatform("desktop"))
-        CapacitorCookies.setCookie({ url: api, key: 'connect.sid', value: session, path: '/'});
-    else
+    if (isPlatform("capacitor"))
         storeSession.set('connect.sid', session);
+    else
+        CapacitorCookies.setCookie({ url: api, key: 'connect.sid', value: session, path: '/' });
 }
 
 export const deleteSession = async () => {
-    if(isPlatform("mobileweb") || isPlatform("desktop"))
-        CapacitorCookies.deleteCookie({ url: api, key: 'connect.sid' });
-    else
+    if (isPlatform("capacitor"))
         storeSession.set('connect.sid', undefined);
+    else
+        CapacitorCookies.deleteCookie({ url: api, key: 'connect.sid' });
 }
 
 export const getSession = async () => {
-    console.log(getPlatforms());
-    if(isPlatform("mobileweb") || isPlatform("desktop"))
-        return getCookies('connect.sid');
-    else
+    if (isPlatform("capacitor"))
         return storeSession.get('connect.sid');
+    else
+        return getCookies('connect.sid');
 }
 
 export const loginSession = async () => {
     const session = await getSession();
     return {
-        params: { 
+        params: {
             accessToken: session ? session : ''
         },
     };

@@ -217,17 +217,39 @@ export class ElectronCapacitorApp {
 }
 
 // Set a CSP up for our application based on the custom scheme
+// export function setupContentSecurityPolicy(customScheme: string): void {
+//   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+//     callback({
+//       responseHeaders: {
+//         ...details.responseHeaders,
+//         'Content-Security-Policy': [
+//           electronIsDev
+//             ? `default-src ${customScheme}://* 'unsafe-inline' devtools://* 'unsafe-eval' data:`
+//             : `default-src ${customScheme}://* 'unsafe-inline' data:`,
+//         ],
+//       },
+//     });
+//   });
+// }
+
+// Set a CSP up for our application based on the custom scheme
 export function setupContentSecurityPolicy(customScheme: string): void {
-  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Content-Security-Policy': [
-          electronIsDev
-            ? `default-src ${customScheme}://* 'unsafe-inline' devtools://* 'unsafe-eval' data:`
-            : `default-src ${customScheme}://* 'unsafe-inline' data:`,
-        ],
-      },
+    session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+      callback({ requestHeaders: { Origin: '*', ...details.requestHeaders } });
     });
-  });
-}
+  
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          'Access-Control-Allow-Origin': ['*'],
+          'Access-Control-Allow-Headers': ['*'],
+          // 'Content-Security-Policy': [
+          //   electronIsDev
+          //     ? `default-src ${customScheme}://* https://* 'unsafe-inline' devtools://* 'unsafe-eval' data:`
+          //     : `default-src ${customScheme}://* https://* 'unsafe-inline' data:`,
+          // ],
+        },
+      });
+    });
+  }
