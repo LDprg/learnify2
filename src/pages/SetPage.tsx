@@ -1,6 +1,6 @@
 import "./index.css";
 import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput, useIonAlert, IonItem, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonTextarea, IonSpinner } from '@ionic/react';
-import { useLocation, useParams } from "react-router";
+import { useLocation, useParams, useHistory } from 'react-router';
 import { useGetSet, useGetUser, useGetUserStatShort, useUpdateSet, useUpdateUserStared } from '../hooks/useApi';
 import { useEffect, useState } from "react";
 import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, pencilOutline, pencilSharp, starOutline, starSharp, trendingDownOutline, trendingDownSharp, trendingUpOutline, trendingUpSharp } from "ionicons/icons";
@@ -12,6 +12,7 @@ const SetsPage: React.FC = () => {
     const { id } = useParams<SetPageProps>();
 
     const location = useLocation();
+    const history = useHistory();
 
     const [presentAlert] = useIonAlert();
 
@@ -42,9 +43,7 @@ const SetsPage: React.FC = () => {
     useEffect(() => {
         if (isOpenExport === true) {
             var text = "";
-            console.log(getSet.data?.data);
             for (const item of getSet.data?.data) {
-                console.log(item);
                 text += item.first + "\t" + item.second + "\n";
             }
             setExportVal(text);
@@ -72,8 +71,11 @@ const SetsPage: React.FC = () => {
     }
 
     const getStar = (data: any) => {
-        console.log(getUserStatShort.data?.data.find((value: any) => value.cardid === data?._id));
         return getUserStatShort.data?.data.find((value: any) => value.cardid === data?._id)?.stared;
+    }
+
+    const getStared = () => {
+        return getUserStatShort.data?.data.filter((value: any) => value.stared);
     }
 
     const renderUser = (data: any) => {
@@ -214,10 +216,23 @@ const SetsPage: React.FC = () => {
                                 </IonCardTitle>
                             </IonCardHeader>
                         </IonCard>
-                        <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-50" disabled={JSON.stringify(getSet.data?.data).length <= 2}>
+                        <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-25" disabled={JSON.stringify(getSet.data?.data).length <= 2}>
                             <IonCardHeader>
                                 <IonCardTitle>
                                     Learn
+                                </IonCardTitle>
+                            </IonCardHeader>
+                        </IonCard>
+                        <IonCard class="flex-item flex-item-25" disabled={JSON.stringify(getStared()) === undefined || JSON.stringify(getSet.data?.data).length <= 2} onClick={() => {
+                            console.log(getStared());
+                            history.push("/Set/" + id + "/Learn", { 
+                                stared: true,
+                                data: [...getStared()]
+                            });
+                        }}>
+                            <IonCardHeader>
+                                <IonCardTitle>
+                                    Learn stared
                                 </IonCardTitle>
                             </IonCardHeader>
                         </IonCard>

@@ -26,8 +26,33 @@ const LearningPage = () => {
     const [wrongAnswer, setWrongAnswer] = useState<string>('');
     const [correct, setCorrect] = useState<number>(0);
 
+    function isStared() {
+        return (location.state as any)?.stared ?? false
+    }
+
+    function getStared() {
+        return (location.state as any)?.data ?? []
+    }
+
     function shuffle(array: any) {
         const newArray = [...array]
+
+        if(isStared()) {            
+            newArray.reduceRight((acc, value, index) => {
+                var found = false;
+
+                for(var stared of getStared()) {
+                    if(value._id === stared.cardid) {   
+                        found = true;
+                    }
+                }
+
+                if(!found) {
+                    newArray.splice(index, 1);
+                }
+            }, []);
+        }
+
         const length = newArray.length
 
         for (let start = 0; start < length; start++) {
@@ -36,7 +61,7 @@ const LearningPage = () => {
 
             newArray.push(...randomItem)
         }
- 
+
         return newArray
     }
 
@@ -58,7 +83,7 @@ const LearningPage = () => {
     }, [getSet.loading])
 
     useEffect(() => {
-        if(collection[index]?.second === "" || collection[index]?.first === "") {
+        if (collection[index]?.second === "" || collection[index]?.first === "") {
             collection[index].correct = true;
             setIndex(index + 1);
         }
@@ -66,13 +91,12 @@ const LearningPage = () => {
     }, [collection])
 
     useEffect(() => {
-        console.log(index);
         if (getSet.loading === false && collection.length > 0) {
             if (collection.length <= index) {
                 setMode("final");
             }
             else {
-                if(collection[index]?.second === "" || collection[index]?.first === "") {
+                if (collection[index]?.second === "" || collection[index]?.first === "") {
                     collection[index].correct = true;
                     setIndex(index + 1);
                 }
@@ -215,9 +239,9 @@ const LearningPage = () => {
                             </IonLabel>
                         </IonItem>
                         <IonItem>
-                            <IonProgressBar value={correct/collection.length} style={{height: "0.5em", margin: "5px"}} color="success"></IonProgressBar>
-                            <IonProgressBar value={(index-correct)/collection.length} style={{height: "0.5em", margin: "5px"}} color="danger"></IonProgressBar>
-                            <IonProgressBar value={index/collection.length} style={{height: "0.5em", margin: "5px"}}></IonProgressBar>
+                            <IonProgressBar value={correct / collection.length} style={{ height: "0.5em", margin: "5px" }} color="success"></IonProgressBar>
+                            <IonProgressBar value={(index - correct) / collection.length} style={{ height: "0.5em", margin: "5px" }} color="danger"></IonProgressBar>
+                            <IonProgressBar value={index / collection.length} style={{ height: "0.5em", margin: "5px" }}></IonProgressBar>
                         </IonItem>
                     </IonCol>
                 </IonRow>
