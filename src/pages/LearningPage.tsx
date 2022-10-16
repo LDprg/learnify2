@@ -164,7 +164,7 @@ const LearningPage = () => {
             <IonGrid>
                 <IonRow>
                     <IonCol>
-                        <IonItem>
+                        <IonItem class="ion-text-center">
                             <IonLabel>Final</IonLabel>
                         </IonItem>
                     </IonCol>
@@ -180,6 +180,14 @@ const LearningPage = () => {
                                 </IonItem>
                             );
                         })}
+                    </IonCol>
+                </IonRow>
+                <IonRow>
+                    <IonCol>
+                        <IonButton expand="full" fill="clear" routerLink={"/Set/" + id} routerDirection="none">Back to Set Page</IonButton>
+                    </IonCol>
+                    <IonCol>
+                        <IonButton expand="full" fill="clear" routerLink={"/Set/" + id + "/Learn"} routerDirection="none">Again</IonButton>
                     </IonCol>
                 </IonRow>
             </IonGrid>

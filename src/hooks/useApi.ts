@@ -60,3 +60,4 @@ export const useDeleteSet = () => {return useApi(Sets.deleteSet)};
 export const useSearchSet = () => {return useApi(Sets.searchSet)};
 export const useGetUserStatShort = () => {return useApi(Sets.getUserStatShort)};
 export const useUpdateUserStat = () => {return useApi(Sets.updateUserStat)};
+export const useUpdateUserStared = () => {return useApi(Sets.updateUserStared)};

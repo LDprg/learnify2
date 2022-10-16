@@ -50,7 +50,6 @@
     }
 }
 
-
 .rotate {
     transform: rotate(180deg); 
     transform-origin: center center
@@ -59,3 +58,16 @@
 .text-big{
     font-size: 20px;
 }
+
+.spinner-center {
+    position: fixed;
+    z-index: 999;
+    height: 5em;
+    width: em;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }

@@ -34,4 +34,8 @@ export default new class{
     public async updateUserStat(id: number, card: number, type: string){
         return await CapacitorHttp.put({url: api + "/api/user/stat/" + id + "/" + card, data: {type: type}, ...defaultOptions, ...await loginSession()});
     }
+
+    public async updateUserStared(id: number, card: number, star: Boolean){
+        return await CapacitorHttp.put({url: api + "/api/user/stat/" + id + "/" + card + "/stared", data: {stared: star}, ...defaultOptions, ...await loginSession()});
+    }
 }();

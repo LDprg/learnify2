@@ -28,24 +28,14 @@ const SetsPage: React.FC = () => {
                             <IonCardHeader>
                                 <IonGrid>
                                     <IonRow>
-                                        <IonCol>
+                                        <IonCol size="6">
                                             <IonButton expand="block" fill="clear" routerLink={"/Set/" + data._id}>
                                                 <IonCardTitle>
                                                     {data.name}
                                                 </IonCardTitle>
                                             </IonButton>
                                         </IonCol>
-                                        <IonCol>
-                                            <IonCardSubtitle>
-                                                <IonRow>
-                                                    <IonLabel>User: {data.userid}</IonLabel>
-                                                </IonRow>
-                                                <IonRow>
-                                                    <IonLabel>Id: {data._id}</IonLabel>
-                                                </IonRow>
-                                            </IonCardSubtitle>
-                                        </IonCol>
-                                        <IonCol>
+                                        <IonCol size="6">
                                             <IonButton expand="block" fill="clear" color="danger" onClick={() => {
                                                 presentAlert({
                                                     header: "Delete",

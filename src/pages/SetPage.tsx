@@ -1,9 +1,9 @@
 import "./index.css";
-import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput, useIonAlert, IonItem, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonTextarea } from '@ionic/react';
+import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput, useIonAlert, IonItem, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonTextarea, IonSpinner } from '@ionic/react';
 import { useLocation, useParams } from "react-router";
-import { useGetSet, useGetUser, useGetUserStatShort, useUpdateSet } from '../hooks/useApi';
+import { useGetSet, useGetUser, useGetUserStatShort, useUpdateSet, useUpdateUserStared } from '../hooks/useApi';
 import { useEffect, useState } from "react";
-import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, pencilOutline, pencilSharp, trendingDownOutline, trendingDownSharp, trendingUpOutline, trendingUpSharp } from "ionicons/icons";
+import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, pencilOutline, pencilSharp, starOutline, starSharp, trendingDownOutline, trendingDownSharp, trendingUpOutline, trendingUpSharp } from "ionicons/icons";
 interface SetPageProps {
     id: string;
 }
@@ -19,6 +19,7 @@ const SetsPage: React.FC = () => {
     const getUser = useGetUser();
     const updateSet = useUpdateSet();
     const getUserStatShort = useGetUserStatShort();
+    const updateUserStared = useUpdateUserStared();
 
     const [edit, setEdit] = useState(false);
     const [item, setItem] = useState("");
@@ -70,13 +71,18 @@ const SetsPage: React.FC = () => {
         return getUserStatShort.data?.data.find((value: any) => value.cardid === data?._id)?.stat;
     }
 
+    const getStar = (data: any) => {
+        console.log(getUserStatShort.data?.data.find((value: any) => value.cardid === data?._id));
+        return getUserStatShort.data?.data.find((value: any) => value.cardid === data?._id)?.stared;
+    }
+
     const renderUser = (data: any) => {
         const noEditMode = !edit || item !== data._id;
 
         return (
             <IonGrid>
                 <IonRow class="ion-align-items-center ion-padding-vertical">
-                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeXs="6" class="ion-no-padding">
+                    <IonCol sizeXl={noEditMode ? "2" : "4"} sizeXs="6" class="ion-no-padding">
                         <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
                             <IonTextarea class="ion-no-margin ion-no-padding" value={noEditMode ? data?.first : newData.first} placeholder="Value" onIonChange={(e) => {
                                 setNewData({ ...newData, first: e.detail.value });
@@ -84,7 +90,7 @@ const SetsPage: React.FC = () => {
                         </IonItem>
                     </IonCol>
 
-                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeXs="6" class="ion-no-padding">
+                    <IonCol sizeXl={noEditMode ? "2" : "4"} sizeXs="4" class="ion-no-padding">
                         <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
                             <IonTextarea class="ion-no-margin ion-no-padding" value={noEditMode ? data?.second : newData.second} placeholder="Key" onIonChange={(e) => {
                                 setNewData({ ...newData, second: e.detail.value });
@@ -113,7 +119,18 @@ const SetsPage: React.FC = () => {
                             </IonItem>
                         </IonCol>
                         : null}
-                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeMd={noEditMode ? "3" : "6"} sizeXs="6" class="ion-no-padding">
+                    {noEditMode ?
+                        <IonCol sizeXl="2" sizeMd="2" sizeXs="4" class="ion-no-padding">
+                            <IonButton expand="block" fill="clear" color={getStar(data) ? "warning" : "medium"} onClick={() => {
+                                updateUserStared.request(id, data._id, getStar(data) === undefined ? true : !getStar(data)).then(() => {
+                                    getUserStatShort.request(id);
+                                });
+                            }} disabled={!getUser.data}>
+                                <IonIcon slot="icon-only" ios={starOutline} md={starSharp}></IonIcon>
+                            </IonButton>
+                        </IonCol>
+                        : null}
+                    <IonCol sizeXl={noEditMode ? "1" : "2"} sizeMd={noEditMode ? "2" : "6"} sizeXs={noEditMode ? "4" : "6"} class="ion-no-padding">
                         <IonButton expand="block" fill="clear" color="danger" onClick={() => {
                             if (noEditMode) {
                                 for (const item of getSet.data?.data) {
@@ -148,7 +165,7 @@ const SetsPage: React.FC = () => {
                             <IonIcon slot="icon-only" ios={closeOutline} md={closeSharp}></IonIcon>
                         </IonButton>
                     </IonCol>
-                    <IonCol sizeXl={noEditMode ? "2" : "3"} sizeMd={noEditMode ? "3" : "6"} sizeXs="6" class="ion-no-padding">
+                    <IonCol sizeXl={noEditMode ? "1" : "2"} sizeMd={noEditMode ? "2" : "6"} sizeXs={noEditMode ? "4" : "6"} class="ion-no-padding">
                         <IonButton expand="block" fill="clear" onClick={() => {
                             if (noEditMode) {
                                 setNewData(data);
@@ -182,18 +199,7 @@ const SetsPage: React.FC = () => {
     const renderSet = () => {
         if (!getSet.data && getSet.loading) {
             return (
-                <IonGrid>
-                    <IonRow class="flex-container">
-                        <IonCard class="flex-item flex-item-25">
-                            <IonCardHeader>
-                                <IonCardTitle>
-                                    <h4>Set: {getSet.data?.name}</h4>
-                                    <h4>User: {getSet.data?.userid}</h4>
-                                </IonCardTitle>
-                            </IonCardHeader>
-                        </IonCard>
-                    </IonRow>
-                </IonGrid>
+                <IonSpinner name="circular" class="spinner-center"></IonSpinner>
             );
         }
         else if (getSet.data) {
