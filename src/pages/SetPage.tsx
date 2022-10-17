@@ -232,7 +232,9 @@ const SetsPage: React.FC = () => {
                         }}>
                             <IonCardHeader>
                                 <IonCardTitle>
-                                    Learn stared
+                                    <IonIcon color={"warning"} ios={starOutline} md={starSharp}></IonIcon>
+                                    &nbsp;
+                                    Learn
                                 </IonCardTitle>
                             </IonCardHeader>
                         </IonCard>
