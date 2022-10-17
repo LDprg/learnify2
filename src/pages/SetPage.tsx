@@ -216,14 +216,14 @@ const SetsPage: React.FC = () => {
                                 </IonCardTitle>
                             </IonCardHeader>
                         </IonCard>
-                        <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-25" disabled={JSON.stringify(getSet.data?.data).length <= 2}>
+                        <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-25" disabled={getSet.data?.data?.length === 0}>
                             <IonCardHeader>
                                 <IonCardTitle>
                                     Learn
                                 </IonCardTitle>
                             </IonCardHeader>
                         </IonCard>
-                        <IonCard class="flex-item flex-item-25" disabled={JSON.stringify(getStared()) === undefined || JSON.stringify(getSet.data?.data).length <= 2} onClick={() => {
+                        <IonCard class="flex-item flex-item-25" disabled={getStared().length === 0 || getSet.data?.data?.length === 0} onClick={() => {
                             console.log(getStared());
                             history.push("/Set/" + id + "/Learn", { 
                                 stared: true,
