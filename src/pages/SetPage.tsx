@@ -223,7 +223,7 @@ const SetsPage: React.FC = () => {
                                 </IonCardTitle>
                             </IonCardHeader>
                         </IonCard>
-                        <IonCard class="flex-item flex-item-25" disabled={getStared().length === 0 || getSet.data?.data?.length === 0} onClick={() => {
+                        <IonCard class="flex-item flex-item-25" disabled={getStared() ? getStared().length === 0 : true || getSet.data?.data?.length === 0} onClick={() => {
                             console.log(getStared());
                             history.push("/Set/" + id + "/Learn", { 
                                 stared: true,
