@@ -50,6 +50,8 @@ const LearningPage = () => {
                 if(!found) {
                     newArray.splice(index, 1);
                 }
+
+                return [];
             }, []);
         }
 

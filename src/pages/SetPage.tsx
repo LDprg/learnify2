@@ -1,5 +1,5 @@
 import "./index.css";
-import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, IonInput, useIonAlert, IonItem, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonTextarea, IonSpinner } from '@ionic/react';
+import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonIcon, IonButton, useIonAlert, IonItem, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonTextarea, IonSpinner, IonText, IonSelect, IonSelectOption } from '@ionic/react';
 import { useLocation, useParams, useHistory } from 'react-router';
 import { useGetSet, useGetUser, useGetUserStatShort, useUpdateSet, useUpdateUserStared } from '../hooks/useApi';
 import { useEffect, useState } from "react";
@@ -22,6 +22,10 @@ const SetsPage: React.FC = () => {
     const getUserStatShort = useGetUserStatShort();
     const updateUserStared = useUpdateUserStared();
 
+    const [collection, setCollection] = useState<any>({});
+
+    const [sortMode, setSortMode] = useState<string>("created");
+
     const [edit, setEdit] = useState(false);
     const [item, setItem] = useState("");
     const [newData, setNewData] = useState<any>({});
@@ -30,6 +34,11 @@ const SetsPage: React.FC = () => {
     const [exportVal, setExportVal] = useState("");
     const [isOpenImport, setIsOpenImport] = useState(false);
     const [importVal, setImportVal] = useState("");
+
+    useEffect(() => {
+        setCollection(getSet.data);
+        sortSet(sortMode);
+    }, [getSet.data]);
 
     useEffect(() => {
         if (location.pathname === "/Set/" + id) {
@@ -76,6 +85,30 @@ const SetsPage: React.FC = () => {
 
     const getStared = () => {
         return getUserStatShort.data?.data.filter((value: any) => value.stared);
+    }
+
+    const sortSet = (type: string) => {
+        if (type === "stat") {
+            console.log(collection);
+            setCollection(collection?.data.sort((a: any, b: any) => {
+                const statA = getStat(a);
+                const statB = getStat(b);
+                if (statA === undefined && statB === undefined) return 0;
+                if (statA === undefined) return 1;
+                if (statB === undefined) return -1;
+                return statA - statB;
+            }));
+            console.log(collection?.data.sort((a: any, b: any) => {
+                const statA = getStat(a);
+                const statB = getStat(b);
+                if (statA === undefined && statB === undefined) return 0;
+                if (statA === undefined) return 1;
+                if (statB === undefined) return -1;
+                return statA - statB;
+            }));
+        } else {
+            getSet.request(id);
+        }
     }
 
     const renderUser = (data: any) => {
@@ -204,28 +237,27 @@ const SetsPage: React.FC = () => {
                 <IonSpinner name="circular" class="spinner-center"></IonSpinner>
             );
         }
-        else if (getSet.data) {
+        else if (collection) {
             return (
                 <IonGrid>
                     <IonRow class="flex-container">
                         <IonCard class="flex-item flex-item-25">
                             <IonCardHeader>
                                 <IonCardTitle>
-                                    <h4>Set: {getSet.data?.name}</h4>
-                                    <h4>User: {getSet.data?.userid}</h4>
+                                    <h4>Set: {collection?.name}</h4>
+                                    <h4>User: {collection?.userid}</h4>
                                 </IonCardTitle>
                             </IonCardHeader>
                         </IonCard>
-                        <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-25" disabled={getSet.data?.data?.length === 0}>
+                        <IonCard routerLink={"/Set/" + id + "/Learn"} routerDirection="none" class="flex-item flex-item-25" disabled={collection?.data?.length === 0}>
                             <IonCardHeader>
                                 <IonCardTitle>
                                     Learn
                                 </IonCardTitle>
                             </IonCardHeader>
                         </IonCard>
-                        <IonCard class="flex-item flex-item-25" disabled={getStared() ? getStared().length === 0 : true || getSet.data?.data?.length === 0} onClick={() => {
-                            console.log(getStared());
-                            history.push("/Set/" + id + "/Learn", { 
+                        <IonCard class="flex-item flex-item-25" disabled={getStared() ? getStared().length === 0 : true || collection?.data?.length === 0} onClick={() => {
+                            history.push("/Set/" + id + "/Learn", {
                                 stared: true,
                                 data: [...getStared()]
                             });
@@ -288,7 +320,7 @@ const SetsPage: React.FC = () => {
                                 </IonItem>
                             </IonContent>
                         </IonModal>
-                        <IonCard onClick={() => setIsOpenImport(true)} disabled={getSet.data?.userid !== getUser.data?.id} class="flex-item flex-item-25">
+                        <IonCard onClick={() => setIsOpenImport(true)} disabled={collection?.userid !== getUser.data?.id} class="flex-item flex-item-25">
                             <IonCardHeader>
                                 <IonCardTitle>
                                     Import
@@ -296,9 +328,28 @@ const SetsPage: React.FC = () => {
                             </IonCardHeader>
                         </IonCard>
                     </IonRow>
+                    <IonRow class="ion-margin-horizontal">
+                        <IonCol>
+                            <IonToolbar>
+                                <IonItem lines="none" slot="start" class="ion-no-margin">
+                                    <IonText color={"medium"}>
+                                        {getSet.data?.data?.length} Cards
+                                    </IonText>
+                                </IonItem>
+                                <IonLabel slot="end">Sort:&nbsp;</IonLabel>
+                                <IonSelect slot="end" interface="popover" value={sortMode} onIonChange={(event: any) => {
+                                    sortSet(event.detail.value);
+                                    setSortMode(event.detail.value);
+                                }}>
+                                    <IonSelectOption value="created">Created</IonSelectOption>
+                                    <IonSelectOption value="stat">Statistic</IonSelectOption>
+                                </IonSelect>
+                            </IonToolbar>
+                        </IonCol>
+                    </IonRow>
                     <IonRow>
                         <IonCol>
-                            {getSet.data?.data.map((data: any, index: number) => {
+                            {collection?.data?.map((data: any, index: number) => {
                                 return (
                                     <IonCard key={index}>
                                         {renderUser(data)}
@@ -306,12 +357,12 @@ const SetsPage: React.FC = () => {
                                 );
                             })}
                             <IonButton expand="block" fill="clear" onClick={() => {
-                                getSet.data?.data.push({ first: "", second: "" });
+                                collection?.data?.push({ first: "", second: "" });
 
-                                updateSet.request(id, getSet.data).then(() => {
+                                updateSet.request(id, collection).then(() => {
                                     getSet.request(id);
                                 });
-                            }} disabled={getSet.data?.userid !== getUser.data?.id || !getUser.data}>
+                            }} disabled={collection?.userid !== getUser.data?.id || !getUser.data}>
                                 <IonIcon slot="icon-only" ios={addOutline} md={addSharp}></IonIcon>
                             </IonButton>
                         </IonCol>

@@ -1,5 +1,5 @@
 import "../index.css";
-import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonRow, IonCol, IonGrid, IonButton, IonIcon, useIonAlert, IonLabel } from '@ionic/react';
+import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonRow, IonCol, IonGrid, IonButton, IonIcon, useIonAlert, IonCardSubtitle } from '@ionic/react';
 import { useGetUserSet, useCreateSet, useDeleteSet } from '../../hooks/useApi';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -27,15 +27,20 @@ const SetsPage: React.FC = () => {
                         <IonCard key={index}>
                             <IonCardHeader>
                                 <IonGrid>
-                                    <IonRow>
-                                        <IonCol size="6">
+                                    <IonRow class="ion-align-items-center">
+                                        <IonCol size="4">
                                             <IonButton expand="block" fill="clear" routerLink={"/Set/" + data._id}>
                                                 <IonCardTitle>
                                                     {data.name}
                                                 </IonCardTitle>
                                             </IonButton>
                                         </IonCol>
-                                        <IonCol size="6">
+                                        <IonCol size="4" className="ion-text-center">
+                                            <IonCardSubtitle>
+                                                {data.length} Cards
+                                            </IonCardSubtitle>
+                                        </IonCol>
+                                        <IonCol size="4">
                                             <IonButton expand="block" fill="clear" color="danger" onClick={() => {
                                                 presentAlert({
                                                     header: "Delete",

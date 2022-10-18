@@ -13,7 +13,7 @@ const LearnPage: React.FC = () => {
                         <IonCard key={index}>
                             <IonCardHeader>
                                 <IonGrid>
-                                    <IonRow>
+                                    <IonRow class="ion-align-items-center">
                                         <IonCol>
                                             <IonButton expand="block" fill="clear" routerLink={"/Set/" + data._id}>
                                                 <IonCardTitle>
@@ -21,14 +21,9 @@ const LearnPage: React.FC = () => {
                                                 </IonCardTitle>
                                             </IonButton>
                                         </IonCol>
-                                        <IonCol>
+                                        <IonCol className="ion-text-center">
                                             <IonCardSubtitle>
-                                                <IonRow>
-                                                    <IonLabel>User: {data.userid}</IonLabel>
-                                                </IonRow>
-                                                <IonRow>
-                                                    <IonLabel>Id: {data._id}</IonLabel>
-                                                </IonRow>
+                                                {data.length} Cards
                                             </IonCardSubtitle>
                                         </IonCol>
                                     </IonRow>
