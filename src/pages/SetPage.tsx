@@ -37,14 +37,17 @@ const SetsPage: React.FC = () => {
 
     useEffect(() => {
         setCollection(getSet.data);
-        sortSet(sortMode);
+        sortSet();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getSet.data]);
 
     useEffect(() => {
         if (location.pathname === "/Set/" + id) {
             getUser.request();
             getSet.request(id);
-            getUserStatShort.request(id);
+            getUserStatShort.request(id).then((res: any) => {
+                sortSet();
+            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname, id]);
@@ -87,27 +90,18 @@ const SetsPage: React.FC = () => {
         return getUserStatShort.data?.data.filter((value: any) => value.stared);
     }
 
-    const sortSet = (type: string) => {
-        if (type === "stat") {
-            console.log(collection);
-            setCollection(collection?.data.sort((a: any, b: any) => {
-                const statA = getStat(a);
-                const statB = getStat(b);
-                if (statA === undefined && statB === undefined) return 0;
-                if (statA === undefined) return 1;
-                if (statB === undefined) return -1;
-                return statA - statB;
-            }));
-            console.log(collection?.data.sort((a: any, b: any) => {
-                const statA = getStat(a);
-                const statB = getStat(b);
-                if (statA === undefined && statB === undefined) return 0;
-                if (statA === undefined) return 1;
-                if (statB === undefined) return -1;
-                return statA - statB;
-            }));
+    const sortSet = () => {
+        console.log("sort");
+        if (sortMode === "statasc") {
+            collection?.data.sort((a: any, b: any) => {
+                return (getStat(b).wrong ?? 0) - (getStat(a).wrong ?? 0);
+            });
+        } else if (sortMode === "statdesc") {
+            collection?.data.sort((a: any, b: any) => {
+                return (getStat(b).success ?? 0) - (getStat(a).success ?? 0);
+            });
         } else {
-            getSet.request(id);
+            setCollection(getSet.data);
         }
     }
 
@@ -338,11 +332,12 @@ const SetsPage: React.FC = () => {
                                 </IonItem>
                                 <IonLabel slot="end">Sort:&nbsp;</IonLabel>
                                 <IonSelect slot="end" interface="popover" value={sortMode} onIonChange={(event: any) => {
-                                    sortSet(event.detail.value);
                                     setSortMode(event.detail.value);
-                                }}>
+                                    sortSet();
+                                }} >
                                     <IonSelectOption value="created">Created</IonSelectOption>
-                                    <IonSelectOption value="stat">Statistic</IonSelectOption>
+                                    <IonSelectOption value="statasc">Statistic asc</IonSelectOption>
+                                    <IonSelectOption value="statdesc">Statistic desc</IonSelectOption>
                                 </IonSelect>
                             </IonToolbar>
                         </IonCol>
