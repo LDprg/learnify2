@@ -1,14 +1,14 @@
 {
   "name": "learnify2",
-  "version": "1.0.0",
-  "description": "An Amazing Capacitor App",
+  "version": "0.0.1",
+  "description": "An amazing learning App",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "Lukas Datler",
+    "email": "lukas_4dr@gmx.at"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/LDprg/learnify2"
   },
   "license": "MIT",
   "main": "build/src/index.js",
@@ -25,6 +25,7 @@
     "chokidar": "~3.5.3",
     "electron-is-dev": "~2.0.0",
     "electron-serve": "~1.1.0",
+    "electron-titlebar": "^0.0.3",
     "electron-unhandled": "~4.0.1",
     "electron-updater": "~5.0.1",
     "electron-window-state": "~5.0.3"

@@ -11,6 +11,7 @@ import electronIsDev from 'electron-is-dev';
 import electronServe from 'electron-serve';
 import windowStateKeeper from 'electron-window-state';
 import { join } from 'path';
+import { setupTitlebar, attachTitlebarToWindow } from "./custom-electron-titlebar/dist/main";
 
 // Define components for a watcher to detect when the webapp is changed so we can reload in Dev mode.
 const reloadWatcher = {
@@ -41,6 +42,8 @@ export function setupReloadWatcher(electronCapacitorApp: ElectronCapacitorApp): 
       }
     });
 }
+
+setupTitlebar();
 
 // Define our class to manage our app.
 export class ElectronCapacitorApp {
@@ -107,6 +110,7 @@ export class ElectronCapacitorApp {
     });
     // Setup preload script path and construct our main window.
     const preloadPath = join(app.getAppPath(), 'build', 'src', 'preload.js');
+
     this.MainWindow = new BrowserWindow({
       icon,
       show: false,
@@ -114,6 +118,7 @@ export class ElectronCapacitorApp {
       y: this.mainWindowState.y,
       width: this.mainWindowState.width,
       height: this.mainWindowState.height,
+      frame: false,
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,
@@ -123,6 +128,7 @@ export class ElectronCapacitorApp {
       },
     });
     this.mainWindowState.manage(this.MainWindow);
+    attachTitlebarToWindow(this.MainWindow);
 
     if (this.CapacitorFileConfig.backgroundColor) {
       this.MainWindow.setBackgroundColor(this.CapacitorFileConfig.electron.backgroundColor);
