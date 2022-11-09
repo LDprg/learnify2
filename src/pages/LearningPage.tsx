@@ -25,6 +25,7 @@ const LearningPage = () => {
     const [answer, setAnswer] = useState<string>('');
     const [wrongAnswer, setWrongAnswer] = useState<string>('');
     const [correct, setCorrect] = useState<number>(0);
+    const [skip, setSkip] = useState<number>(0);
 
     function isStared() {
         return (location.state as any)?.stared ?? false
@@ -72,8 +73,11 @@ const LearningPage = () => {
             setIndex(0);
             setMode("ask");
             (input.current as any)?.setFocus();
+            getSet.data = null;
+            setCorrect(0);
+            setSkip(0);
             getSet.request(id);
-        }
+        } 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location, id]);
 
@@ -117,11 +121,20 @@ const LearningPage = () => {
             setAnswer('');
         } else {
             collection[index].correct = false;
-            setAnswer('');
             setWrongAnswer(answer);
             updateUserStat.request(id, collection[index]._id, "wrong");
+            setAnswer('');
             setMode('result');
         }
+    }
+
+    const skipSubmit = () => {
+        (input.current as any)?.setFocus();
+        collection[index].skip = true;
+        setIndex(index + 1);
+        setSkip(skip + 1);
+        updateUserStat.request(id, collection[index]._id, "skip");
+        setAnswer('');
     }
 
     const ask = () => {
@@ -142,6 +155,7 @@ const LearningPage = () => {
                             <IonLabel>Answer: </IonLabel>
                             <IonInput placeholder="Your Text" value={answer} onIonChange={e => setAnswer(e.detail.value!)} ref={input} onKeyDown={e => e.key === 'Enter' && askSubmit()}></IonInput>
                             <IonButton expand="full" onClick={askSubmit}>Check</IonButton>
+                            <IonButton expand="full" color="danger" onClick={skipSubmit}>Skip</IonButton>
                         </IonItem>
                     </IonCol>
                 </IonRow>
@@ -200,7 +214,7 @@ const LearningPage = () => {
                         {collection.map((item: any, index: number) => {
                             return (
                                 <IonItem key={index}>
-                                    <IonLabel color={item.correct ? "success" : "danger"}>
+                                    <IonLabel color={item.correct ? "success" : item.skip ? "warning" : "danger"}>
                                         {item.first} - {item.second}
                                     </IonLabel>
                                 </IonItem>

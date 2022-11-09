@@ -3,7 +3,7 @@ import { IonContent, IonRow, IonCol, IonGrid, IonCard, IonCardHeader, IonCardTit
 import { useLocation, useParams, useHistory } from 'react-router';
 import { useGetSet, useGetUser, useGetUserStatShort, useUpdateSet, useUpdateUserStared } from '../hooks/useApi';
 import { useEffect, useState } from "react";
-import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, pencilOutline, pencilSharp, starOutline, starSharp, trendingDownOutline, trendingDownSharp, trendingUpOutline, trendingUpSharp } from "ionicons/icons";
+import { addOutline, addSharp, checkmarkOutline, checkmarkSharp, closeOutline, closeSharp, helpOutline, helpSharp, pencilOutline, pencilSharp, starOutline, starSharp, trendingDownOutline, trendingDownSharp, trendingUpOutline, trendingUpSharp } from "ionicons/icons";
 interface SetPageProps {
     id: string;
 }
@@ -48,6 +48,10 @@ const SetsPage: React.FC = () => {
             getUserStatShort.request(id).then((res: any) => {
                 sortSet();
             });
+        } else {
+            getSet.data = null;
+            getUser.data = null;
+            getUserStatShort.data = null;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname, id]);
@@ -91,14 +95,17 @@ const SetsPage: React.FC = () => {
     }
 
     const sortSet = () => {
-        console.log("sort");
-        if (sortMode === "statasc") {
+        if (sortMode === "statasc" && collection?.data != null) {
             collection?.data.sort((a: any, b: any) => {
                 return (getStat(b).wrong ?? 0) - (getStat(a).wrong ?? 0);
+            }).then(() => {
+                setCollection(collection);
             });
-        } else if (sortMode === "statdesc") {
+        } else if (sortMode === "statdesc" && collection?.data != null) {
             collection?.data.sort((a: any, b: any) => {
                 return (getStat(b).success ?? 0) - (getStat(a).success ?? 0);
+            }).then(() => {
+                setCollection(collection);
             });
         } else {
             setCollection(getSet.data);
@@ -111,7 +118,7 @@ const SetsPage: React.FC = () => {
         return (
             <IonGrid>
                 <IonRow class="ion-align-items-center ion-padding-vertical">
-                    <IonCol sizeXl={noEditMode ? "2" : "4"} sizeXs="6" class="ion-no-padding">
+                    <IonCol sizeXl={noEditMode ? "2" : "4"} sizeMd="6" sizeXs="6" class="ion-no-padding">
                         <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
                             <IonTextarea class="ion-no-margin ion-no-padding" value={noEditMode ? data?.first : newData.first} placeholder="Value" onIonChange={(e) => {
                                 setNewData({ ...newData, first: e.detail.value });
@@ -119,7 +126,7 @@ const SetsPage: React.FC = () => {
                         </IonItem>
                     </IonCol>
 
-                    <IonCol sizeXl={noEditMode ? "2" : "4"} sizeXs="4" class="ion-no-padding">
+                    <IonCol sizeXl={noEditMode ? "2" : "4"} sizeMd="6" sizeXs="4" class="ion-no-padding">
                         <IonItem lines={noEditMode ? "none" : "full"} class="text-big">
                             <IonTextarea class="ion-no-margin ion-no-padding" value={noEditMode ? data?.second : newData.second} placeholder="Key" onIonChange={(e) => {
                                 setNewData({ ...newData, second: e.detail.value });
@@ -127,7 +134,7 @@ const SetsPage: React.FC = () => {
                         </IonItem>
                     </IonCol>
                     {noEditMode ?
-                        <IonCol sizeXl="2" sizeMd="3" sizeXs="6" class="ion-no-padding">
+                        <IonCol sizeXl="1" sizeMd="2" sizeXs="4" class="ion-no-padding">
                             <IonItem disabled={!getUser.data} class="ion-text-center">
                                 <IonLabel class="ion-no-margin">
                                     <IonIcon color={"danger"} ios={trendingDownOutline} md={trendingDownSharp}></IonIcon>
@@ -138,7 +145,18 @@ const SetsPage: React.FC = () => {
                         </IonCol>
                         : null}
                     {noEditMode ?
-                        <IonCol sizeXl="2" sizeMd="3" sizeXs="6" class="ion-no-padding">
+                        <IonCol sizeXl="2" sizeMd="2" sizeXs="4" class="ion-no-padding">
+                            <IonItem disabled={!getUser.data} class="ion-text-center">
+                                <IonLabel class="ion-no-margin">
+                                    <IonIcon color={"warning"} ios={helpOutline} md={helpSharp}></IonIcon>
+                                    &nbsp;
+                                    {getStat(data) ? getStat(data).skip ? getStat(data).skip : 0 : 0}
+                                </IonLabel>
+                            </IonItem>
+                        </IonCol>
+                        : null}
+                    {noEditMode ?
+                        <IonCol sizeXl="1" sizeMd="2" sizeXs="4" class="ion-no-padding">
                             <IonItem disabled={!getUser.data} class="ion-text-center">
                                 <IonLabel class="ion-no-margin">
                                     <IonIcon color={"success"} ios={trendingUpOutline} md={trendingUpSharp}></IonIcon>

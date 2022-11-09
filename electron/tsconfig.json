@@ -11,6 +11,5 @@
     "typeRoots": ["./node_modules/@types"],
     "allowJs": true,
     "rootDir": "."
-  },
-  "files": ["./src/index.d.ts"]
+  }
 }
