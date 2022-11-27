@@ -10,7 +10,9 @@
     "app/**/*"
   ],
   "publish": {
-    "provider": "github"
+    "provider": "github",
+    "owner": "LDprg",
+    "repo": "learnify2"
   },
   "nsis": {
     "allowElevation": true,
