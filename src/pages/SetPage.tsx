@@ -37,9 +37,7 @@ const SetsPage: React.FC = () => {
     const [importVal, setImportVal] = useState("");
 
     useEffect(() => {
-        console.log(getSet.data);    
         setCollection(getSet.data);
-        console.log(collection?.data);  
     }, [getSet.data])
 
     useEffect(() => {
