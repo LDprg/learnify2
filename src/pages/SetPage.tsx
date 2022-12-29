@@ -23,6 +23,7 @@ const SetsPage: React.FC = () => {
     const updateUserStared = useUpdateUserStared();
 
     const [collection, setCollection] = useState<any>({});
+    const [loading, setLoading] = useState<boolean>(true);
 
     const [sortMode, setSortMode] = useState<string>("created");
 
@@ -36,22 +37,29 @@ const SetsPage: React.FC = () => {
     const [importVal, setImportVal] = useState("");
 
     useEffect(() => {
+        console.log(getSet.data);    
         setCollection(getSet.data);
-        sortSet();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [getSet.data]);
+        console.log(collection?.data);  
+    }, [getSet.data])
 
     useEffect(() => {
         if (location.pathname === "/Set/" + id) {
-            getUser.request();
-            getSet.request(id);
-            getUserStatShort.request(id).then((res: any) => {
-                sortSet();
+            getUser.request().then((res: any) => {
+                getSet.request(id);
+                setLoading(false);          
+                getUserStatShort.request(id).then((res: any) => {
+                    sortSet();
+                });
             });
-        } else {
-            getSet.data = null;
-            getUser.data = null;
-            getUserStatShort.data = null;
+        } else {            
+            getSet.reset();
+
+            getUser.reset();
+
+            getUserStatShort.reset();
+
+            setCollection({});
+            setLoading(true);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname, id]);
@@ -244,12 +252,12 @@ const SetsPage: React.FC = () => {
     }
 
     const renderSet = () => {
-        if (!getSet.data && getSet.loading) {
+        if (loading) {
             return (
                 <IonSpinner name="circular" class="spinner-center"></IonSpinner>
             );
         }
-        else if (collection) {
+        else if (getSet.data && !getSet.loading) {
             return (
                 <IonGrid>
                     <IonRow class="flex-container">

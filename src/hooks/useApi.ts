@@ -10,27 +10,35 @@ const useApi = (apiFunc: any) => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const request = async (...args: any) => {
-        setLoading(true);
+        await setLoading(true);
         try {
             const result = await apiFunc(...args);
             // console.log(result);
             if (result.status !== 200)
                 throw new Error(result.data.message);
-            setData(result.data);
-            setError("");
+            
+            await setError("");
+            await setData(result.data);
         } catch (e: any) {
-            setData(null);
-            setError(e.message || "Unexpected Error!");
+            await setData(null);
+            await setError(e.message || "Unexpected Error!");
         } finally {
-            setLoading(false);
+            await setLoading(false);
         }
+    };
+
+    const reset = () => {
+        setData(null);
+        setError("");
+        setLoading(false);
     };
 
     return {
         data,
         error,
         loading,
-        request
+        request,
+        reset
     };
 };
 
