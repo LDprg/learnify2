@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {ApiService} from "./api.service";
 
 @Component({
     selector: 'app-root',
@@ -12,15 +13,23 @@ export class AppComponent {
     ];
 
     public userPages = [
-        {title: 'Profile', url: '/folder/Profile', icon: 'person-circle'},
+        {title: 'Profile', url: 'profile', icon: 'person-circle'},
         {title: 'Sets', url: '/folder/Sets', icon: 'list'},
     ];
 
     public accountPages = [
         {title: 'Login', url: '/login', icon: 'log-in'},
-        {title: 'Register', url: '/folder/Register', icon: 'id-card'},
+        {title: 'Register', url: 'register', icon: 'id-card'},
     ];
 
-    constructor() {
+    constructor(private apiService: ApiService) {
+    }
+
+    public logout() {
+        this.apiService.logout();
+    }
+
+    public isLoggedIn() {
+        return this.apiService.isLoggedIn();
     }
 }

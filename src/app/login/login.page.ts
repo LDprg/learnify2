@@ -19,21 +19,17 @@ export class LoginPage implements OnInit {
     }
 
     ngOnInit() {
+        this.apiService.getUserData();
     }
 
     login() {
-        console.log('login');
-        console.log(this.data.value);
         if (!this.data.valid) {
             this.presentErrorAlert('Please enter valid data');
             return;
         }
 
         this.apiService.signIn(this.data.value.email, this.data.value.password).then((res) => {
-            console.log(res);
-            if (!res.message) {
-                console.log('Login successful');
-            } else {
+            if (res.message) {
                 this.presentErrorAlert(res.message);
             }
         });
