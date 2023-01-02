@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-
-// import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Storage} from '@ionic/storage-angular';
 
 @Injectable({
     providedIn: 'root'
@@ -11,10 +10,10 @@ export class ApiService {
         'Content-Type': 'application/json',
         // 'WithCredentials': 'true'
     }
-    accessToken = null;
-    id = null;
-    username = null;
-    email = null;
+    accessToken: string = "";
+    id: string = "";
+    username: string = "";
+    email: string = "";
 
     // httpOptions = {
     //     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -22,6 +21,19 @@ export class ApiService {
 
     // constructor(private httpClient: HttpClient) {
     // }
+
+    constructor(private storage: Storage) {
+        this.storage.create();
+        this.storage.get('token').then((val) => {
+            this.setToken(val);
+        });
+    }
+
+    private setToken(token: string) {
+        this.accessToken = token;
+        this.storage.set('token', token);
+        this.getUserData();
+    }
 
     public signIn(email: string, password: string) {
         console.log('signIn');
@@ -36,17 +48,10 @@ export class ApiService {
             })
         }).then(res => res.json()).then(res => {
             if (res.accessToken) {
-                this.accessToken = res.accessToken;
-                this.id = res.id;
-                this.username = res.username;
-                this.email = res.email;
+                this.setToken(res.accessToken);
             }
             return res;
         });
-        // return this.httpClient.post(this.endpoint + '/api/auth/signin', {
-        //     email: email,
-        //     password: password
-        // }, this.httpOptions);
     }
 
     public register(email: string, username: string, password: string) {
@@ -66,7 +71,7 @@ export class ApiService {
 
     public isLoggedIn() {
         console.log('isLoggedIn');
-        return this.accessToken != null;
+        return this.accessToken != '';
     }
 
     public getUserData() {
@@ -87,10 +92,10 @@ export class ApiService {
                 this.username = res.username;
                 this.email = res.email;
             } else {
-                this.accessToken = null;
-                this.id = null;
-                this.username = null;
-                this.email = null;
+                this.accessToken = "";
+                this.id = "";
+                this.username = "";
+                this.email = "";
             }
 
             return res;
@@ -101,14 +106,25 @@ export class ApiService {
         console.log('logout');
         let url = new URL(this.endpoint + '/api/auth/signout');
 
-        this.accessToken = null;
-        this.id = null;
-        this.username = null;
-        this.email = null;
+        this.accessToken = "";
+        this.storage.remove('token');
+        this.id = "";
+        this.username = "";
+        this.email = "";
 
         return fetch(url, {
             method: 'POST',
             headers: this.headers
+        }).then(res => res.json());
+    }
+
+    public searchSets(search: string, count: number = 10) {
+        console.log('searchSets');
+        let url = new URL(this.endpoint + '/api/set/search/' + search + "/" + count);
+
+        return fetch(url, {
+            method: 'GET',
+            headers: this.headers,
         }).then(res => res.json());
     }
 }

@@ -32,8 +32,7 @@ export class LoginPage implements OnInit {
         this.apiService.signIn(this.data.value.email, this.data.value.password).then((res) => {
             if (res.message) {
                 this.presentErrorAlert(res.message);
-            }
-            else {
+            } else {
                 this.router.navigateByUrl('/profile');
             }
         });

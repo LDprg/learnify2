@@ -23,10 +23,18 @@ const routes: Routes = [
         path: 'profile',
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
     },
-  {
-    path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
-  }
+    {
+        path: 'register',
+        loadChildren: () => import('./register/register.module').then(m => m.RegisterPageModule)
+    },
+    {
+        path: 'learn',
+        loadChildren: () => import('./learn/learn.module').then(m => m.LearnPageModule)
+    },
+    {
+        path: 'sets',
+        loadChildren: () => import('./sets/sets.module').then(m => m.SetsPageModule)
+    }
 ];
 
 @NgModule({

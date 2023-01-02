@@ -6,6 +6,23 @@
 
 <ion-content>
     <ion-grid>
+        <ion-row class="ion-margin-bottom ion-text-center">
+            <ion-col>
+                <ion-icon class="profile-icon" icon="person-circle"></ion-icon>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-margin-bottom">
+            <ion-col size-md="4" size-xs="12">
+                <ion-item>
+                    <ion-label>ID:</ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size-md="8" size-xs="12">
+                <ion-item>
+                    <ion-label>{{user.id}}</ion-label>
+                </ion-item>
+            </ion-col>
+        </ion-row>
         <ion-row class="ion-margin-bottom">
             <ion-col size-md="4" size-xs="12">
                 <ion-item>
@@ -27,18 +44,6 @@
             <ion-col size-md="8" size-xs="12">
                 <ion-item>
                     <ion-label>{{user.email}}</ion-label>
-                </ion-item>
-            </ion-col>
-        </ion-row>
-        <ion-row class="ion-margin-bottom">
-            <ion-col size-md="4" size-xs="12">
-                <ion-item>
-                    <ion-label>UserId:</ion-label>
-                </ion-item>
-            </ion-col>
-            <ion-col size-md="8" size-xs="12">
-                <ion-item>
-                    <ion-label>{{user.id}}</ion-label>
                 </ion-item>
             </ion-col>
         </ion-row>

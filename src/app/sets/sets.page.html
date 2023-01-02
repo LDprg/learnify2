@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Sets</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col class="ion-text-center">
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-title>
+                            <h3>Your Sets:</h3>
+                        </ion-card-title>
+                    </ion-card-header>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <div *ngIf="true; then noset else set"></div>
+
+            <ng-template #set>
+            </ng-template>
+
+            <ng-template #noset>
+                <ion-row>
+                    <ion-col class="ion-text-center">
+                        <ion-label>No sets found</ion-label>
+                    </ion-col>
+                </ion-row>
+            </ng-template>
+
+            <ion-col>
+                <ion-button expand="block" fill="clear">
+                    <ion-icon slot="icon-only" ios="add-outline" md="add-sharp"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
