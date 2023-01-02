@@ -6,6 +6,7 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: ['./sets.page.scss'],
 })
 export class SetsPage implements OnInit {
+    public Sets: any = [];
 
     constructor() {
     }
