@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertController} from "@ionic/angular";
 import {ApiService} from "../api.service";
+import {routerLink} from "@angular/core/schematics/migrations/router-link-with-href/util";
+import {push} from "ionicons/icons";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -11,7 +14,7 @@ import {ApiService} from "../api.service";
 export class RegisterPage implements OnInit {
     data: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private alertController: AlertController, private apiService: ApiService) {
+  constructor(private formBuilder: FormBuilder, private alertController: AlertController, private router: Router, private apiService: ApiService) {
       this.data = this.formBuilder.group({
           email: ['', Validators.compose([Validators.required, Validators.email])],
           username: ['', Validators.required],
@@ -23,7 +26,26 @@ export class RegisterPage implements OnInit {
   }
 
   register() {
-
+        this.apiService.register(this.data.value.email, this.data.value.username, this.data.value.password).then((res) => {
+            this.apiService.signIn(this.data.value.email, this.data.value.password).then((_) => {
+                if (this.apiService.isLoggedIn()) {
+                    this.router.navigateByUrl('/profile');
+                }
+                else{
+                    this.presentErrorAlert(res.message);
+                }
+            });
+        });
   }
 
+    async presentErrorAlert(message: string) {
+        const alert = await this.alertController.create({
+            header: 'Error',
+            subHeader: 'Register Failed',
+            message: message,
+            buttons: ['OK'],
+        });
+
+        await alert.present();
+    }
 }

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertController} from "@ionic/angular";
 import {ApiService} from "../api.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-login',
@@ -11,7 +12,7 @@ import {ApiService} from "../api.service";
 export class LoginPage implements OnInit {
     data: FormGroup;
 
-    constructor(private formBuilder: FormBuilder, private alertController: AlertController, private apiService: ApiService) {
+    constructor(private formBuilder: FormBuilder, private alertController: AlertController, private router: Router, private apiService: ApiService) {
         this.data = this.formBuilder.group({
             email: ['', Validators.compose([Validators.required, Validators.email])],
             password: ['', Validators.required],
@@ -31,6 +32,9 @@ export class LoginPage implements OnInit {
         this.apiService.signIn(this.data.value.email, this.data.value.password).then((res) => {
             if (res.message) {
                 this.presentErrorAlert(res.message);
+            }
+            else {
+                this.router.navigateByUrl('/profile');
             }
         });
     }

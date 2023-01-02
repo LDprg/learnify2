@@ -7,6 +7,10 @@ import {Injectable} from '@angular/core';
 })
 export class ApiService {
     endpoint = 'http://192.168.0.183:8082';
+    headers = {
+        'Content-Type': 'application/json',
+        // 'WithCredentials': 'true'
+    }
     accessToken = null;
     id = null;
     username = null;
@@ -25,9 +29,7 @@ export class ApiService {
 
         return fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: this.headers,
             body: JSON.stringify({
                 email: email,
                 password: password
@@ -47,6 +49,21 @@ export class ApiService {
         // }, this.httpOptions);
     }
 
+    public register(email: string, username: string, password: string) {
+        console.log('register');
+        let url = new URL(this.endpoint + '/api/auth/signup');
+
+        return fetch(url, {
+            method: 'POST',
+            headers: this.headers,
+            body: JSON.stringify({
+                email: email,
+                username: username,
+                password: password
+            })
+        }).then(res => res.json());
+    }
+
     public isLoggedIn() {
         console.log('isLoggedIn');
         return this.accessToken != null;
@@ -61,9 +78,7 @@ export class ApiService {
 
         return fetch(url, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: this.headers,
         }).then(res => res.json()).then(res => {
             console.log(res);
 
@@ -93,9 +108,7 @@ export class ApiService {
 
         return fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: this.headers
         }).then(res => res.json());
     }
 }
