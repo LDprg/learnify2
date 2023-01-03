@@ -40,7 +40,8 @@
                                         </ion-card-subtitle>
                                     </ion-col>
                                     <ion-col size="4">
-                                        <ion-button expand="block" fill="clear" color="danger">
+                                        <ion-button expand="block" fill="clear" color="danger"
+                                                    (click)="deleteSet(p._id)">
                                             <ion-icon slot="icon-only" ios="close-outline" md="close-sharp"></ion-icon>
                                         </ion-button>
                                     </ion-col>
@@ -62,7 +63,7 @@
 
         <ion-row class="ion-justify-content-center">
             <ion-col>
-                <ion-button expand="block" fill="clear">
+                <ion-button expand="block" fill="clear" (click)="newSet()">
                     <ion-icon slot="icon-only" ios="add-outline" md="add-sharp"></ion-icon>
                 </ion-button>
             </ion-col>

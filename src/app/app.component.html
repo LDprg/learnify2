@@ -48,6 +48,18 @@
                             </ion-item>
                         </ion-menu-toggle>
                     </ng-template>
+
+                    <ion-list id="setting-list">
+                        <ion-list-header>Settings</ion-list-header>
+                        <ion-item lines="none">
+                            <ion-toggle slot="start" (ionChange)="switchTheme()" [(ngModel)]="LightMode"></ion-toggle>
+                            <ion-label>Light Mode</ion-label>
+                        </ion-item>
+                        <ion-item lines="none" detail="false">
+                            <ion-label>URL:</ion-label>
+                            <ion-input placeholder="http://127.0.0.1/" (ionChange)="changeUrl()" [(ngModel)]="Url"></ion-input>
+                        </ion-item>
+                    </ion-list>
                 </ion-list>
             </ion-content>
         </ion-menu>

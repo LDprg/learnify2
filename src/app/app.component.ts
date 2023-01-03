@@ -22,7 +22,11 @@ export class AppComponent {
         {title: 'Register', url: '/register', icon: 'id-card'},
     ];
 
+    public LightMode : boolean = false;
+    public Url : string = "";
+
     constructor(private apiService: ApiService) {
+        this.switchTheme();
     }
 
     public logout() {
@@ -31,5 +35,17 @@ export class AppComponent {
 
     public isLoggedIn() {
         return this.apiService.isLoggedIn();
+    }
+
+    public switchTheme() {
+        if (!this.LightMode) {
+            document.body.classList.add('dark');
+        } else {
+            document.body.classList.remove('dark');
+        }
+    }
+
+    public changeUrl() {
+
     }
 }

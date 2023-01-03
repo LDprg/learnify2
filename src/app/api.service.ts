@@ -71,7 +71,7 @@ export class ApiService {
 
     public isLoggedIn() {
         console.log('isLoggedIn');
-        return this.accessToken != '';
+        return this.accessToken.trim().length > 0;
     }
 
     public getUserData() {
@@ -124,6 +124,46 @@ export class ApiService {
 
         return fetch(url, {
             method: 'GET',
+            headers: this.headers,
+        }).then(res => res.json());
+    }
+
+    public getUserSets() {
+        console.log('getUserSets');
+        let url = new URL(this.endpoint + '/api/user/set');
+
+        if (this.accessToken)
+            url.searchParams.append('accessToken', this.accessToken);
+
+        return fetch(url, {
+            method: 'GET',
+            headers: this.headers,
+        }).then(res => res.json());
+    }
+
+    public createSet(set: any) {
+        console.log('createSet');
+        let url = new URL(this.endpoint + '/api/set');
+
+        if (this.accessToken)
+            url.searchParams.append('accessToken', this.accessToken);
+
+        return fetch(url, {
+            method: 'POST',
+            headers: this.headers,
+            body: JSON.stringify(set)
+        }).then(res => res.json());
+    }
+
+    public deleteSet(id: string) {
+        console.log('deleteSet');
+        let url = new URL(this.endpoint + '/api/set/' + id);
+
+        if (this.accessToken)
+            url.searchParams.append('accessToken', this.accessToken);
+
+        return fetch(url, {
+            method: 'DELETE',
             headers: this.headers,
         }).then(res => res.json());
     }

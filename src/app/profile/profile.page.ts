@@ -21,5 +21,4 @@ export class ProfilePage implements OnInit {
             this.user = res;
         });
     }
-
 }
