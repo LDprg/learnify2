@@ -34,6 +34,10 @@ const routes: Routes = [
     {
         path: 'sets',
         loadChildren: () => import('./sets/sets.module').then(m => m.SetsPageModule)
+    },
+    {
+        path: 'set/:id',
+        loadChildren: () => import('./set/set.module').then(m => m.SetPageModule)
     }
 ];
 

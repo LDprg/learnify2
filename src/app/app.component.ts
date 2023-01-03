@@ -23,8 +23,8 @@ export class AppComponent {
         {title: 'Register', url: '/register', icon: 'id-card'},
     ];
 
-    public LightMode : boolean = false;
-    public Url : string = "http://192.168.0.183:8082";
+    public LightMode: boolean = false;
+    public Url: string = "http://192.168.0.183:8082";
 
     constructor(private storage: Storage, private apiService: ApiService) {
         this.storage.get('theme').then((val) => {
@@ -38,10 +38,10 @@ export class AppComponent {
         });
 
         this.storage.get('url').then((val) => {
-           if (val) {
-               this.Url = val;
-               this.apiService.setUrl(this.Url);
-           }
+            if (val) {
+                this.Url = val;
+                this.apiService.setUrl(this.Url);
+            }
         });
     }
 
