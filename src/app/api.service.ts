@@ -35,6 +35,11 @@ export class ApiService {
         this.getUserData();
     }
 
+    public setUrl(url: string) {
+        this.endpoint = url;
+        return this.getUserData();
+    }
+
     public signIn(email: string, password: string) {
         console.log('signIn');
         let url = new URL(this.endpoint + '/api/auth/signin');
@@ -93,12 +98,21 @@ export class ApiService {
                 this.email = res.email;
             } else {
                 this.accessToken = "";
+                this.storage.remove('token');
                 this.id = "";
                 this.username = "";
                 this.email = "";
             }
 
             return res;
+        }).catch(err => {
+            console.log(err);
+
+            this.accessToken = "";
+            this.storage.remove('token');
+            this.id = "";
+            this.username = "";
+            this.email = "";
         });
     }
 

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {ApiService} from "./api.service";
+import {Storage} from "@ionic/storage-angular";
 
 @Component({
     selector: 'app-root',
@@ -23,10 +24,25 @@ export class AppComponent {
     ];
 
     public LightMode : boolean = false;
-    public Url : string = "";
+    public Url : string = "http://192.168.0.183:8082";
 
-    constructor(private apiService: ApiService) {
-        this.switchTheme();
+    constructor(private storage: Storage, private apiService: ApiService) {
+        this.storage.get('theme').then((val) => {
+            if (val) {
+                document.body.classList.add('dark');
+                this.LightMode = false;
+            } else {
+                document.body.classList.remove('dark');
+                this.LightMode = true;
+            }
+        });
+
+        this.storage.get('url').then((val) => {
+           if (val) {
+               this.Url = val;
+               this.apiService.setUrl(this.Url);
+           }
+        });
     }
 
     public logout() {
@@ -40,12 +56,15 @@ export class AppComponent {
     public switchTheme() {
         if (!this.LightMode) {
             document.body.classList.add('dark');
+            this.storage.set('theme', 'dark');
         } else {
             document.body.classList.remove('dark');
+            this.storage.remove('theme');
         }
     }
 
     public changeUrl() {
-
+        this.apiService.setUrl(this.Url);
+        this.storage.set('url', this.Url);
     }
 }
