@@ -194,4 +194,49 @@ export class ApiService {
             headers: this.headers,
         }).then(res => res.json());
     }
+
+    public getUserStats(id: number) {
+        console.log('getUserStats');
+        let url = new URL(this.endpoint + '/api/user/stat/' + id + '/short');
+
+        if (this.accessToken)
+            url.searchParams.append('accessToken', this.accessToken);
+
+        return fetch(url, {
+            method: 'GET',
+            headers: this.headers,
+        }).then(res => res.json());
+    }
+
+    public updateUserStats(id: number, card: number, type: string) {
+        console.log('updateUserStats');
+        let url = new URL(this.endpoint + '/api/user/stat/' + id + "/" + card);
+
+        if (this.accessToken)
+            url.searchParams.append('accessToken', this.accessToken);
+
+        return fetch(url, {
+            method: 'PUT',
+            headers: this.headers,
+            body: JSON.stringify({
+                type: type
+            })
+        }).then(res => res.json());
+    }
+
+    public updateUserStared(id: number, card: number, stared: boolean) {
+        console.log('updateUserStared');
+        let url = new URL(this.endpoint + '/api/user/stat/' + id + "/" + card + "/stared");
+
+        if (this.accessToken)
+            url.searchParams.append('accessToken', this.accessToken);
+
+        return fetch(url, {
+            method: 'PUT',
+            headers: this.headers,
+            body: JSON.stringify({
+                stared: stared
+            })
+        }).then(res => res.json());
+    }
 }

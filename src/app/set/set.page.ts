@@ -11,6 +11,7 @@ import {AlertController, ViewWillEnter} from "@ionic/angular";
 export class SetPage implements OnInit, ViewWillEnter {
     public id!: string;
     public set: any = null;
+    public userStat : any = null;
     public editMode = false;
     public editId = -1;
 
@@ -56,6 +57,42 @@ export class SetPage implements OnInit, ViewWillEnter {
     editCard(id : number) {
         this.editMode = !this.editMode;
         this.editId = id;
+
+        if (!this.editMode) {
+            this.apiService.updateSet(this.set.id, this.set).then((res) => {
+                this.apiService.getSet(this.id).then((set) => {
+                    this.set = set;
+                });
+            });
+        }
+    }
+
+    deleteCard(id : number) {
+        for (let i = 0; i < this.set.data.length; i++) {
+            if (this.set.data[i]._id == id) {
+                this.alertController.create({
+                    header: "Delete",
+                    message: "Are you sure you want to delete this Card?",
+                    buttons: [
+                        {
+                            text: "No",
+                        },
+                        {
+                            text: "Yes",
+                            handler: () => {
+                                this.set.data.splice(i, 1);
+                                this.apiService.updateSet(this.set.id, this.set).then((res) => {
+                                    this.apiService.getSet(this.id).then((set) => {
+                                        this.set = set;
+                                    });
+                                });
+                            }
+                        }
+                    ]
+                }).then(r => r.present());
+                break;
+            }
+        }
     }
 
     isEditMode(id : number) {
