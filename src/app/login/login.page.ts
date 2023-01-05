@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AlertController} from "@ionic/angular";
+import {AlertController, ViewWillEnter} from "@ionic/angular";
 import {ApiService} from "../api.service";
 import {Router} from "@angular/router";
 
@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
     templateUrl: './login.page.html',
     styleUrls: ['./login.page.scss']
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, ViewWillEnter {
     data: FormGroup;
 
     constructor(private formBuilder: FormBuilder, private alertController: AlertController, private router: Router, private apiService: ApiService) {
@@ -20,6 +20,10 @@ export class LoginPage implements OnInit {
     }
 
     ngOnInit() {
+
+    }
+
+    ionViewWillEnter() {
         this.apiService.getUserData();
     }
 

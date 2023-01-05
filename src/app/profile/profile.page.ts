@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from "../api.service";
+import {ViewWillEnter} from "@ionic/angular";
 
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.page.html',
     styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage implements OnInit, ViewWillEnter {
     user = {
         id: null,
         username: null,
@@ -17,6 +18,10 @@ export class ProfilePage implements OnInit {
     }
 
     ngOnInit() {
+
+    }
+
+    ionViewWillEnter() {
         this.apiService.getUserData().then((res) => {
             this.user = res;
         });

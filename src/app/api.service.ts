@@ -7,20 +7,12 @@ import {Storage} from '@ionic/storage-angular';
 export class ApiService {
     endpoint = 'http://192.168.0.183:8082';
     headers = {
-        'Content-Type': 'application/json',
-        // 'WithCredentials': 'true'
+        'Content-Type': 'application/json'
     }
     accessToken: string = "";
     id: string = "";
     username: string = "";
     email: string = "";
-
-    // httpOptions = {
-    //     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    // };
-
-    // constructor(private httpClient: HttpClient) {
-    // }
 
     constructor(private storage: Storage) {
         this.storage.create();
@@ -75,7 +67,6 @@ export class ApiService {
     }
 
     public isLoggedIn() {
-        console.log('isLoggedIn');
         return this.accessToken.trim().length > 0;
     }
 
@@ -90,8 +81,6 @@ export class ApiService {
             method: 'GET',
             headers: this.headers,
         }).then(res => res.json()).then(res => {
-            console.log(res);
-
             if (res.id) {
                 this.id = res.id;
                 this.username = res.username;
@@ -169,6 +158,20 @@ export class ApiService {
         }).then(res => res.json());
     }
 
+    public updateSet(id: number, set: any) {
+        console.log('updateSet');
+        let url = new URL(this.endpoint + '/api/set/' + id);
+
+        if (this.accessToken)
+            url.searchParams.append('accessToken', this.accessToken);
+
+        return fetch(url, {
+            method: 'PUT',
+            headers: this.headers,
+            body: JSON.stringify(set)
+        }).then(res => res.json());
+    }
+
     public deleteSet(id: string) {
         console.log('deleteSet');
         let url = new URL(this.endpoint + '/api/set/' + id);
@@ -178,6 +181,16 @@ export class ApiService {
 
         return fetch(url, {
             method: 'DELETE',
+            headers: this.headers,
+        }).then(res => res.json());
+    }
+
+    public getSet(id: string) {
+        console.log('getSet');
+        let url = new URL(this.endpoint + '/api/set/' + id);
+
+        return fetch(url, {
+            method: 'GET',
             headers: this.headers,
         }).then(res => res.json());
     }

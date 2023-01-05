@@ -1,19 +1,22 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from "../api.service";
-import {AlertController} from "@ionic/angular";
+import {AlertController, ViewWillEnter} from "@ionic/angular";
 
 @Component({
     selector: 'app-sets',
     templateUrl: './sets.page.html',
     styleUrls: ['./sets.page.scss'],
 })
-export class SetsPage implements OnInit {
+export class SetsPage implements OnInit, ViewWillEnter {
     public Sets: any = [];
 
     constructor(private alertController: AlertController, private apiService: ApiService) {
     }
 
     ngOnInit() {
+    }
+
+    ionViewWillEnter() {
         this.refresh();
     }
 
