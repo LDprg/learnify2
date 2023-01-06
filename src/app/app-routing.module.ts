@@ -38,6 +38,10 @@ const routes: Routes = [
     {
         path: 'set/:id',
         loadChildren: () => import('./set/set.module').then(m => m.SetPageModule)
+    },
+    {
+        path: 'learning/:id/:starred',
+        loadChildren: () => import('./learning/learning.module').then(m => m.LearningPageModule)
     }
 ];
 

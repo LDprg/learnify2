@@ -24,7 +24,7 @@
                         </ion-card-title>
                     </ion-card-header>
                 </ion-card>
-                <ion-card [disabled]="canBeLearned()" [routerLink]="'/Set/' + id + '/Learn'"
+                <ion-card [disabled]="canBeLearned()" [routerLink]="'/learning/' + id + '/false'"
                           class="flex-item flex-item-25" routerDirection="root">
                     <ion-card-header>
                         <ion-card-title>
@@ -32,7 +32,8 @@
                         </ion-card-title>
                     </ion-card-header>
                 </ion-card>
-                <ion-card [disabled]="canBeLearned()" class="flex-item flex-item-25">
+                <ion-card [disabled]="canBeLearned()" [routerLink]="'/learning/' + id + '/true'"
+                          class="flex-item flex-item-25" routerDirection="root">
                     <ion-card-header>
                         <ion-card-title>
                             <ion-icon color="warning" ios="star-outline" md="star-sharp"></ion-icon>
