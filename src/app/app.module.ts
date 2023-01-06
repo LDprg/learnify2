@@ -9,9 +9,11 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {ApiService} from "./api.service";
 import {FormsModule} from "@angular/forms";
+import {ExportModalComponent} from "./export-modal/export-modal.component";
+import {ImportModalComponent} from "./import-modal/import-modal.component";
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, ExportModalComponent, ImportModalComponent],
     imports: [BrowserModule, IonicModule.forRoot(), IonicStorageModule.forRoot(), AppRoutingModule, FormsModule],
     providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, ApiService],
     bootstrap: [AppComponent],

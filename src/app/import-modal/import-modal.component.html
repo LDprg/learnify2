@@ -1,0 +1,16 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Import</ion-title>
+        <ion-buttons slot="end" (click)="add()">
+            <ion-button>Add</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end" (click)="close()">
+            <ion-button>Close</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+    <ion-item>
+        <ion-textarea auto-grow="true" [(ngModel)]="text" (keydown)="keyDownFunction($event)"></ion-textarea>
+    </ion-item>
+</ion-content>

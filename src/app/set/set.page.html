@@ -43,47 +43,14 @@
                 </ion-card>
             </ion-row>
             <ion-row class="flex-container">
-                <ion-modal>
-                    <ion-header>
-                        <ion-toolbar>
-                            <ion-title>Export</ion-title>
-                            <ion-buttons slot="end">
-                                <ion-button>Close</ion-button>
-                            </ion-buttons>
-                        </ion-toolbar>
-                    </ion-header>
-                    <ion-content class="ion-padding">
-                        <ion-item>
-                            <ion-textarea auto-grow="true" readonly="true"></ion-textarea>
-                        </ion-item>
-                    </ion-content>
-                </ion-modal>
-                <ion-card class="flex-item flex-item-25">
+                <ion-card (click)="export()" class="flex-item flex-item-25">
                     <ion-card-header>
                         <ion-card-title>
                             Export
                         </ion-card-title>
                     </ion-card-header>
                 </ion-card>
-                <ion-modal>
-                    <ion-header>
-                        <ion-toolbar>
-                            <ion-title>Import</ion-title>
-                            <ion-buttons slot="end">
-                                <ion-button>Add</ion-button>
-                            </ion-buttons>
-                            <ion-buttons slot="end">
-                                <ion-button>Close</ion-button>
-                            </ion-buttons>
-                        </ion-toolbar>
-                    </ion-header>
-                    <ion-content class="ion-padding">
-                        <ion-item>
-                            <ion-textarea auto-grow="true"></ion-textarea>
-                        </ion-item>
-                    </ion-content>
-                </ion-modal>
-                <ion-card class="flex-item flex-item-25">
+                <ion-card (click)="import()" class="flex-item flex-item-25">
                     <ion-card-header>
                         <ion-card-title>
                             Import
@@ -130,7 +97,7 @@
                                                     <ion-icon color="danger" ios="trending-down-outline"
                                                               md="trending-down-sharp"></ion-icon>
                                                     &nbsp;
-                                                    ?
+                                                    {{getStat(s._id, 'wrong')}}
                                                 </ion-label>
                                             </ion-item>
                                         </ion-col>
@@ -141,7 +108,7 @@
                                                     <ion-icon color="warning" ios="help-outline"
                                                               md="help-sharp"></ion-icon>
                                                     &nbsp;
-                                                    ?
+                                                    {{getStat(s._id, 'skip')}}
                                                 </ion-label>
                                             </ion-item>
                                         </ion-col>
@@ -152,13 +119,15 @@
                                                     <ion-icon color="success" ios="trending-up-outline"
                                                               md="trending-up-sharp"></ion-icon>
                                                     &nbsp;
-                                                    ?
+                                                    {{getStat(s._id, 'success')}}
                                                 </ion-label>
                                             </ion-item>
                                         </ion-col>
 
                                         <ion-col class="ion-no-padding" sizeMd="2" sizeXl="2" sizeXs="4">
-                                            <ion-button expand="block" fill="clear" [color]="false ? 'warning' : 'medium'"  >
+                                            <ion-button (click)="setStar(s._id)" [color]="getStar(s._id) ? 'warning' : 'medium'"
+                                                        expand="block"
+                                                        fill="clear">
                                                 <ion-icon ios="star-outline" md="star-sharp"
                                                           slot="icon-only"></ion-icon>
                                             </ion-button>

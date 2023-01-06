@@ -67,7 +67,8 @@ export class ApiService {
     }
 
     public isLoggedIn() {
-        return this.accessToken.trim().length > 0;
+        return !!this.accessToken;
+
     }
 
     public getUserData() {
@@ -195,7 +196,7 @@ export class ApiService {
         }).then(res => res.json());
     }
 
-    public getUserStats(id: number) {
+    public getUserStats(id: string) {
         console.log('getUserStats');
         let url = new URL(this.endpoint + '/api/user/stat/' + id + '/short');
 
@@ -208,7 +209,7 @@ export class ApiService {
         }).then(res => res.json());
     }
 
-    public updateUserStats(id: number, card: number, type: string) {
+    public updateUserStats(id: string, card: string, type: string) {
         console.log('updateUserStats');
         let url = new URL(this.endpoint + '/api/user/stat/' + id + "/" + card);
 
@@ -224,7 +225,7 @@ export class ApiService {
         }).then(res => res.json());
     }
 
-    public updateUserStared(id: number, card: number, stared: boolean) {
+    public updateUserStared(id: string, card: string, stared: boolean) {
         console.log('updateUserStared');
         let url = new URL(this.endpoint + '/api/user/stat/' + id + "/" + card + "/stared");
 
