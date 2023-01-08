@@ -5,5 +5,15 @@
 </ion-header>
 
 <ion-content>
-
+    <div [ngSwitch]="status">
+        <div *ngSwitchCase="0">
+            Ask
+        </div>
+        <div *ngSwitchCase="1">
+            Result
+        </div>
+        <div *ngSwitchCase="2">
+            Final
+        </div>
+    </div>
 </ion-content>
