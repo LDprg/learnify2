@@ -7,13 +7,83 @@
 <ion-content>
     <div [ngSwitch]="status">
         <div *ngSwitchCase="0">
-            Ask
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <ion-item>
+                            <ion-label>
+                                Question:
+                            </ion-label>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <ion-item>
+                            <ion-label>Answer: </ion-label>
+                            <ion-input placeholder="Your Text" [(ngModel)]="answerText"></ion-input>
+                            <ion-button expand="full" (click)="checkAnswer()">Check</ion-button>
+                            <ion-button expand="full" color="danger">Skip</ion-button>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
         </div>
         <div *ngSwitchCase="1">
-            Result
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <ion-item>
+                            <ion-label color="success">
+                                Correct Answer:
+                            </ion-label>
+                            <ion-label color="danger">
+                                Your Answer: {{answerText}}
+                            </ion-label>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <ion-item>
+                            <ion-label>Answer: </ion-label>
+                            <ion-input placeholder="Your Text"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
         </div>
         <div *ngSwitchCase="2">
-            Final
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <ion-item class="ion-text-center">
+                            <ion-label>Final</ion-label>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+<!--                        {collection.map((item: any, index: number) => {-->
+<!--                        return (-->
+<!--                        <IonItem key={index}>-->
+<!--                            <IonLabel color={item.correct ? "success" : item.skip ? "warning" : "danger"}>-->
+<!--                            {item.first} - {item.second}-->
+<!--                            </IonLabel>-->
+<!--                        </IonItem>-->
+<!--                    );-->
+<!--                            })}-->
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+<!--                        <IonButton expand="full" fill="clear" routerLink={"/Set/" + id} routerDirection="root">Back to Set Page</IonButton>-->
+                    </ion-col>
+                    <ion-col>
+<!--                        <IonButton expand="full" fill="clear" routerLink={"/Set/" + id + "/Learn"} routerDirection="root">Again</IonButton>-->
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
         </div>
     </div>
 </ion-content>
