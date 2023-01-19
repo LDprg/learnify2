@@ -17,18 +17,26 @@ export class ApiService {
     constructor(private storage: Storage) {
         this.storage.create();
         this.storage.get('token').then((val) => {
-            this.setToken(val);
+            if (val)
+                this.accessToken = val;
+        });
+        this.storage.get('endpoint').then((val) => {
+            if (val)
+                this.endpoint = val;
         });
     }
 
     private setToken(token: string) {
         this.accessToken = token;
-        this.storage.set('token', token);
-        this.getUserData();
+        if (token)
+            this.storage.set('token', token);
+        return this.getUserData();
     }
 
     public setUrl(url: string) {
         this.endpoint = url;
+        if (url)
+            this.storage.set('endpoint', url);
         return this.getUserData();
     }
 

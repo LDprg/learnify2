@@ -144,9 +144,9 @@
 
                                     <ion-col [sizeXl]="isEditMode(s._id) ? 2 : 1" [sizeMd]="isEditMode(s._id) ? 6 : 2" [sizeXs]="isEditMode(s._id) ? 6 : 4" class="ion-no-padding">
                                         <ion-button expand="block" fill="clear" (click)="editCard(s._id)">
-                                            <ion-icon [hidden]="isEditMode(s._id)" slot="icon-only" ios="checkmark-outline"
+                                            <ion-icon [hidden]="!isEditMode(s._id)" slot="icon-only" ios="checkmark-outline"
                                                       md="checkmark-sharp"></ion-icon>
-                                            <ion-icon [hidden]="!isEditMode(s._id)" slot="icon-only" ios="pencil-outline"
+                                            <ion-icon [hidden]="isEditMode(s._id)" slot="icon-only" ios="pencil-outline"
                                                       md="pencil-sharp"></ion-icon>
                                         </ion-button>
                                     </ion-col>

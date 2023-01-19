@@ -20,10 +20,12 @@ export class LearningPage implements OnInit, ViewWillEnter {
 
     public status: Status = Status.Ask;
 
-    public set : any;
-    public data : any;
+    public set: any;
+    public data: any;
 
     public answerText: any;
+
+    public index: number = 0;
 
     constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService) {
     }
@@ -33,12 +35,45 @@ export class LearningPage implements OnInit, ViewWillEnter {
         this.apiService.getSet(this.id).then((res) => {
             this.set = res;
 
+            if(this.starred) {
+                this.apiService.getUserStats(this.id).then((stat) => {
+                    let temp : any[] = [];
 
-            this.data = res.data;
-            this.data = this.shuffleArray(this.data);
+                    console.log(stat.data);
+                    console.log(this.set.data);
 
-            console.log(this.data);
+                    for (let statItem of stat.data) {
+                        if(statItem.stared) {
+                            for (let setItem of this.set.data) {
+                                console.log(setItem);
+                                console.log(statItem);
+
+                                if(setItem._id == statItem.cardid) {
+                                    temp.push(setItem);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    console.log(temp);
+
+                    this.data = this.shuffleArray(temp);
+
+                    console.log(this.data);
+                });
+
+            } else {
+                this.data = res.data;
+                this.data = this.shuffleArray(this.data);
+            }
         });
+    }
+
+    getQuestion() {
+        if (this.data !== undefined) {
+            return this.data[this.index].first;
+        }
     }
 
     ngOnInit() {
@@ -48,6 +83,26 @@ export class LearningPage implements OnInit, ViewWillEnter {
 
     checkAnswer() {
         this.status = Status.Answer;
+    }
+
+    skip() {
+        this.status = Status.Ask;
+        this.answerText = "";
+
+        this.index++;
+
+        if(this.index >= this.data.length) {
+            this.status = Status.Final;
+        }
+    }
+
+    again() {
+        this.status = Status.Ask;
+        this.answerText = "";
+
+        this.index = 0;
+
+        this.ionViewWillEnter();
     }
 
     shuffleArray (value: any[]) {

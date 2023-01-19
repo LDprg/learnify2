@@ -12,7 +12,7 @@
                     <ion-col>
                         <ion-item>
                             <ion-label>
-                                Question:
+                                Question: {{getQuestion()}}
                             </ion-label>
                         </ion-item>
                     </ion-col>
@@ -23,7 +23,7 @@
                             <ion-label>Answer: </ion-label>
                             <ion-input placeholder="Your Text" [(ngModel)]="answerText"></ion-input>
                             <ion-button expand="full" (click)="checkAnswer()">Check</ion-button>
-                            <ion-button expand="full" color="danger">Skip</ion-button>
+                            <ion-button expand="full" color="danger" (click)="skip()">Skip</ion-button>
                         </ion-item>
                     </ion-col>
                 </ion-row>
@@ -77,10 +77,10 @@
                 </ion-row>
                 <ion-row>
                     <ion-col>
-<!--                        <IonButton expand="full" fill="clear" routerLink={"/Set/" + id} routerDirection="root">Back to Set Page</IonButton>-->
+                        <ion-button expand="full" fill="clear" [routerLink]="'/set/' + id" routerDirection="root">Back to Set Page</ion-button>
                     </ion-col>
                     <ion-col>
-<!--                        <IonButton expand="full" fill="clear" routerLink={"/Set/" + id + "/Learn"} routerDirection="root">Again</IonButton>-->
+                        <ion-button expand="full" fill="clear" [routerLink]="'/learning/' + id + '/' + starred"  routerDirection="root" (click)="again()">Again</ion-button>
                     </ion-col>
                 </ion-row>
             </ion-grid>
