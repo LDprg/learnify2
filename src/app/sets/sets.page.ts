@@ -39,7 +39,6 @@ export class SetsPage implements OnInit, ViewWillEnter {
                 }
             ],
             buttons: [
-                'Cancel',
                 {
                     text: 'Create',
                     handler: (input) => {
@@ -50,6 +49,7 @@ export class SetsPage implements OnInit, ViewWillEnter {
                         });
                     },
                 },
+                'Cancel',
             ],
         }).then((alert) => {
             alert.present();

@@ -36,7 +36,6 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     ionViewWillEnter() {
-
         this.apiService.getSet(this.id).then((res) => {
             this.set = res;
 
@@ -80,25 +79,43 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     getAnswer() {
-        if (this.data !== undefined) {
-            return this.data[this.index].second;
-        } else {
+        if (this.data === undefined) {
             return "";
         }
+
+        return this.answerFormat(this.data[this.index].second);
+    }
+
+    answerFormat(text: string) {
+        let res = text;
+
+        res = res.replace(/[(\[{][^(\[{}\])]*[}\])]/g, ' '); // remove content in brackets
+        res = res.replace(/[;()\[\]{}\\/]/g,  ' '); // remove special characters
+        res = res.replace(/(?<=[^\d]|([\d][,.][\d]))[.,]/g, ' '); // remove dots
+        res = res.replace(/ {2,}/g, ' '); // remove multiple spaces
+        res = res.trim(); // remove leading and trailing spaces
+
+        // console.log(text);
+        // console.log(res);
+        return res;
     }
 
     getAnswerText() {
+        let text = '';
+
         if (this.status == Status.Ask) {
             if (this.answerText === undefined) {
                 return "";
             }
-            return this.answerText;
+            text = this.answerText;
         } else {
             if (this.correctionText === undefined) {
                 return "";
             }
-            return this.correctionText;
+            text = this.correctionText;
         }
+
+        return this.answerFormat(text);
     }
 
     setFocus() {
@@ -150,6 +167,16 @@ export class LearningPage implements OnInit, ViewWillEnter {
     skip() {
         this.status = Status.Ask;
         this.apiService.updateUserStats(this.id, this.data[this.index]._id, "skip");
+        this.nextItem();
+        this.setFocus();
+    }
+
+    changeWrong() {
+        this.status = Status.Ask;
+        this.correctCount++;
+        this.data[this.index].changed = true;
+        this.apiService.updateUserStats(this.id, this.data[this.index]._id, "changed");
+        this.correctionText = "";
         this.nextItem();
         this.setFocus();
     }

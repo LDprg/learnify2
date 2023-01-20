@@ -79,6 +79,9 @@
                             <ion-label>Answer:</ion-label>
                             <ion-input #correction (keyup)="enterAnswer()" [(ngModel)]="correctionText"
                                        placeholder="Your Text"></ion-input>
+
+
+                            <ion-button (click)="changeWrong()" color="warning" expand="full">I was right!</ion-button>
                         </ion-item>
                     </ion-col>
                 </ion-row>
@@ -96,7 +99,7 @@
                 <ion-row>
                     <ion-col>
                         <ion-item *ngFor="let p of data; let i = index">
-                            <ion-label [color]="p.correct ? 'success' : p.wrong ? 'danger' : 'warning'">
+                            <ion-label [color]="p.correct ? 'success' : p.wrong ? 'danger' : p.changed ? 'warning' : 'dark'">
                                 {{p.first}} - {{p.second}}
                             </ion-label>
                         </ion-item>
