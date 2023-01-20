@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Learn</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-item>
+                    <ion-label>Search:</ion-label>
+                    <ion-input (ionChange)="search()" [(ngModel)]="query" enterkeyhint="search"
+                               inputMode="search" placeholder="Text"></ion-input>
+                    <ion-input (ionChange)="search()" [(ngModel)]="count" max="1000" min="0" placeholder="10"
+                               type="number"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-label>
+                    <ion-card *ngFor="let p of learnSets; let i = index">
+                        <ion-card-header>
+                            <ion-grid>
+                                <ion-row class="ion-align-items-center">
+                                    <ion-col>
+                                        <ion-button [routerLink]="'/set/' + p._id" expand="block" fill="clear">
+                                            <ion-card-title>
+                                                {{p.name}}
+                                            </ion-card-title>
+                                        </ion-button>
+                                    </ion-col>
+                                    <ion-col class="ion-text-center">
+                                        <ion-card-subtitle>
+                                            {{p.length}} Cards
+                                        </ion-card-subtitle>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-card-header>
+                    </ion-card>
+                </ion-label>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

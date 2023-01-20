@@ -1,0 +1,175 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Set</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="set !== null then loaded else loading"></div>
+
+    <ng-template #loading>
+        <ion-spinner class="spinner-center" name="circular"></ion-spinner>
+    </ng-template>
+
+    <ng-template #loaded>
+        <!--        {{id}}-->
+
+        <ion-grid>
+            <ion-row class="flex-container">
+                <ion-card class="flex-item flex-item-25">
+                    <ion-card-header>
+                        <ion-card-title>
+                            <h4>Set: {{set.name}}</h4>
+                            <h4>User: {{set.userid}}</h4>
+                        </ion-card-title>
+                    </ion-card-header>
+                </ion-card>
+                <ion-card [disabled]="canBeLearned()" [routerLink]="'/learning/' + id + '/false'"
+                          class="flex-item flex-item-25" routerDirection="root">
+                    <ion-card-header>
+                        <ion-card-title>
+                            Learn
+                        </ion-card-title>
+                    </ion-card-header>
+                </ion-card>
+                <ion-card [disabled]="canBeLearned()" [routerLink]="'/learning/' + id + '/true'"
+                          class="flex-item flex-item-25" routerDirection="root">
+                    <ion-card-header>
+                        <ion-card-title>
+                            <ion-icon color="warning" ios="star-outline" md="star-sharp"></ion-icon>
+                            &nbsp;
+                            Learn
+                        </ion-card-title>
+                    </ion-card-header>
+                </ion-card>
+            </ion-row>
+            <ion-row class="flex-container">
+                <ion-card (click)="export()" class="flex-item flex-item-25">
+                    <ion-card-header>
+                        <ion-card-title>
+                            Export
+                        </ion-card-title>
+                    </ion-card-header>
+                </ion-card>
+                <ion-card (click)="import()" class="flex-item flex-item-25">
+                    <ion-card-header>
+                        <ion-card-title>
+                            Import
+                        </ion-card-title>
+                    </ion-card-header>
+                </ion-card>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <div *ngIf="set.data.length > 0 then notEmpty else empty"></div>
+
+                    <ng-template #empty>
+                        <ion-row class="ion-justify-content-center">
+                            <ion-label>
+                                No Cards found
+                            </ion-label>
+                        </ion-row>
+                    </ng-template>
+
+                    <ng-template #notEmpty>
+                        <ion-card *ngFor="let s of set.data; let i = index">
+                            <ion-grid>
+                                <ion-row class="ion-align-items-center ion-padding-vertical">
+                                    <ion-col [sizeXl]="isEditMode(s._id) ? 4 : 2" class="ion-no-padding" sizeMd="6"
+                                             sizeXs="6">
+                                        <ion-item [lines]="getLines()" class="text-big">
+                                            <ion-textarea [(ngModel)]="s.first" [readonly]="!isEditMode(s._id)"
+                                                          autoGrow="true" class="ion-no-margin ion-no-padding"
+                                                          placeholder="Value">
+                                            </ion-textarea>
+                                        </ion-item>
+                                    </ion-col>
+
+                                    <ion-col [sizeXl]="isEditMode(s._id) ? 4 : 2" class="ion-no-padding" sizeMd="6"
+                                             sizeXs="4">
+                                        <ion-item [lines]="getLines()" class="text-big">
+                                            <ion-textarea [(ngModel)]="s.second" [readonly]="!isEditMode(s._id)"
+                                                          autoGrow="true" class="ion-no-margin ion-no-padding"
+                                                          placeholder="Key">
+                                            </ion-textarea>
+                                        </ion-item>
+                                    </ion-col>
+
+                                    <ng-template [ngIf]="!isEditMode(s._id)">
+                                        <ion-col class="ion-no-padding" sizeMd="2" sizeXl="1" sizeXs="4">
+                                            <ion-item class="ion-text-center">
+                                                <ion-label class="ion-no-margin">
+                                                    <ion-icon color="danger" ios="trending-down-outline"
+                                                              md="trending-down-sharp"></ion-icon>
+                                                    &nbsp;
+                                                    {{getStat(s._id, 'wrong')}}
+                                                </ion-label>
+                                            </ion-item>
+                                        </ion-col>
+
+                                        <ion-col class="ion-no-padding" sizeMd="2" sizeXl="2" sizeXs="4">
+                                            <ion-item class="ion-text-center">
+                                                <ion-label class="ion-no-margin">
+                                                    <ion-icon color="warning" ios="help-outline"
+                                                              md="help-sharp"></ion-icon>
+                                                    &nbsp;
+                                                    {{getStat(s._id, 'skip')}}
+                                                </ion-label>
+                                            </ion-item>
+                                        </ion-col>
+
+                                        <ion-col class="ion-no-padding" sizeMd="2" sizeXl="1" sizeXs="4">
+                                            <ion-item class="ion-text-center">
+                                                <ion-label class="ion-no-margin">
+                                                    <ion-icon color="success" ios="trending-up-outline"
+                                                              md="trending-up-sharp"></ion-icon>
+                                                    &nbsp;
+                                                    {{getStat(s._id, 'success')}}
+                                                </ion-label>
+                                            </ion-item>
+                                        </ion-col>
+
+                                        <ion-col class="ion-no-padding" sizeMd="2" sizeXl="2" sizeXs="4">
+                                            <ion-button (click)="setStar(s._id)"
+                                                        [color]="getStar(s._id) ? 'warning' : 'medium'"
+                                                        expand="block"
+                                                        fill="clear">
+                                                <ion-icon ios="star-outline" md="star-sharp"
+                                                          slot="icon-only"></ion-icon>
+                                            </ion-button>
+                                        </ion-col>
+
+                                    </ng-template>
+
+                                    <ion-col [sizeMd]="isEditMode(s._id) ? 6 : 2" [sizeXl]="isEditMode(s._id) ? 2 : 1"
+                                             [sizeXs]="isEditMode(s._id) ? 6 : 4" class="ion-no-padding">
+                                        <ion-button (click)="deleteCard(s._id)" color="danger" expand="block"
+                                                    fill="clear">
+                                            <ion-icon ios="close-outline" md="close-sharp" slot="icon-only"></ion-icon>
+                                        </ion-button>
+                                    </ion-col>
+
+                                    <ion-col [sizeMd]="isEditMode(s._id) ? 6 : 2" [sizeXl]="isEditMode(s._id) ? 2 : 1"
+                                             [sizeXs]="isEditMode(s._id) ? 6 : 4" class="ion-no-padding">
+                                        <ion-button (click)="editCard(s._id)" expand="block" fill="clear">
+                                            <ion-icon [hidden]="!isEditMode(s._id)" ios="checkmark-outline"
+                                                      md="checkmark-sharp"
+                                                      slot="icon-only"></ion-icon>
+                                            <ion-icon [hidden]="isEditMode(s._id)" ios="pencil-outline" md="pencil-sharp"
+                                                      slot="icon-only"></ion-icon>
+                                        </ion-button>
+                                    </ion-col>
+
+                                </ion-row>
+                            </ion-grid>
+                        </ion-card>
+                    </ng-template>
+
+                    <ion-button (click)="newCard()" expand="block" fill="clear">
+                        <ion-icon ios="add-outline" md="add-sharp" slot="icon-only"></ion-icon>
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ng-template>
+</ion-content>

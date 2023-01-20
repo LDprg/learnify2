@@ -1,0 +1,14 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Export</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="copy()">Copy</ion-button>
+            <ion-button (click)="close()">Close</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+    <ion-item>
+        <ion-textarea [value]="getExport()" auto-grow="true" readonly="true"></ion-textarea>
+    </ion-item>
+</ion-content>

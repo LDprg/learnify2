@@ -1,1 +1,1 @@
-ionic build && npx cap copy android && npx cap copy @capacitor-community/electron
+ionic build && npx cap sync android && npx cap sync @capacitor-community/electron

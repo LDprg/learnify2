@@ -1,22 +1,21 @@
-import type { CapacitorElectronConfig } from '@capacitor-community/electron';
-import { getCapacitorElectronConfig, setupElectronDeepLinking } from '@capacitor-community/electron';
-import { MenuItemConstructorOptions } from 'electron';
-import { app, MenuItem } from 'electron';
+import type {CapacitorElectronConfig} from '@capacitor-community/electron';
+import {getCapacitorElectronConfig, setupElectronDeepLinking} from '@capacitor-community/electron';
+import type {MenuItemConstructorOptions} from 'electron';
+import {app, MenuItem} from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
-import { autoUpdater } from 'electron-updater';
+import {autoUpdater} from 'electron-updater';
 
-import { ElectronCapacitorApp, setupContentSecurityPolicy, setupReloadWatcher } from './setup';
+import {ElectronCapacitorApp, setupContentSecurityPolicy, setupReloadWatcher} from './setup';
 
 // Graceful handling of unhandled errors.
 unhandled();
 
-
 // Define our menu templates (these are optional)
-const trayMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [new MenuItem({ label: 'Quit App', role: 'quit' })];
+const trayMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [new MenuItem({label: 'Quit App', role: 'quit'})];
 const appMenuBarMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [
-    { role: process.platform === 'darwin' ? 'appMenu' : 'fileMenu' },
-    { role: 'viewMenu' },
+    {role: process.platform === 'darwin' ? 'appMenu' : 'fileMenu'},
+    {role: 'viewMenu'},
 ];
 
 // Get Config options from capacitor.config
