@@ -20,10 +20,10 @@
                 <ion-row>
                     <ion-col>
                         <ion-item>
-                            <ion-label>Answer: </ion-label>
-                            <ion-input placeholder="Your Text" [(ngModel)]="answerText"></ion-input>
-                            <ion-button expand="full" (click)="checkAnswer()">Check</ion-button>
-                            <ion-button expand="full" color="danger" (click)="skip()">Skip</ion-button>
+                            <ion-label>Answer:</ion-label>
+                            <ion-input [(ngModel)]="answerText" placeholder="Your Text" (keyup.enter)="checkAnswer()" #answer></ion-input>
+                            <ion-button (click)="checkAnswer()" expand="full">Check</ion-button>
+                            <ion-button (click)="skip()" color="danger" expand="full">Skip</ion-button>
                         </ion-item>
                     </ion-col>
                 </ion-row>
@@ -34,8 +34,17 @@
                 <ion-row>
                     <ion-col>
                         <ion-item>
+                            <ion-label>
+                                Question: {{getQuestion()}}
+                            </ion-label>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <ion-item>
                             <ion-label color="success">
-                                Correct Answer:
+                                Correct Answer: {{getAnswer()}}
                             </ion-label>
                             <ion-label color="danger">
                                 Your Answer: {{answerText}}
@@ -46,8 +55,8 @@
                 <ion-row>
                     <ion-col>
                         <ion-item>
-                            <ion-label>Answer: </ion-label>
-                            <ion-input placeholder="Your Text"></ion-input>
+                            <ion-label>Answer:</ion-label>
+                            <ion-input [(ngModel)]="correctionText" placeholder="Your Text" (keyup)="enterAnswer()" #correction></ion-input>
                         </ion-item>
                     </ion-col>
                 </ion-row>
@@ -64,23 +73,28 @@
                 </ion-row>
                 <ion-row>
                     <ion-col>
-<!--                        {collection.map((item: any, index: number) => {-->
-<!--                        return (-->
-<!--                        <IonItem key={index}>-->
-<!--                            <IonLabel color={item.correct ? "success" : item.skip ? "warning" : "danger"}>-->
-<!--                            {item.first} - {item.second}-->
-<!--                            </IonLabel>-->
-<!--                        </IonItem>-->
-<!--                    );-->
-<!--                            })}-->
+                        <!--                        <IonItem key={index}>-->
+                        <!--                            <IonLabel color={item.correct ? "success" : item.skip ? "warning" : "danger"}>-->
+                        <!--                            {item.first} - {item.second}-->
+                        <!--                            </IonLabel>-->
+                        <!--                        </IonItem>-->
+                        <ion-item *ngFor="let p of data; let i = index">
+                            <ion-label>
+                                {{p.first}} - {{p.second}}
+                            </ion-label>
+                        </ion-item>
                     </ion-col>
                 </ion-row>
                 <ion-row>
                     <ion-col>
-                        <ion-button expand="full" fill="clear" [routerLink]="'/set/' + id" routerDirection="root">Back to Set Page</ion-button>
+                        <ion-button [routerLink]="'/set/' + id" expand="full" fill="clear" routerDirection="root">Back
+                            to Set Page
+                        </ion-button>
                     </ion-col>
                     <ion-col>
-                        <ion-button expand="full" fill="clear" [routerLink]="'/learning/' + id + '/' + starred"  routerDirection="root" (click)="again()">Again</ion-button>
+                        <ion-button (click)="again()" [routerLink]="'/learning/' + id + '/' + starred" expand="full"
+                                    fill="clear" routerDirection="root">Again
+                        </ion-button>
                     </ion-col>
                 </ion-row>
             </ion-grid>

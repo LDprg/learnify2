@@ -15,12 +15,12 @@
             </ion-row>
             <ion-item>
                 <ion-label>Email:</ion-label>
-                <ion-input type="email" placeholder="Email" autofocus="true" formControlName="email"></ion-input>
+                <ion-input type="email" placeholder="Email" autofocus="true" formControlName="email" (keyup.enter)="pass.setFocus()"></ion-input>
             </ion-item>
             <ion-item>
                 <ion-label>Password:</ion-label>
                 <ion-input type="password" placeholder="Password" autofocus="true"
-                           formControlName="password"></ion-input>
+                           formControlName="password" (keyup.enter)="login()" #pass></ion-input>
             </ion-item>
             <ion-button type="submit" expand="full">Login</ion-button>
         </form>

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ApiService} from "../api.service";
-import {ViewWillEnter} from "@ionic/angular";
+import {IonInput, ViewWillEnter} from "@ionic/angular";
 
 export enum Status {
     Ask,
@@ -24,8 +24,12 @@ export class LearningPage implements OnInit, ViewWillEnter {
     public data: any;
 
     public answerText: any;
+    public correctionText: string = "";
 
     public index: number = 0;
+
+    @ViewChild('answer', { static: false }) answer: IonInput | undefined;
+    @ViewChild('correction', { static: false }) correction: IonInput | undefined;
 
     constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService) {
     }
@@ -39,14 +43,9 @@ export class LearningPage implements OnInit, ViewWillEnter {
                 this.apiService.getUserStats(this.id).then((stat) => {
                     let temp : any[] = [];
 
-                    console.log(stat.data);
-                    console.log(this.set.data);
-
                     for (let statItem of stat.data) {
                         if(statItem.stared) {
                             for (let setItem of this.set.data) {
-                                console.log(setItem);
-                                console.log(statItem);
 
                                 if(setItem._id == statItem.cardid) {
                                     temp.push(setItem);
@@ -56,11 +55,7 @@ export class LearningPage implements OnInit, ViewWillEnter {
                         }
                     }
 
-                    console.log(temp);
-
                     this.data = this.shuffleArray(temp);
-
-                    console.log(this.data);
                 });
 
             } else {
@@ -68,6 +63,8 @@ export class LearningPage implements OnInit, ViewWillEnter {
                 this.data = this.shuffleArray(this.data);
             }
         });
+
+        this.setFocus();
     }
 
     getQuestion() {
@@ -76,17 +73,81 @@ export class LearningPage implements OnInit, ViewWillEnter {
         }
     }
 
+    getAnswer() {
+        if (this.data !== undefined) {
+            return this.data[this.index].second;
+        } else {
+            return "";
+        }
+    }
+
+    getAnswerText() {
+        if (this.status == Status.Ask) {
+            if (this.answerText === undefined) {
+                return "";
+            }
+            return this.answerText;
+        } else {
+            if (this.correctionText === undefined) {
+                return "";
+            }
+            return this.correctionText;
+        }
+    }
+
+    setFocus() {
+        setTimeout(() =>
+        {
+            if(this.status == Status.Ask) {
+                this.answer?.setFocus();
+            } else {
+                this.correction?.setFocus();
+            }
+        }, 100);
+    }
+
     ngOnInit() {
         this.id = this.activatedRoute.snapshot.paramMap.get('id') as string;
         this.starred = this.activatedRoute.snapshot.paramMap.get('starred') === 'true';
     }
 
     checkAnswer() {
-        this.status = Status.Answer;
+        let answer = this.getAnswerText().trim();
+        let correct = this.getAnswer().trim();
+
+        if (answer == correct) {
+            this.status = Status.Ask;
+            this.apiService.updateUserStats(this.id, this.data[this.index]._id, "success");
+            this.nextItem();
+        } else {
+            this.status = Status.Answer;
+            this.apiService.updateUserStats(this.id, this.data[this.index]._id, "wrong");
+        }
+
+        this.setFocus();
+    }
+
+    enterAnswer() {
+        let answer = this.getAnswerText().trim();
+        let correct = this.getAnswer().trim();
+
+        if(answer == correct){
+            this.status = Status.Ask;
+            this.apiService.updateUserStats(this.id, this.data[this.index]._id, "wrong");
+            this.correctionText = "";
+            this.nextItem();
+            this.setFocus();
+        }
     }
 
     skip() {
         this.status = Status.Ask;
+        this.apiService.updateUserStats(this.id, this.data[this.index]._id, "skip");
+        this.nextItem();
+        this.setFocus();
+    }
+
+    nextItem(){
         this.answerText = "";
 
         this.index++;
