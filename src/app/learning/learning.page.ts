@@ -21,6 +21,7 @@ export class LearningPage implements OnInit, ViewWillEnter {
     public status: Status = Status.Ask;
 
     public set: any;
+    public userStat: any = null;
     public data: any;
 
     public answerText: any;
@@ -36,7 +37,6 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     ionViewWillEnter() {
-
         this.apiService.getSet(this.id).then((res) => {
             this.set = res;
 
@@ -65,6 +65,10 @@ export class LearningPage implements OnInit, ViewWillEnter {
             }
         });
 
+        this.apiService.getUserStats(this.id).then((stat) => {
+            this.userStat = stat;
+        });
+
         this.correctCount = 0;
         this.index = 0;
         this.status = Status.Ask;
@@ -80,25 +84,43 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     getAnswer() {
-        if (this.data !== undefined) {
-            return this.data[this.index].second;
-        } else {
+        if (this.data === undefined) {
             return "";
         }
+
+        return this.answerFormat(this.data[this.index].second);
+    }
+
+    answerFormat(text: string) {
+        let res = text;
+
+        res = res.replace(/[(\[{][^(\[{}\])]*[}\])]/g, ' '); // remove content in brackets
+        res = res.replace(/[;()\[\]{}\\/]/g,  ' '); // remove special characters
+        res = res.replace(/(?<=[^\d]|([\d][,.][\d]))[.,]/g, ' '); // remove dots
+        res = res.replace(/ {2,}/g, ' '); // remove multiple spaces
+        res = res.trim(); // remove leading and trailing spaces
+
+        // console.log(text);
+        // console.log(res);
+        return res;
     }
 
     getAnswerText() {
+        let text = '';
+
         if (this.status == Status.Ask) {
             if (this.answerText === undefined) {
                 return "";
             }
-            return this.answerText;
+            text = this.answerText;
         } else {
             if (this.correctionText === undefined) {
                 return "";
             }
-            return this.correctionText;
+            text = this.correctionText;
         }
+
+        return this.answerFormat(text);
     }
 
     setFocus() {
@@ -154,6 +176,16 @@ export class LearningPage implements OnInit, ViewWillEnter {
         this.setFocus();
     }
 
+    changeWrong() {
+        this.status = Status.Ask;
+        this.correctCount++;
+        this.data[this.index].changed = true;
+        this.apiService.updateUserStats(this.id, this.data[this.index]._id, "changed");
+        this.correctionText = "";
+        this.nextItem();
+        this.setFocus();
+    }
+
     nextItem() {
         this.answerText = "";
 
@@ -162,6 +194,37 @@ export class LearningPage implements OnInit, ViewWillEnter {
         if (this.index >= this.data.length) {
             this.status = Status.Final;
         }
+    }
+
+    getStar(id: string) {
+        if (this.userStat != null && this.userStat.data != null) {
+            for (let i = 0; i < this.userStat.data.length; i++) {
+                if (this.userStat.data[i].cardid == id) {
+                    if (this.userStat.data[i].stared != null) {
+                        return this.userStat.data[i].stared;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    setStar(id: string) {
+        this.apiService.updateUserStared(this.id, id, !this.getStar(id)).then((res) => {
+            if (this.userStat != null && this.userStat.data != null) {
+                for (let i = 0; i < this.userStat.data.length; i++) {
+                    if (this.userStat.data[i].cardid == id) {
+                        this.userStat.data[i].stared = !this.userStat.data[i].stared;
+                    }
+                }
+            }
+
+            this.apiService.getUserStats(this.id).then((stat) => {
+                this.userStat = stat;
+            });
+        });
     }
 
     again() {

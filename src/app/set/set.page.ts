@@ -14,9 +14,13 @@ export class SetPage implements OnInit, ViewWillEnter {
     public id!: string;
 
     public set: any = null;
+
+    public orginal: any = null;
     public userStat: any = null;
     public editMode = false;
     public editId = -1;
+
+    public sortMode :string= "norm";
 
     constructor(private alertController: AlertController, private modalController: ModalController, private activatedRoute: ActivatedRoute, private apiService: ApiService) {
     }
@@ -25,14 +29,46 @@ export class SetPage implements OnInit, ViewWillEnter {
         this.id = this.activatedRoute.snapshot.paramMap.get('id') as string;
     }
 
+    async sort (newItem : any) {
+        if (this.sortMode == "alphaAsc") {
+            newItem.data = await newItem.data.sort((a: any, b: any) => {
+                return a.first.localeCompare(b.first);
+            });
+        } else if (this.sortMode == "alphaDesc") {
+            newItem.data = await  newItem.data.sort((a: any, b: any) => {
+                return b.first.localeCompare(a.first);
+            });
+        } else if (this.userStat != null && this.userStat.data != null) {
+             if (this.sortMode == "statAsc") {
+                newItem.data = await  newItem.data.sort((a: any, b: any) => {
+                    return  (this.getStat(b._id, 'success') + 1) / (this.getStat(b._id, 'wrong') + 1) -
+                            (this.getStat(a._id, 'success') + 1) / (this.getStat(a._id, 'wrong') + 1);
+                });
+            } else if (this.sortMode == "statDesc") {
+                newItem.data = await  newItem.data.sort((a: any, b: any) => {
+                    return  (this.getStat(b._id, 'wrong') + 1) / (this.getStat(b._id, 'success') + 1) -
+                            (this.getStat(a._id, 'wrong') + 1) / (this.getStat(a._id, 'success') + 1);
+                });
+            }
+        }
+
+        return await newItem;
+    }
+
     ionViewWillEnter() {
         this.apiService.getSet(this.id).then((set) => {
-            this.set = set;
+            this.setSet(set);
 
             this.apiService.getUserStats(this.id).then((stat) => {
                 this.userStat = stat;
-                console.log(stat);
             });
+        });
+    }
+
+    setSet(data: any){
+        this.orginal = data;
+        this.sort(data).then((newItem) => {
+            this.set = newItem;
         });
     }
 
@@ -41,7 +77,11 @@ export class SetPage implements OnInit, ViewWillEnter {
     }
 
     canBeLearned() {
-        return this.set.data.length <= 0;
+        if (this.set != null && this.set?.data != null) {
+            return this.set.data.length <= 0;
+        }
+
+        return false;
     }
 
     getLines() {
@@ -49,14 +89,14 @@ export class SetPage implements OnInit, ViewWillEnter {
     }
 
     newCard() {
-        this.set.data.push({
+        this.orginal.data.push({
             first: "",
             second: "",
         });
 
-        this.apiService.updateSet(this.set.id, this.set).then((res) => {
+        this.apiService.updateSet(this.orginal.id, this.orginal).then((res) => {
             this.apiService.getSet(this.id).then((set) => {
-                this.set = set;
+                this.setSet(set);
             });
         });
     }
@@ -68,7 +108,7 @@ export class SetPage implements OnInit, ViewWillEnter {
         if (!this.editMode) {
             this.apiService.updateSet(this.set.id, this.set).then((res) => {
                 this.apiService.getSet(this.id).then((set) => {
-                    this.set = set;
+                    this.setSet(set);
                 });
             });
         }
@@ -90,7 +130,7 @@ export class SetPage implements OnInit, ViewWillEnter {
                                 this.set.data.splice(i, 1);
                                 this.apiService.updateSet(this.set.id, this.set).then((res) => {
                                     this.apiService.getSet(this.id).then((set) => {
-                                        this.set = set;
+                                        this.setSet(set);
                                     });
                                 });
                             }
@@ -169,7 +209,7 @@ export class SetPage implements OnInit, ViewWillEnter {
 
                 this.apiService.updateSet(this.set.id, this.set).then((res) => {
                     this.apiService.getSet(this.id).then((set) => {
-                        this.set = set;
+                        this.setSet(set);
                     });
                 });
             });

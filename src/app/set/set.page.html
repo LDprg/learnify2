@@ -59,6 +59,30 @@
                     </ion-card-header>
                 </ion-card>
             </ion-row>
+            <ion-row class="flex-container">
+                <ion-card class="flex-item flex-item-100 flex-container">
+                    <ion-item class="flex-item flex-item-75">
+                        <ion-item lines="none">
+                            <ion-text color="medium">
+                                {{set.data.length}} Cards
+                            </ion-text>
+                        </ion-item>
+                    </ion-item>
+
+                    <ion-toolbar class="flex-item flex-item-25">
+                        <ion-item>
+                            <ion-label>Sort:&nbsp;</ion-label>
+                            <ion-select interface="popover" [(ngModel)]="sortMode" (ionChange)="setSet(orginal)">
+                                <ion-select-option value="norm">Normal</ion-select-option>
+                                <ion-select-option value="statAsc">Stat. Asc.</ion-select-option>
+                                <ion-select-option value="statDesc">Stat. Desc.</ion-select-option>
+                                <ion-select-option value="alphaAsc">Alpha. Asc.</ion-select-option>
+                                <ion-select-option value="alphaDesc">Alpha. Desc.</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-toolbar>
+                </ion-card>
+            </ion-row>
             <ion-row>
                 <ion-col>
                     <div *ngIf="set.data.length > 0 then notEmpty else empty"></div>
@@ -113,7 +137,7 @@
                                                     <ion-icon color="warning" ios="help-outline"
                                                               md="help-sharp"></ion-icon>
                                                     &nbsp;
-                                                    {{getStat(s._id, 'skip')}}
+                                                    {{getStat(s._id, 'changed')}}
                                                 </ion-label>
                                             </ion-item>
                                         </ion-col>
