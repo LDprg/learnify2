@@ -27,6 +27,7 @@ export class LearningPage implements OnInit, ViewWillEnter {
     public correctionText: string = "";
 
     public index: number = 0;
+    public correctCount : number = 0;
 
     @ViewChild('answer', { static: false }) answer: IonInput | undefined;
     @ViewChild('correction', { static: false }) correction: IonInput | undefined;
@@ -64,6 +65,11 @@ export class LearningPage implements OnInit, ViewWillEnter {
             }
         });
 
+        this.correctCount = 0;
+        this.index = 0;
+        this.status = Status.Ask;
+        this.correctionText = "";
+        this.answerText = "";
         this.setFocus();
     }
 
@@ -117,11 +123,12 @@ export class LearningPage implements OnInit, ViewWillEnter {
 
         if (answer == correct) {
             this.status = Status.Ask;
+            this.correctCount++;
+            this.data[this.index].correct = true;
             this.apiService.updateUserStats(this.id, this.data[this.index]._id, "success");
             this.nextItem();
         } else {
             this.status = Status.Answer;
-            this.apiService.updateUserStats(this.id, this.data[this.index]._id, "wrong");
         }
 
         this.setFocus();
@@ -133,6 +140,7 @@ export class LearningPage implements OnInit, ViewWillEnter {
 
         if(answer == correct){
             this.status = Status.Ask;
+            this.data[this.index].wrong = true;
             this.apiService.updateUserStats(this.id, this.data[this.index]._id, "wrong");
             this.correctionText = "";
             this.nextItem();
