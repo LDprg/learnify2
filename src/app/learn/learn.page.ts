@@ -22,7 +22,7 @@ export class LearnPage implements OnInit {
     search() {
         this.count = Math.abs(this.count);
 
-        let query = ' ';
+        let query = '';
         if (this.query.length > 0) query = this.query;
 
         this.apiService.searchSets(query, this.count).then((res) => {

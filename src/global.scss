@@ -71,8 +71,16 @@
     flex: 50%;
 }
 
+.flex-item-75 {
+    flex: 75%;
+}
+
+.flex-item-100 {
+    flex: 100%;
+}
+
 @media (max-width: 800px) {
-    .flex-item-25, .flex-item-50 {
+    .flex-item-25, .flex-item-50, .flex-item-75, flex-item-100 {
         flex: 100%;
     }
 }
