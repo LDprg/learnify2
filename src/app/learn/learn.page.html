@@ -10,10 +10,10 @@
             <ion-col>
                 <ion-item>
                     <ion-label>Search:</ion-label>
-                    <ion-input placeholder="Text" inputMode="search" enterkeyhint="search"
-                               [(ngModel)]="query" (ionChange)="search()"></ion-input>
-                    <ion-input type="number" placeholder="10" min="0" max="1000" [(ngModel)]="count"
-                               (ionChange)="search()"></ion-input>
+                    <ion-input (ionChange)="search()" [(ngModel)]="query" enterkeyhint="search"
+                               inputMode="search" placeholder="Text"></ion-input>
+                    <ion-input (ionChange)="search()" [(ngModel)]="count" max="1000" min="0" placeholder="10"
+                               type="number"></ion-input>
                 </ion-item>
             </ion-col>
         </ion-row>
@@ -25,7 +25,7 @@
                             <ion-grid>
                                 <ion-row class="ion-align-items-center">
                                     <ion-col>
-                                        <ion-button expand="block" fill="clear" [routerLink]="'/set/' + p._id">
+                                        <ion-button [routerLink]="'/set/' + p._id" expand="block" fill="clear">
                                             <ion-card-title>
                                                 {{p.name}}
                                             </ion-card-title>

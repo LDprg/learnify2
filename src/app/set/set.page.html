@@ -75,18 +75,22 @@
                         <ion-card *ngFor="let s of set.data; let i = index">
                             <ion-grid>
                                 <ion-row class="ion-align-items-center ion-padding-vertical">
-                                    <ion-col class="ion-no-padding" [sizeXl]="isEditMode(s._id) ? 4 : 2" sizeMd="6" sizeXs="6">
+                                    <ion-col [sizeXl]="isEditMode(s._id) ? 4 : 2" class="ion-no-padding" sizeMd="6"
+                                             sizeXs="6">
                                         <ion-item [lines]="getLines()" class="text-big">
-                                            <ion-textarea [readonly]="!isEditMode(s._id)" [(ngModel)]="s.first"
-                                                          autoGrow="true" class="ion-no-margin ion-no-padding" placeholder="Value">
+                                            <ion-textarea [(ngModel)]="s.first" [readonly]="!isEditMode(s._id)"
+                                                          autoGrow="true" class="ion-no-margin ion-no-padding"
+                                                          placeholder="Value">
                                             </ion-textarea>
                                         </ion-item>
                                     </ion-col>
 
-                                    <ion-col class="ion-no-padding" [sizeXl]="isEditMode(s._id) ? 4 : 2" sizeMd="6" sizeXs="4">
+                                    <ion-col [sizeXl]="isEditMode(s._id) ? 4 : 2" class="ion-no-padding" sizeMd="6"
+                                             sizeXs="4">
                                         <ion-item [lines]="getLines()" class="text-big">
-                                            <ion-textarea [readonly]="!isEditMode(s._id)" [(ngModel)]="s.second"
-                                                          autoGrow="true" class="ion-no-margin ion-no-padding" placeholder="Key">
+                                            <ion-textarea [(ngModel)]="s.second" [readonly]="!isEditMode(s._id)"
+                                                          autoGrow="true" class="ion-no-margin ion-no-padding"
+                                                          placeholder="Key">
                                             </ion-textarea>
                                         </ion-item>
                                     </ion-col>
@@ -126,7 +130,8 @@
                                         </ion-col>
 
                                         <ion-col class="ion-no-padding" sizeMd="2" sizeXl="2" sizeXs="4">
-                                            <ion-button (click)="setStar(s._id)" [color]="getStar(s._id) ? 'warning' : 'medium'"
+                                            <ion-button (click)="setStar(s._id)"
+                                                        [color]="getStar(s._id) ? 'warning' : 'medium'"
                                                         expand="block"
                                                         fill="clear">
                                                 <ion-icon ios="star-outline" md="star-sharp"
@@ -136,18 +141,22 @@
 
                                     </ng-template>
 
-                                    <ion-col [sizeXl]="isEditMode(s._id) ? 2 : 1" [sizeMd]="isEditMode(s._id) ? 6 : 2" [sizeXs]="isEditMode(s._id) ? 6 : 4" class="ion-no-padding">
-                                        <ion-button color="danger" expand="block" fill="clear" (click)="deleteCard(s._id)">
+                                    <ion-col [sizeMd]="isEditMode(s._id) ? 6 : 2" [sizeXl]="isEditMode(s._id) ? 2 : 1"
+                                             [sizeXs]="isEditMode(s._id) ? 6 : 4" class="ion-no-padding">
+                                        <ion-button (click)="deleteCard(s._id)" color="danger" expand="block"
+                                                    fill="clear">
                                             <ion-icon ios="close-outline" md="close-sharp" slot="icon-only"></ion-icon>
                                         </ion-button>
                                     </ion-col>
 
-                                    <ion-col [sizeXl]="isEditMode(s._id) ? 2 : 1" [sizeMd]="isEditMode(s._id) ? 6 : 2" [sizeXs]="isEditMode(s._id) ? 6 : 4" class="ion-no-padding">
-                                        <ion-button expand="block" fill="clear" (click)="editCard(s._id)">
-                                            <ion-icon [hidden]="!isEditMode(s._id)" slot="icon-only" ios="checkmark-outline"
-                                                      md="checkmark-sharp"></ion-icon>
-                                            <ion-icon [hidden]="isEditMode(s._id)" slot="icon-only" ios="pencil-outline"
-                                                      md="pencil-sharp"></ion-icon>
+                                    <ion-col [sizeMd]="isEditMode(s._id) ? 6 : 2" [sizeXl]="isEditMode(s._id) ? 2 : 1"
+                                             [sizeXs]="isEditMode(s._id) ? 6 : 4" class="ion-no-padding">
+                                        <ion-button (click)="editCard(s._id)" expand="block" fill="clear">
+                                            <ion-icon [hidden]="!isEditMode(s._id)" ios="checkmark-outline"
+                                                      md="checkmark-sharp"
+                                                      slot="icon-only"></ion-icon>
+                                            <ion-icon [hidden]="isEditMode(s._id)" ios="pencil-outline" md="pencil-sharp"
+                                                      slot="icon-only"></ion-icon>
                                         </ion-button>
                                     </ion-col>
 

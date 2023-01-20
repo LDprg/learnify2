@@ -26,13 +26,6 @@ export class ApiService {
         });
     }
 
-    private setToken(token: string) {
-        this.accessToken = token;
-        if (token)
-            this.storage.set('token', token);
-        return this.getUserData();
-    }
-
     public setUrl(url: string) {
         this.endpoint = url;
         if (url)
@@ -247,5 +240,12 @@ export class ApiService {
                 stared: stared
             })
         }).then(res => res.json());
+    }
+
+    private setToken(token: string) {
+        this.accessToken = token;
+        if (token)
+            this.storage.set('token', token);
+        return this.getUserData();
     }
 }

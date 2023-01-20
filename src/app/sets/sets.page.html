@@ -28,21 +28,21 @@
                             <ion-grid>
                                 <ion-row class="ion-align-items-center">
                                     <ion-col size="4">
-                                        <ion-button expand="block" fill="clear" [routerLink]="'/set/' + p._id">
+                                        <ion-button [routerLink]="'/set/' + p._id" expand="block" fill="clear">
                                             <ion-card-title>
                                                 {{p.name}}
                                             </ion-card-title>
                                         </ion-button>
                                     </ion-col>
-                                    <ion-col size="4" class="ion-text-center">
+                                    <ion-col class="ion-text-center" size="4">
                                         <ion-card-subtitle>
                                             {{p.length}} Cards
                                         </ion-card-subtitle>
                                     </ion-col>
                                     <ion-col size="4">
-                                        <ion-button expand="block" fill="clear" color="danger"
-                                                    (click)="deleteSet(p._id)">
-                                            <ion-icon slot="icon-only" ios="close-outline" md="close-sharp"></ion-icon>
+                                        <ion-button (click)="deleteSet(p._id)" color="danger" expand="block"
+                                                    fill="clear">
+                                            <ion-icon ios="close-outline" md="close-sharp" slot="icon-only"></ion-icon>
                                         </ion-button>
                                     </ion-col>
                                 </ion-row>
@@ -63,8 +63,8 @@
 
         <ion-row class="ion-justify-content-center">
             <ion-col>
-                <ion-button expand="block" fill="clear" (click)="newSet()">
-                    <ion-icon slot="icon-only" ios="add-outline" md="add-sharp"></ion-icon>
+                <ion-button (click)="newSet()" expand="block" fill="clear">
+                    <ion-icon ios="add-outline" md="add-sharp" slot="icon-only"></ion-icon>
                 </ion-button>
             </ion-col>
         </ion-row>

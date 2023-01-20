@@ -27,10 +27,10 @@ export class LearningPage implements OnInit, ViewWillEnter {
     public correctionText: string = "";
 
     public index: number = 0;
-    public correctCount : number = 0;
+    public correctCount: number = 0;
 
-    @ViewChild('answer', { static: false }) answer: IonInput | undefined;
-    @ViewChild('correction', { static: false }) correction: IonInput | undefined;
+    @ViewChild('answer', {static: false}) answer: IonInput | undefined;
+    @ViewChild('correction', {static: false}) correction: IonInput | undefined;
 
     constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService) {
     }
@@ -40,15 +40,15 @@ export class LearningPage implements OnInit, ViewWillEnter {
         this.apiService.getSet(this.id).then((res) => {
             this.set = res;
 
-            if(this.starred) {
+            if (this.starred) {
                 this.apiService.getUserStats(this.id).then((stat) => {
-                    let temp : any[] = [];
+                    let temp: any[] = [];
 
                     for (let statItem of stat.data) {
-                        if(statItem.stared) {
+                        if (statItem.stared) {
                             for (let setItem of this.set.data) {
 
-                                if(setItem._id == statItem.cardid) {
+                                if (setItem._id == statItem.cardid) {
                                     temp.push(setItem);
                                     break;
                                 }
@@ -102,9 +102,8 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     setFocus() {
-        setTimeout(() =>
-        {
-            if(this.status == Status.Ask) {
+        setTimeout(() => {
+            if (this.status == Status.Ask) {
                 this.answer?.setFocus();
             } else {
                 this.correction?.setFocus();
@@ -138,7 +137,7 @@ export class LearningPage implements OnInit, ViewWillEnter {
         let answer = this.getAnswerText().trim();
         let correct = this.getAnswer().trim();
 
-        if(answer == correct){
+        if (answer == correct) {
             this.status = Status.Ask;
             this.data[this.index].wrong = true;
             this.apiService.updateUserStats(this.id, this.data[this.index]._id, "wrong");
@@ -155,12 +154,12 @@ export class LearningPage implements OnInit, ViewWillEnter {
         this.setFocus();
     }
 
-    nextItem(){
+    nextItem() {
         this.answerText = "";
 
         this.index++;
 
-        if(this.index >= this.data.length) {
+        if (this.index >= this.data.length) {
             this.status = Status.Final;
         }
     }
@@ -174,7 +173,7 @@ export class LearningPage implements OnInit, ViewWillEnter {
         this.ionViewWillEnter();
     }
 
-    shuffleArray (value: any[]) {
+    shuffleArray(value: any[]) {
 
         let items: any[] = [];
 

@@ -14,7 +14,7 @@ export class SetPage implements OnInit, ViewWillEnter {
     public id!: string;
 
     public set: any = null;
-    public userStat : any = null;
+    public userStat: any = null;
     public editMode = false;
     public editId = -1;
 
@@ -61,7 +61,7 @@ export class SetPage implements OnInit, ViewWillEnter {
         });
     }
 
-    editCard(id : number) {
+    editCard(id: number) {
         this.editMode = !this.editMode;
         this.editId = id;
 
@@ -74,7 +74,7 @@ export class SetPage implements OnInit, ViewWillEnter {
         }
     }
 
-    deleteCard(id : number) {
+    deleteCard(id: number) {
         for (let i = 0; i < this.set.data.length; i++) {
             if (this.set.data[i]._id == id) {
                 this.alertController.create({

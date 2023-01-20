@@ -14,9 +14,12 @@
                     </ion-label>
                 </ion-item>
                 <ion-item>
-                    <ion-progress-bar [value]="this.correctCount / this.data?.length" class="bar" color="success"></ion-progress-bar>
-                    <ion-progress-bar [value]="(this.index - this.correctCount) / this.data?.length" class="bar" color="danger"></ion-progress-bar>
-                    <ion-progress-bar [value]="this.index / this.data?.length" class="bar"> color="primary"</ion-progress-bar>
+                    <ion-progress-bar [value]="this.correctCount / this.data?.length" class="bar"
+                                      color="success"></ion-progress-bar>
+                    <ion-progress-bar [value]="(this.index - this.correctCount) / this.data?.length" class="bar"
+                                      color="danger"></ion-progress-bar>
+                    <ion-progress-bar [value]="this.index / this.data?.length" class="bar"> color="primary"
+                    </ion-progress-bar>
                 </ion-item>
             </ion-col>
         </ion-row>
@@ -38,7 +41,8 @@
                     <ion-col>
                         <ion-item>
                             <ion-label>Answer:</ion-label>
-                            <ion-input [(ngModel)]="answerText" placeholder="Your Text" (keyup.enter)="checkAnswer()" #answer></ion-input>
+                            <ion-input #answer (keyup.enter)="checkAnswer()" [(ngModel)]="answerText"
+                                       placeholder="Your Text"></ion-input>
                             <ion-button (click)="checkAnswer()" expand="full">Check</ion-button>
                             <ion-button (click)="skip()" color="danger" expand="full">Skip</ion-button>
                         </ion-item>
@@ -73,7 +77,8 @@
                     <ion-col>
                         <ion-item>
                             <ion-label>Answer:</ion-label>
-                            <ion-input [(ngModel)]="correctionText" placeholder="Your Text" (keyup)="enterAnswer()" #correction></ion-input>
+                            <ion-input #correction (keyup)="enterAnswer()" [(ngModel)]="correctionText"
+                                       placeholder="Your Text"></ion-input>
                         </ion-item>
                     </ion-col>
                 </ion-row>
@@ -90,11 +95,6 @@
                 </ion-row>
                 <ion-row>
                     <ion-col>
-                        <!--                        <IonItem key={index}>-->
-                        <!--                            <IonLabel color={item.correct ? "success" : item.skip ? "warning" : "danger"}>-->
-                        <!--                            {item.first} - {item.second}-->
-                        <!--                            </IonLabel>-->
-                        <!--                        </IonItem>-->
                         <ion-item *ngFor="let p of data; let i = index">
                             <ion-label [color]="p.correct ? 'success' : p.wrong ? 'danger' : 'warning'">
                                 {{p.first}} - {{p.second}}

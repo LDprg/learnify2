@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertController} from "@ionic/angular";
 import {ApiService} from "../api.service";
-import {routerLink} from "@angular/core/schematics/migrations/router-link-with-href/util";
-import {push} from "ionicons/icons";
 import {Router} from "@angular/router";
 
 @Component({

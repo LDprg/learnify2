@@ -7,7 +7,7 @@ import {ModalController} from "@ionic/angular";
     styleUrls: ['./import-modal.component.scss'],
 })
 export class ImportModalComponent implements OnInit {
-    public text : string = "";
+    public text: string = "";
 
     constructor(private modalController: ModalController) {
     }
