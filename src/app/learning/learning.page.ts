@@ -21,6 +21,7 @@ export class LearningPage implements OnInit, ViewWillEnter {
     public status: Status = Status.Ask;
 
     public set: any;
+    public userStat: any = null;
     public data: any;
 
     public answerText: any;
@@ -62,6 +63,10 @@ export class LearningPage implements OnInit, ViewWillEnter {
                 this.data = res.data;
                 this.data = this.shuffleArray(this.data);
             }
+        });
+
+        this.apiService.getUserStats(this.id).then((stat) => {
+            this.userStat = stat;
         });
 
         this.correctCount = 0;
@@ -189,6 +194,37 @@ export class LearningPage implements OnInit, ViewWillEnter {
         if (this.index >= this.data.length) {
             this.status = Status.Final;
         }
+    }
+
+    getStar(id: string) {
+        if (this.userStat != null && this.userStat.data != null) {
+            for (let i = 0; i < this.userStat.data.length; i++) {
+                if (this.userStat.data[i].cardid == id) {
+                    if (this.userStat.data[i].stared != null) {
+                        return this.userStat.data[i].stared;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    setStar(id: string) {
+        this.apiService.updateUserStared(this.id, id, !this.getStar(id)).then((res) => {
+            if (this.userStat != null && this.userStat.data != null) {
+                for (let i = 0; i < this.userStat.data.length; i++) {
+                    if (this.userStat.data[i].cardid == id) {
+                        this.userStat.data[i].stared = !this.userStat.data[i].stared;
+                    }
+                }
+            }
+
+            this.apiService.getUserStats(this.id).then((stat) => {
+                this.userStat = stat;
+            });
+        });
     }
 
     again() {
