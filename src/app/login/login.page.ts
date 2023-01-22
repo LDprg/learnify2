@@ -41,6 +41,8 @@ export class LoginPage implements OnInit, ViewWillEnter {
             } else {
                 this.router.navigateByUrl('/profile');
             }
+        }).catch((err) => {
+            this.presentErrorAlert(err);
         });
     }
 

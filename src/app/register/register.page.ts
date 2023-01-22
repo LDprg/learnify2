@@ -31,7 +31,11 @@ export class RegisterPage implements OnInit {
                 } else {
                     this.presentErrorAlert(res.message);
                 }
+            }).catch((err) => {
+                this.presentErrorAlert(err);
             });
+        }).catch((err) => {
+            this.presentErrorAlert(err);
         });
     }
 

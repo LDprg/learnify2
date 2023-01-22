@@ -1,6 +1,6 @@
 {
     "name": "learnify2",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "An amazing learning App",
     "author": {
         "name": "Lukas Datler",
@@ -12,6 +12,14 @@
     },
     "license": "MIT",
     "main": "build/src/index.js",
+    "build": [
+        {
+            "publish": {
+                "provider": "github",
+                "owner": "LDprg",
+                "repo": "learnify2"
+            }
+        }],
     "scripts": {
         "build": "tsc && electron-rebuild",
         "electron:start-live": "node ./live-runner.js",
