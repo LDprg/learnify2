@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Storage} from '@ionic/storage-angular';
+import { CapacitorHttp } from '@capacitor/core';
 
 @Injectable({
     providedIn: 'root'
@@ -37,14 +38,15 @@ export class ApiService {
         console.log('signIn');
         let url = new URL(this.endpoint + '/api/auth/signin');
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'POST',
             headers: this.headers,
-            body: JSON.stringify({
+            data: JSON.stringify({
                 email: email,
                 password: password
             })
-        }).then(res => res.json()).then(res => {
+        }).then(res => res.data).then(res => {
             if (res.accessToken) {
                 this.setToken(res.accessToken);
             }
@@ -56,15 +58,16 @@ export class ApiService {
         console.log('register');
         let url = new URL(this.endpoint + '/api/auth/signup');
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'POST',
             headers: this.headers,
-            body: JSON.stringify({
+            data: JSON.stringify({
                 email: email,
                 username: username,
                 password: password
             })
-        }).then(res => res.json());
+        }).then(res => res.data);
     }
 
     public isLoggedIn() {
@@ -79,10 +82,11 @@ export class ApiService {
         if (this.accessToken)
             url.searchParams.append('accessToken', this.accessToken);
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'GET',
             headers: this.headers,
-        }).then(res => res.json()).then(res => {
+        }).then(res => res.data).then(res => {
             if (res.id) {
                 this.id = res.id;
                 this.username = res.username;
@@ -117,20 +121,22 @@ export class ApiService {
         this.username = "";
         this.email = "";
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'POST',
             headers: this.headers
-        }).then(res => res.json());
+        }).then(res => res.data);
     }
 
     public searchSets(search: string, count: number = 10) {
         console.log('searchSets');
         let url = new URL(this.endpoint + '/api/set/search/' + search + "/" + count);
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url:url.toString(),
             method: 'GET',
             headers: this.headers,
-        }).then(res => res.json());
+        }).then(res => res.data);
     }
 
     public getUserSets() {
@@ -140,10 +146,11 @@ export class ApiService {
         if (this.accessToken)
             url.searchParams.append('accessToken', this.accessToken);
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'GET',
             headers: this.headers,
-        }).then(res => res.json());
+        }).then(res => res.data);
     }
 
     public createSet(set: any) {
@@ -153,11 +160,12 @@ export class ApiService {
         if (this.accessToken)
             url.searchParams.append('accessToken', this.accessToken);
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'POST',
             headers: this.headers,
-            body: JSON.stringify(set)
-        }).then(res => res.json());
+            data: JSON.stringify(set)
+        }).then(res => res.data);
     }
 
     public updateSet(id: number, set: any) {
@@ -167,11 +175,12 @@ export class ApiService {
         if (this.accessToken)
             url.searchParams.append('accessToken', this.accessToken);
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'PUT',
             headers: this.headers,
-            body: JSON.stringify(set)
-        }).then(res => res.json());
+            data: JSON.stringify(set)
+        }).then(res => res.data);
     }
 
     public deleteSet(id: string) {
@@ -181,20 +190,22 @@ export class ApiService {
         if (this.accessToken)
             url.searchParams.append('accessToken', this.accessToken);
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'DELETE',
             headers: this.headers,
-        }).then(res => res.json());
+        }).then(res => res.data);
     }
 
     public getSet(id: string) {
         console.log('getSet');
         let url = new URL(this.endpoint + '/api/set/' + id);
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'GET',
             headers: this.headers,
-        }).then(res => res.json());
+        }).then(res => res.data);
     }
 
     public getUserStats(id: string) {
@@ -204,10 +215,11 @@ export class ApiService {
         if (this.accessToken)
             url.searchParams.append('accessToken', this.accessToken);
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'GET',
             headers: this.headers,
-        }).then(res => res.json());
+        }).then(res => res.data);
     }
 
     public updateUserStats(id: string, card: string, type: string) {
@@ -217,13 +229,14 @@ export class ApiService {
         if (this.accessToken)
             url.searchParams.append('accessToken', this.accessToken);
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'PUT',
             headers: this.headers,
-            body: JSON.stringify({
+            data: JSON.stringify({
                 type: type
             })
-        }).then(res => res.json());
+        }).then(res => res.data);
     }
 
     public updateUserStared(id: string, card: string, stared: boolean) {
@@ -233,13 +246,14 @@ export class ApiService {
         if (this.accessToken)
             url.searchParams.append('accessToken', this.accessToken);
 
-        return fetch(url, {
+        return CapacitorHttp.request({
+            url: url.toString(),
             method: 'PUT',
             headers: this.headers,
-            body: JSON.stringify({
+            data: JSON.stringify({
                 stared: stared
             })
-        }).then(res => res.json());
+        }).then(res => res.data);
     }
 
     private setToken(token: string) {
