@@ -8,11 +8,9 @@
 </ion-header>
 
 <ion-content>
-    <div *ngIf="set !== null then loaded else loading"></div>
+    <div *ngIf="set !== null then loaded"></div>
 
-    <ng-template #loading>
-        <ion-spinner class="spinner-center" name="circular"></ion-spinner>
-    </ng-template>
+    <ion-spinner [hidden]="set !== null" class="spinner-center" name="circular"></ion-spinner>
 
     <ng-template #loaded>
         <!--        {{id}}-->
@@ -99,7 +97,7 @@
                     </ng-template>
 
                     <ng-template #notEmpty>
-                        <ion-card *ngFor="let s of set.data; let i = index">
+                        <ion-card *ngFor="let s of set.data; let i = index; trackBy:itemTrackBy">
                             <ion-grid>
                                 <ion-row class="ion-align-items-center ion-padding-vertical">
                                     <ion-col [sizeXl]="isEditMode(s._id) ? 4 : 2" class="ion-no-padding" sizeMd="6"

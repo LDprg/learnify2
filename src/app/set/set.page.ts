@@ -72,6 +72,10 @@ export class SetPage implements OnInit, ViewWillEnter {
         });
     }
 
+    itemTrackBy(index : number, item: any) {
+        return item._id;
+    }
+
     status() {
         return JSON.stringify(this.set);
     }

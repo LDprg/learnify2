@@ -12,9 +12,19 @@
         <ion-row>
             <ion-col>
                 <ion-item class="ion-text-center" lines="none">
+                    <ion-label></ion-label>
+                    <ion-label></ion-label>
                     <ion-label>
                         {{this.index}} / {{this.data?.length}}
                     </ion-label>
+                    <ion-label>
+                        -
+                    </ion-label>
+                    <ion-label>
+                        {{(this.index / this.data?.length) * 100}}%
+                    </ion-label>
+                    <ion-label></ion-label>
+                    <ion-label></ion-label>
                 </ion-item>
                 <ion-item>
                     <ion-progress-bar [value]="this.correctCount / this.data?.length" class="bar"
@@ -29,7 +39,7 @@
     </ion-grid>
 
     <div [ngSwitch]="status">
-<!--    ! 0: not started, 1: in progress, 2: finished-->
+        <!--    ! 0: not started, 1: in progress, 2: finished-->
         <div *ngSwitchCase="0">
             <ion-grid>
                 <ion-row>
@@ -66,16 +76,16 @@
                     </ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col size-md="6" size-xl="6" size-sm="12" size-xs="12">
+                    <ion-col size-md="6" size-sm="12" size-xl="6" size-xs="12">
                         <ion-item>
-                            <ion-label color="success" class="ion-text-wrap">
+                            <ion-label class="ion-text-wrap" color="success">
                                 Correct Answer: {{getAnswer()}}
                             </ion-label>
                         </ion-item>
                     </ion-col>
-                    <ion-col size-md="6" size-xl="6" size-sm="12" size-xs="12">
+                    <ion-col size-md="6" size-sm="12" size-xl="6" size-xs="12">
                         <ion-item>
-                            <ion-label color="danger" class="ion-text-wrap">
+                            <ion-label class="ion-text-wrap" color="danger">
                                 Your Answer: {{answerText}}
                             </ion-label>
                         </ion-item>
@@ -107,9 +117,10 @@
                 <ion-row>
                     <ion-col>
                         <ion-item *ngFor="let p of data; let i = index">
-                            <ion-label [color]="p.correct ? 'success' : p.wrong ? 'danger' : p.changed ? 'warning' : 'dark'"
-                                        class="ion-text-center">
-<!--                                {{p.first}} - {{p.second}}-->
+                            <ion-label
+                                [color]="p.correct ? 'success' : p.wrong ? 'danger' : p.changed ? 'warning' : 'dark'"
+                                class="ion-text-center">
+                                <!--                                {{p.first}} - {{p.second}}-->
                                 <ion-row>
                                     <ion-col>
                                         {{p.first}}
