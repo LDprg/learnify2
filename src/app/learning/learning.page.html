@@ -116,6 +116,23 @@
                 </ion-row>
                 <ion-row>
                     <ion-col>
+                        <ion-item class="ion-text-center ion-text-wrap" color="success">
+                            <ion-label>{{this.correctCount}} - {{100 * this.correctCount/this.index}}% Correct</ion-label>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col>
+                        <ion-item class="ion-text-center ion-text-wrap" color="warning">
+                            <ion-label>{{this.skippedCount}} - {{100 * this.skippedCount/this.index}}% Skipped</ion-label>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col>
+                        <ion-item class="ion-text-center ion-text-wrap" color="danger">
+                            <ion-label>{{this.index - this.correctCount - this.skippedCount}} - {{100 * (this.index - this.correctCount - this.skippedCount)/this.index}}% Wrong</ion-label>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
                         <ion-item *ngFor="let p of data; let i = index">
                             <ion-label
                                 [color]="p.correct ? 'success' : p.wrong ? 'danger' : p.changed ? 'warning' : 'dark'"

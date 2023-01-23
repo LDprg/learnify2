@@ -29,6 +29,7 @@ export class LearningPage implements OnInit, ViewWillEnter {
 
     public index: number = 0;
     public correctCount: number = 0;
+    public skippedCount: number = 0;
 
     @ViewChild('answer', {static: false}) answer: IonInput | undefined;
     @ViewChild('correction', {static: false}) correction: IonInput | undefined;
@@ -171,6 +172,7 @@ export class LearningPage implements OnInit, ViewWillEnter {
 
     skip() {
         this.status = Status.Ask;
+        this.skippedCount++;
         this.apiService.updateUserStats(this.id, this.data[this.index]._id, "skip");
         this.nextItem();
         this.setFocus();
