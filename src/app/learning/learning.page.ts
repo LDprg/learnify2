@@ -31,6 +31,9 @@ export class LearningPage implements OnInit, ViewWillEnter {
     public correctCount: number = 0;
     public skippedCount: number = 0;
 
+    public tempReadonly: boolean = false;
+    public tempColor: string = "none";
+
     @ViewChild('answer', {static: false}) answer: IonInput | undefined;
     @ViewChild('correction', {static: false}) correction: IonInput | undefined;
 
@@ -144,11 +147,17 @@ export class LearningPage implements OnInit, ViewWillEnter {
         let correct = this.getAnswer().trim();
 
         if (answer == correct) {
-            this.status = Status.Ask;
-            this.correctCount++;
-            this.data[this.index].correct = true;
-            this.apiService.updateUserStats(this.id, this.data[this.index]._id, "success");
-            this.nextItem();
+            this.tempColor = "success";
+            this.tempReadonly = true;
+            setTimeout(() => {
+                this.tempColor = "none";
+                this.tempReadonly = false;
+                this.status = Status.Ask;
+                this.correctCount++;
+                this.data[this.index].correct = true;
+                this.apiService.updateUserStats(this.id, this.data[this.index]._id, "success");
+                this.nextItem();
+            }, 500);
         } else {
             this.status = Status.Answer;
         }
@@ -161,12 +170,18 @@ export class LearningPage implements OnInit, ViewWillEnter {
         let correct = this.getAnswer().trim();
 
         if (answer == correct) {
-            this.status = Status.Ask;
-            this.data[this.index].wrong = true;
-            this.apiService.updateUserStats(this.id, this.data[this.index]._id, "wrong");
-            this.correctionText = "";
-            this.nextItem();
-            this.setFocus();
+            this.tempColor = "danger";
+            this.tempReadonly = true;
+            setTimeout(() => {
+                this.tempColor = "none";
+                this.tempReadonly = false;
+                this.status = Status.Ask;
+                this.data[this.index].wrong = true;
+                this.apiService.updateUserStats(this.id, this.data[this.index]._id, "wrong");
+                this.correctionText = "";
+                this.nextItem();
+                this.setFocus();
+            }, 2000);
         }
     }
 

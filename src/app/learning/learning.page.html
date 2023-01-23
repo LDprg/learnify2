@@ -53,12 +53,12 @@
                 </ion-row>
                 <ion-row>
                     <ion-col>
-                        <ion-item>
+                        <ion-item [color]="tempColor">
                             <ion-label>Answer:</ion-label>
                             <ion-input #answer (keyup.enter)="checkAnswer()" [(ngModel)]="answerText"
-                                       placeholder="Your Text"></ion-input>
-                            <ion-button (click)="checkAnswer()" expand="full">Check</ion-button>
-                            <ion-button (click)="skip()" color="danger" expand="full">Skip</ion-button>
+                                       placeholder="Your Text" [readonly]="tempReadonly"></ion-input>
+                            <ion-button (click)="checkAnswer()" [disabled]="tempReadonly" expand="full">Check</ion-button>
+                            <ion-button (click)="skip()" [disabled]="tempReadonly" color="danger" expand="full">Skip</ion-button>
                         </ion-item>
                     </ion-col>
                 </ion-row>
@@ -93,13 +93,13 @@
                 </ion-row>
                 <ion-row>
                     <ion-col>
-                        <ion-item>
+                        <ion-item [color]="tempColor">
                             <ion-label>Answer:</ion-label>
                             <ion-input #correction (keyup)="enterAnswer()" [(ngModel)]="correctionText"
-                                       placeholder="Your Text"></ion-input>
+                                       placeholder="Your Text"  [readonly]="tempReadonly"></ion-input>
 
 
-                            <ion-button (click)="changeWrong()" color="warning" expand="full">I was right!</ion-button>
+                            <ion-button (click)="changeWrong()" [disabled]="tempReadonly" color="warning" expand="full">I was right!</ion-button>
                         </ion-item>
                     </ion-col>
                 </ion-row>
