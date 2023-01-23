@@ -29,12 +29,13 @@
     </ion-grid>
 
     <div [ngSwitch]="status">
+<!--    ! 0: not started, 1: in progress, 2: finished-->
         <div *ngSwitchCase="0">
             <ion-grid>
                 <ion-row>
                     <ion-col>
                         <ion-item>
-                            <ion-label>
+                            <ion-label class="ion-text-wrap">
                                 Question: {{getQuestion()}}
                             </ion-label>
                         </ion-item>
@@ -58,19 +59,23 @@
                 <ion-row>
                     <ion-col>
                         <ion-item>
-                            <ion-label>
+                            <ion-label class="ion-text-wrap">
                                 Question: {{getQuestion()}}
                             </ion-label>
                         </ion-item>
                     </ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col>
+                    <ion-col size-md="6" size-xl="6" size-sm="12" size-xs="12">
                         <ion-item>
-                            <ion-label color="success">
+                            <ion-label color="success" class="ion-text-wrap">
                                 Correct Answer: {{getAnswer()}}
                             </ion-label>
-                            <ion-label color="danger">
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size-md="6" size-xl="6" size-sm="12" size-xs="12">
+                        <ion-item>
+                            <ion-label color="danger" class="ion-text-wrap">
                                 Your Answer: {{answerText}}
                             </ion-label>
                         </ion-item>

@@ -30,19 +30,19 @@
                         <ion-card-header>
                             <ion-grid>
                                 <ion-row class="ion-align-items-center">
-                                    <ion-col size="4">
-                                        <ion-button [routerLink]="'/set/' + p._id" expand="block" fill="clear">
+                                    <ion-col size="4" size-sm="12" size-xs="12" class="ion-text-wrap">
+                                        <ion-button [routerLink]="'/set/' + p._id" expand="block" fill="clear" class="ion-text-wrap">
                                             <ion-card-title>
                                                 {{p.name}}
                                             </ion-card-title>
                                         </ion-button>
                                     </ion-col>
-                                    <ion-col class="ion-text-center" size="4">
+                                    <ion-col class="ion-text-center" size="4" size-sm="6" size-xs="6">
                                         <ion-card-subtitle>
                                             {{p.length}} Cards
                                         </ion-card-subtitle>
                                     </ion-col>
-                                    <ion-col size="4">
+                                    <ion-col size="4" size-sm="6" size-xs="6">
                                         <ion-button (click)="deleteSet(p._id)" color="danger" expand="block"
                                                     fill="clear">
                                             <ion-icon ios="close-outline" md="close-sharp" slot="icon-only"></ion-icon>

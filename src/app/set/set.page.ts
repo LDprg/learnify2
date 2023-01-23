@@ -115,30 +115,34 @@ export class SetPage implements OnInit, ViewWillEnter {
     }
 
     deleteCard(id: number) {
-        for (let i = 0; i < this.set.data.length; i++) {
-            if (this.set.data[i]._id == id) {
-                this.alertController.create({
-                    header: "Delete",
-                    message: "Are you sure you want to delete this Card?",
-                    buttons: [
-                        {
-                            text: "No",
-                        },
-                        {
-                            text: "Yes",
-                            handler: () => {
-                                this.set.data.splice(i, 1);
-                                this.apiService.updateSet(this.set.id, this.set).then((res) => {
-                                    this.apiService.getSet(this.id).then((set) => {
-                                        this.setSet(set);
+        if (!this.editMode) {
+            for (let i = 0; i < this.set.data.length; i++) {
+                if (this.set.data[i]._id == id) {
+                    this.alertController.create({
+                        header: "Delete",
+                        message: "Are you sure you want to delete this Card?",
+                        buttons: [
+                            {
+                                text: "No",
+                            },
+                            {
+                                text: "Yes",
+                                handler: () => {
+                                    this.set.data.splice(i, 1);
+                                    this.apiService.updateSet(this.set.id, this.set).then((res) => {
+                                        this.apiService.getSet(this.id).then((set) => {
+                                            this.setSet(set);
+                                        });
                                     });
-                                });
+                                }
                             }
-                        }
-                    ]
-                }).then(r => r.present());
-                break;
+                        ]
+                    }).then(r => r.present());
+                    break;
+                }
             }
+        } else {
+            this.editMode = false;
         }
     }
 

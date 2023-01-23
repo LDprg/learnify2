@@ -106,17 +106,17 @@
                                              sizeXs="6">
                                         <ion-item [lines]="getLines()" class="text-big">
                                             <ion-textarea [(ngModel)]="s.first" [readonly]="!isEditMode(s._id)"
-                                                          autoGrow="true" class="ion-no-margin ion-no-padding"
+                                                          autoGrow="true" class="ion-no-margin ion-no-padding ion-text-wrap"
                                                           placeholder="Value">
                                             </ion-textarea>
                                         </ion-item>
                                     </ion-col>
 
                                     <ion-col [sizeXl]="isEditMode(s._id) ? 4 : 2" class="ion-no-padding" sizeMd="6"
-                                             sizeXs="4">
+                                             sizeXs="6">
                                         <ion-item [lines]="getLines()" class="text-big">
                                             <ion-textarea [(ngModel)]="s.second" [readonly]="!isEditMode(s._id)"
-                                                          autoGrow="true" class="ion-no-margin ion-no-padding"
+                                                          autoGrow="true" class="ion-no-margin ion-no-padding ion-text-wrap"
                                                           placeholder="Key">
                                             </ion-textarea>
                                         </ion-item>
