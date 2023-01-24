@@ -21,7 +21,7 @@
                         -
                     </ion-label>
                     <ion-label>
-                        {{(this.index / this.data?.length) * 100}}%
+                        {{this.floor((this.index / this.data?.length) * 100)}}%
                     </ion-label>
                     <ion-label></ion-label>
                     <ion-label></ion-label>
@@ -117,17 +117,17 @@
                 <ion-row>
                     <ion-col>
                         <ion-item class="ion-text-center ion-text-wrap" color="success">
-                            <ion-label>{{this.correctCount}} - {{100 * this.correctCount/this.index}}% Correct</ion-label>
+                            <ion-label>{{this.correctCount}} - {{this.floor(100 * this.correctCount/this.index)}}% Correct</ion-label>
                         </ion-item>
                     </ion-col>
                     <ion-col>
                         <ion-item class="ion-text-center ion-text-wrap" color="warning">
-                            <ion-label>{{this.skippedCount}} - {{100 * this.skippedCount/this.index}}% Skipped</ion-label>
+                            <ion-label>{{this.skippedCount}} - {{this.floor(100 * this.skippedCount/this.index)}}% Skipped</ion-label>
                         </ion-item>
                     </ion-col>
                     <ion-col>
                         <ion-item class="ion-text-center ion-text-wrap" color="danger">
-                            <ion-label>{{this.index - this.correctCount - this.skippedCount}} - {{100 * (this.index - this.correctCount - this.skippedCount)/this.index}}% Wrong</ion-label>
+                            <ion-label>{{this.index - this.correctCount - this.skippedCount}} - {{this.floor(100 * (this.index - this.correctCount - this.skippedCount)/this.index)}}% Wrong</ion-label>
                         </ion-item>
                     </ion-col>
                 </ion-row>

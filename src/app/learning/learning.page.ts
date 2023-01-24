@@ -81,6 +81,10 @@ export class LearningPage implements OnInit, ViewWillEnter {
         this.setFocus();
     }
 
+    floor(value: number) {
+        return Math.round(value);
+    }
+
     getQuestion() {
         if (this.data !== undefined) {
             return this.data[this.index].first;
@@ -143,6 +147,8 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     checkAnswer() {
+        if (this.tempReadonly) return;
+
         let answer = this.getAnswerText().trim();
         let correct = this.getAnswer().trim();
 
@@ -166,6 +172,8 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     enterAnswer() {
+        if (this.tempReadonly) return;
+
         let answer = this.getAnswerText().trim();
         let correct = this.getAnswer().trim();
 
@@ -186,6 +194,8 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     skip() {
+        if (this.tempReadonly) return;
+
         this.status = Status.Ask;
         this.skippedCount++;
         this.apiService.updateUserStats(this.id, this.data[this.index]._id, "skip");
@@ -194,6 +204,8 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     changeWrong() {
+        if (this.tempReadonly) return;
+
         this.status = Status.Ask;
         this.correctCount++;
         this.data[this.index].changed = true;
@@ -204,6 +216,8 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     nextItem() {
+        if (this.tempReadonly) return;
+
         this.answerText = "";
 
         this.index++;
