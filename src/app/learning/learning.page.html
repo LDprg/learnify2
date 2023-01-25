@@ -133,6 +133,20 @@
                 </ion-row>
                 <ion-row>
                     <ion-col>
+                        <ion-button (click)="markNothing()" expand="full">Mark nothing</ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button (click)="markAll()" expand="full">Mark all</ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button (click)="markCorrect()" expand="full">Mark Correct</ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button (click)="markWrong()" expand="full">Mark Wrong</ion-button>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
                         <ion-item *ngFor="let p of data; let i = index">
                             <ion-label
                                 [color]="p.correct ? 'success' : p.wrong ? 'danger' : p.changed ? 'warning' : 'dark'"

@@ -227,6 +227,66 @@ export class LearningPage implements OnInit, ViewWillEnter {
         }
     }
 
+    markNothing() {
+        let func = async () => {
+            if (this.userStat != null && this.userStat.data != null) {
+                for (let i = 0; i < this.userStat.data.length; i++) {
+                    await this.setStarVal(this.userStat.data[i].cardid, false);
+                }
+                await this.apiService.getUserStats(this.id).then((stat) => {
+                    this.userStat = stat;
+                });
+            }
+        }
+        func();
+    }
+
+    markAll() {
+        let func = async () => {
+            if (this.userStat != null && this.userStat.data != null) {
+                for (let i = 0; i < this.userStat.data.length; i++) {
+                   await this.setStarVal(this.userStat.data[i].cardid, true);
+                }
+                await this.apiService.getUserStats(this.id).then((stat) => {
+                    this.userStat = stat;
+                });
+            }
+        }
+        func();
+    }
+
+    markWrong() {
+        let func = async () => {
+            for (let p of this.data) {
+                if (p.wrong || (p.wrong == undefined && p.correct == undefined && p.changed == undefined)) {
+                    await this.setStarVal(p._id, true);
+                } else {
+                    await this.setStarVal(p._id, false);
+                }
+            }
+            await this.apiService.getUserStats(this.id).then((stat) => {
+                this.userStat = stat;
+            });
+        }
+        func();
+    }
+
+    markCorrect() {
+        let func = async () => {
+            for (let p of this.data) {
+                if (p.correct || p.changed) {
+                    await this.setStarVal(p._id, true);
+                } else {
+                    await this.setStarVal(p._id, false);
+                }
+            }
+            await this.apiService.getUserStats(this.id).then((stat) => {
+                this.userStat = stat;
+            });
+        }
+        func();
+    }
+
     getStar(id: string) {
         if (this.userStat != null && this.userStat.data != null) {
             for (let i = 0; i < this.userStat.data.length; i++) {
@@ -243,18 +303,22 @@ export class LearningPage implements OnInit, ViewWillEnter {
     }
 
     setStar(id: string) {
-        this.apiService.updateUserStared(this.id, id, !this.getStar(id)).then((res) => {
-            if (this.userStat != null && this.userStat.data != null) {
-                for (let i = 0; i < this.userStat.data.length; i++) {
-                    if (this.userStat.data[i].cardid == id) {
-                        this.userStat.data[i].stared = !this.userStat.data[i].stared;
-                    }
-                }
-            }
-
+        return this.setStarVal(id, !this.getStar(id)).then(() => {
             this.apiService.getUserStats(this.id).then((stat) => {
                 this.userStat = stat;
             });
+        });
+    }
+
+    setStarVal(id: string, value: boolean) {
+        return this.apiService.updateUserStared(this.id, id, value).then((res) => {
+            if (this.userStat != null && this.userStat.data != null) {
+                for (let i = 0; i < this.userStat.data.length; i++) {
+                    if (this.userStat.data[i].cardid == id) {
+                        this.userStat.data[i].stared = value;
+                    }
+                }
+            }
         });
     }
 
