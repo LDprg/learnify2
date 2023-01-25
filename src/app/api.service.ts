@@ -168,7 +168,7 @@ export class ApiService {
         }).then(res => res.data);
     }
 
-    public updateSet(id: number, set: any) {
+    public updateSet(id: string, set: any) {
         console.log('updateSet');
         let url = new URL(this.endpoint + '/api/set/' + id);
 

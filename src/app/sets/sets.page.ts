@@ -39,6 +39,7 @@ export class SetsPage implements OnInit, ViewWillEnter {
                 }
             ],
             buttons: [
+                'Cancel',
                 {
                     text: 'Create',
                     handler: (input) => {
@@ -49,7 +50,6 @@ export class SetsPage implements OnInit, ViewWillEnter {
                         });
                     },
                 },
-                'Cancel',
             ],
         }).then((alert) => {
             alert.present();
@@ -73,6 +73,40 @@ export class SetsPage implements OnInit, ViewWillEnter {
             ],
         }).then((alert) => {
             alert.present();
+        });
+    }
+
+    renameSet(id: string) {
+        this.apiService.getSet(id).then((res) => {
+            this.alertController.create({
+                header: 'Rename',
+                inputs: [
+                    {
+                        name: 'name',
+                        placeholder: 'Name (min 3 characters)',
+                        value: res.name,
+                        attributes: {
+                            minlength: 3,
+                        },
+                    }
+                ],
+                buttons: [
+                    'Cancel',
+                    {
+                        text: 'Rename',
+                        handler: (input) => {
+                            this.apiService.updateSet(id, {
+                                name: input.name,
+                                ...res.data,
+                            }).then((res) => {
+                                this.refresh();
+                            });
+                        },
+                    },
+                ],
+            }).then((alert) => {
+                alert.present();
+            });
         });
     }
 }
