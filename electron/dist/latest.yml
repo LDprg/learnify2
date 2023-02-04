@@ -1,8 +1,8 @@
 version: 1.0.7
 files:
   - url: learnify2-Setup-1.0.7.exe
-    sha512: KgtmSOpSSAdZ1Xl68tcmKPjyHqqfmQdmTgOxdpNfSVveG2HvjAHJZc/GsF6Pb429Ww7Wvi0FkZY95YjnoccScg==
-    size: 75792517
+    sha512: oCgkZR3PaZHY/4Eh12ZhBF/c69ZlPghHv7EGK5ISu+ARBYFsBU8XFb6uzjiB3iZtofsAjssfsWevVKRBRDUyCw==
+    size: 75792441
 path: learnify2-Setup-1.0.7.exe
-sha512: KgtmSOpSSAdZ1Xl68tcmKPjyHqqfmQdmTgOxdpNfSVveG2HvjAHJZc/GsF6Pb429Ww7Wvi0FkZY95YjnoccScg==
-releaseDate: '2023-02-04T13:27:25.530Z'
+sha512: oCgkZR3PaZHY/4Eh12ZhBF/c69ZlPghHv7EGK5ISu+ARBYFsBU8XFb6uzjiB3iZtofsAjssfsWevVKRBRDUyCw==
+releaseDate: '2023-02-04T13:36:35.076Z'
